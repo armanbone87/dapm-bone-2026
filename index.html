@@ -27,23 +27,25 @@
 
     <!-- Navigasi Tab -->
     <div class="flex flex-wrap gap-2 border-b border-slate-200 bg-white p-2 rounded-xl border shadow-sm">
-      <button id="tabBtn1" onclick="switchTab(1)" class="px-4 py-2.5 text-xs font-bold rounded-lg transition flex items-center gap-2 bg-indigo-600 text-white">
-        <i class="fa-solid fa-table"></i> Iuran & Laporan 2026
+      <button id="tabBtn1" onclick="switchTab(1)" class="px-3.5 py-2 text-xs font-bold rounded-lg transition flex items-center gap-2 bg-indigo-600 text-white">
+        <i class="fa-solid fa-table"></i> Iuran & Laporan
       </button>
-      <button id="tabBtn2" onclick="switchTab(2)" class="px-4 py-2.5 text-xs font-bold rounded-lg transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
-        <i class="fa-solid fa-sack-dollar"></i> Modal Awal Kecamatan
+      <button id="tabBtn5" onclick="switchTab(5)" class="px-3.5 py-2 text-xs font-bold rounded-lg transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+        <i class="fa-solid fa-book-bookmark"></i> Laporan Kas 2026
       </button>
-      <button id="tabBtn3" onclick="switchTab(3)" class="px-4 py-2.5 text-xs font-bold rounded-lg transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+      <button id="tabBtn2" onclick="switchTab(2)" class="px-3.5 py-2 text-xs font-bold rounded-lg transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+        <i class="fa-solid fa-sack-dollar"></i> Modal Awal
+      </button>
+      <button id="tabBtn3" onclick="switchTab(3)" class="px-3.5 py-2 text-xs font-bold rounded-lg transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
         <i class="fa-solid fa-users"></i> Data Pengurus
       </button>
-      <button id="tabBtn4" onclick="switchTab(4)" class="px-4 py-2.5 text-xs font-bold rounded-lg transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+      <button id="tabBtn4" onclick="switchTab(4)" class="px-3.5 py-2 text-xs font-bold rounded-lg transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
         <i class="fa-solid fa-boxes-packing"></i> Aset Sekarang
       </button>
     </div>
 
     <!-- ================= TAB 1: IURAN & LAPORAN 2026 ================= -->
     <div id="tabContent1" class="space-y-4">
-      <!-- Summary Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
           <span class="text-xs text-slate-400 font-medium">Total Penerimaan Iuran 2026</span>
@@ -59,13 +61,9 @@
         </div>
       </div>
 
-      <!-- Table Iuran -->
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="p-3 border-b border-slate-100 flex justify-between items-center">
           <input type="text" id="searchIuran" onkeyup="filterIuranTable()" placeholder="Cari kecamatan..." class="text-xs p-2 border border-slate-200 rounded-lg w-64">
-          <button onclick="exportIuranCSV()" class="bg-emerald-600 text-white text-xs px-3 py-2 rounded-lg font-medium hover:bg-emerald-700">
-            <i class="fa-solid fa-file-excel"></i> Export CSV
-          </button>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-xs text-left border-collapse" id="iuranTable">
@@ -91,6 +89,54 @@
             </thead>
             <tbody class="divide-y divide-slate-200 font-medium text-slate-700" id="iuranBody"></tbody>
             <tfoot class="bg-slate-100 font-bold text-slate-900 border-t-2 border-slate-300" id="iuranFoot"></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 5: LAPORAN KAS ASOSIASI 2026 ================= -->
+    <div id="tabContent5" class="space-y-4 hidden">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-xs text-slate-400 font-medium">Saldo Awal</span>
+          <p class="text-xl font-bold text-slate-700 mt-1 font-mono">Rp 825.137</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-xs text-slate-400 font-medium">Total Penerimaan Kas</span>
+          <p class="text-xl font-bold text-emerald-600 mt-1 font-mono" id="kasTotMasuk">Rp 0</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-xs text-slate-400 font-medium">Total Pengeluaran Kas</span>
+          <p class="text-xl font-bold text-red-600 mt-1 font-mono" id="kasTotKeluar">Rp 0</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-xs text-slate-400 font-medium">Saldo Akhir Saat Ini</span>
+          <p class="text-2xl font-black text-indigo-600 mt-1 font-mono" id="kasSaldoAkhir">Rp 0</p>
+        </div>
+      </div>
+
+      <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex justify-between items-center">
+        <h2 class="font-bold text-slate-800 text-sm">Buku Kas Mutasi Asosiasi UPK Kab. Bone Tahun 2026</h2>
+        <button onclick="openModalKas()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3.5 py-2 rounded-lg font-bold">
+          <i class="fa-solid fa-plus"></i> Tambah Transaksi Kas
+        </button>
+      </div>
+
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-slate-800 text-white font-semibold">
+              <tr>
+                <th class="p-2.5 text-center w-12">NO</th>
+                <th class="p-2.5 w-28">TANGGAL</th>
+                <th class="p-2.5">URAIAN TRANSAKSI</th>
+                <th class="p-2.5 text-right text-emerald-300 w-32">PENERIMAAN (RP)</th>
+                <th class="p-2.5 text-right text-red-300 w-32">PENGELUARAN (RP)</th>
+                <th class="p-2.5 text-right w-36">SALDO (RP)</th>
+                <th class="p-2.5 text-center w-20">AKSI</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200" id="kasBody"></tbody>
           </table>
         </div>
       </div>
@@ -197,6 +243,41 @@
   </div>
 
   <!-- ================= MODALS ================= -->
+
+  <!-- Modal Edit Kas -->
+  <div id="modalKas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-slate-800" id="modalKasTitle">Tambah Transaksi Kas</h3>
+        <button onclick="closeModal('modalKas')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="saveKas(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="editKasIdx">
+        <div>
+          <label class="block font-semibold mb-1">Tanggal Transaksi</label>
+          <input type="text" id="kTgl" required placeholder="DD/MM/2026" class="w-full p-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Uraian / Keterangan</label>
+          <input type="text" id="kUraian" required placeholder="Terima Iuran / Penarikan..." class="w-full p-2 border rounded-lg">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold mb-1">Penerimaan (Rp)</label>
+            <input type="number" id="kMasuk" placeholder="0" class="w-full p-2 border rounded-lg font-mono">
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Pengeluaran (Rp)</label>
+            <input type="number" id="kKeluar" placeholder="0" class="w-full p-2 border rounded-lg font-mono">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 border-t pt-3">
+          <button type="button" onclick="closeModal('modalKas')" class="px-4 py-2 bg-slate-100 rounded-lg">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Modal Edit Iuran -->
   <div id="modalIuran" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
@@ -345,31 +426,64 @@
       return { no: i+1, name: k, highlight, months };
     });
 
-    const defaultModalAwal = kecList.map((k, i) => ({
-      no: i+1,
-      name: k,
-      modal: 0,
-      ket: "Program DAPM"
-    }));
+    const defaultKas = [
+      { tgl: "28/01/2026", uraian: "Terima Iuran Dari UPK Tonra Jan-Feb 2026", masuk: 100000, keluar: 0 },
+      { tgl: "01/02/2026", uraian: "Terima Iuran Dari Upk Amali Januari 2026", masuk: 50000, keluar: 0 },
+      { tgl: "02/02/2026", uraian: "Terima Iuran Dari Upk Tr.barat Januari 2026", masuk: 60000, keluar: 0 },
+      { tgl: "02/02/2026", uraian: "Terima Iuran Dari UPK Barebbo Januari 2026", masuk: 60000, keluar: 0 },
+      { tgl: "02/02/2026", uraian: "Terima Iuran Dari UPK Tr.Timur Januari 2026", masuk: 210000, keluar: 0 },
+      { tgl: "02/02/2026", uraian: "Terima Iuran Dari Upk Tlimpoe Ags-Des 2025", masuk: 300000, keluar: 0 },
+      { tgl: "02/02/2026", uraian: "Terima Iuran Dari Upk Dua Boccoe Mar-Des 2025", masuk: 1000000, keluar: 0 },
+      { tgl: "28/02/2026", uraian: "Terima Iuran Upk Amali feb 2026", masuk: 50000, keluar: 0 },
+      { tgl: "28/02/2026", uraian: "Terima Iuran Upk Tonra Maret-april 2026", masuk: 100000, keluar: 0 },
+      { tgl: "28/02/2026", uraian: "Terima Iuran Upk Tr.Barat Feb 2026", masuk: 70000, keluar: 0 },
+      { tgl: "02/03/2026", uraian: "Terima Iuran Upk Tr.Timur Feb 2026", masuk: 213000, keluar: 0 },
+      { tgl: "02/03/2026", uraian: "Terima Iuran Upk Barebbo Feb 2026", masuk: 75000, keluar: 0 },
+      { tgl: "30/03/2026", uraian: "Terima Iuran Upk Amali Maret 26", masuk: 50000, keluar: 0 },
+      { tgl: "30/03/2026", uraian: "Terima Iuran Upk Barebbo Maret 26", masuk: 60000, keluar: 0 },
+      { tgl: "31/03/2026", uraian: "Terima Iuran Upk Tonra Mei-Juni 2026", masuk: 100000, keluar: 0 },
+      { tgl: "01/04/2026", uraian: "Terima Iuran Upk Tr.Barat Maret 2026", masuk: 55000, keluar: 0 },
+      { tgl: "02/04/2026", uraian: "Terima Iuran Upk Tr.Timur Maret 2026", masuk: 234000, keluar: 0 },
+      { tgl: "23/04/2026", uraian: "Penarikan Dana Untuk Operator", masuk: 0, keluar: 2000000 },
+      { tgl: "26/04/2026", uraian: "Terima Iuran Upk Tonra Juli-Agustus 2026", masuk: 100000, keluar: 0 },
+      { tgl: "29/04/2026", uraian: "Terima Iuran Upk Amali April 2026", masuk: 50000, keluar: 0 },
+      { tgl: "30/04/2026", uraian: "Terima Iuran Upk Barebbo April 2026", masuk: 65000, keluar: 0 },
+      { tgl: "04/05/2026", uraian: "Terima Iuran UPK Tr.Barat April 2026", masuk: 50000, keluar: 0 },
+      { tgl: "05/04/2026", uraian: "Terima Iuran UPK Tr.Timur April 2026", masuk: 212500, keluar: 0 },
+      { tgl: "29/05/2026", uraian: "Terima Iuran Upk Amali Mei 2026", masuk: 50000, keluar: 0 },
+      { tgl: "30/05/2026", uraian: "Terima Iuran Upk Barebbo Mei 2026", masuk: 65000, keluar: 0 },
+      { tgl: "30/05/2026", uraian: "Terima Iuran Tonra Sept-Okt 2026", masuk: 100000, keluar: 0 },
+      { tgl: "02/06/2026", uraian: "Terima Iuran Upk Tr Barat Mei 2026", masuk: 55000, keluar: 0 },
+      { tgl: "02/06/2026", uraian: "Terima Iuran Tr.Timur Mei 2026", masuk: 277500, keluar: 0 },
+      { tgl: "27/06/2026", uraian: "Terima Iuran Tonra Nop-Des 26", masuk: 100000, keluar: 0 },
+      { tgl: "29/06/2026", uraian: "Terima Iuran Upk Amali Juni 2026", masuk: 50000, keluar: 0 },
+      { tgl: "30/06/2026", uraian: "Terima Iuran Upk Barebbo Juni 2026", masuk: 65000, keluar: 0 },
+      { tgl: "02/07/2026", uraian: "Terima Iuran Upk Timur Juni 2026", masuk: 229000, keluar: 0 },
+      { tgl: "02/07/2026", uraian: "Terima Iuran Upk Barat Juni 2026", masuk: 55000, keluar: 0 },
+      { tgl: "03/08/2026", uraian: "Terima Iuran Upk Barat Juli 2026", masuk: 50000, keluar: 0 },
+      { tgl: "03/08/2026", uraian: "Terima Iuran Upk Timur Juli 2026", masuk: 230000, keluar: 0 },
+      { tgl: "04/08/2026", uraian: "Terima Iuran Upk Barebbo Juli 2026", masuk: 65000, keluar: 0 }
+    ];
 
+    const defaultModalAwal = kecList.map((k, i) => ({ no: i+1, name: k, modal: 0, ket: "Program DAPM" }));
     const defaultPengurus = [
       { nama: "H. Andi Ahmad, S.E.", jabatan: "Ketua Asosiasi", kecamatan: "Kabupaten Bone", hp: "081234567890", status: "Aktif" },
       { nama: "Drs. M. Ridwan", jabatan: "Sekretaris", kecamatan: "Kabupaten Bone", hp: "085299887766", status: "Aktif" }
     ];
-
     const defaultAset = [
-      { nama: "Laptop Operasional Office", kategori: "Sekretariat", jumlah: 1, nilai: 8500000, kondisi: "Baik", ket: "Pengadaan 2024" },
-      { nama: "Printer All-in-One", kategori: "Sekretariat", jumlah: 1, nilai: 2500000, kondisi: "Baik", ket: "Canon G3010" }
+      { nama: "Laptop Operasional Office", kategori: "Sekretariat", jumlah: 1, nilai: 8500000, kondisi: "Baik", ket: "Pengadaan 2024" }
     ];
 
     // LocalStorage Load
     let dbIuran = JSON.parse(localStorage.getItem('bone_iuran')) || defaultIuran;
+    let dbKas = JSON.parse(localStorage.getItem('bone_kas')) || defaultKas;
     let dbModalAwal = JSON.parse(localStorage.getItem('bone_modal_awal')) || defaultModalAwal;
     let dbPengurus = JSON.parse(localStorage.getItem('bone_pengurus')) || defaultPengurus;
     let dbAset = JSON.parse(localStorage.getItem('bone_aset')) || defaultAset;
 
     function saveAll() {
       localStorage.setItem('bone_iuran', JSON.stringify(dbIuran));
+      localStorage.setItem('bone_kas', JSON.stringify(dbKas));
       localStorage.setItem('bone_modal_awal', JSON.stringify(dbModalAwal));
       localStorage.setItem('bone_pengurus', JSON.stringify(dbPengurus));
       localStorage.setItem('bone_aset', JSON.stringify(dbAset));
@@ -379,6 +493,7 @@
       if(confirm("Apakah Anda yakin ingin mereset seluruh data ke kondisi awal?")) {
         localStorage.clear();
         dbIuran = defaultIuran;
+        dbKas = defaultKas;
         dbModalAwal = defaultModalAwal;
         dbPengurus = defaultPengurus;
         dbAset = defaultAset;
@@ -391,14 +506,15 @@
 
     // TAB SWITCHING
     function switchTab(num) {
-      for(let i=1; i<=4; i++) {
-        document.getElementById(`tabContent${i}`).classList.add('hidden');
+      const tabs = [1, 2, 3, 4, 5];
+      tabs.forEach(i => {
+        const content = document.getElementById(`tabContent${i}`);
         const btn = document.getElementById(`tabBtn${i}`);
-        btn.className = "px-4 py-2.5 text-xs font-bold rounded-lg transition flex items-center gap-2 text-slate-600 hover:bg-slate-100";
-      }
+        if(content) content.classList.add('hidden');
+        if(btn) btn.className = "px-3.5 py-2 text-xs font-bold rounded-lg transition flex items-center gap-2 text-slate-600 hover:bg-slate-100";
+      });
       document.getElementById(`tabContent${num}`).classList.remove('hidden');
-      const activeBtn = document.getElementById(`tabBtn${num}`);
-      activeBtn.className = "px-4 py-2.5 text-xs font-bold rounded-lg transition flex items-center gap-2 bg-indigo-600 text-white";
+      document.getElementById(`tabBtn${num}`).className = "px-3.5 py-2 text-xs font-bold rounded-lg transition flex items-center gap-2 bg-indigo-600 text-white";
     }
 
     function closeModal(id) {
@@ -406,7 +522,108 @@
       document.getElementById(id).classList.remove('flex');
     }
 
-    // ================= TAB 1 RENDER & ACTIONS =================
+    // ================= TAB 5: KAS ASOSIASI =================
+    function renderKas() {
+      const tbody = document.getElementById('kasBody');
+      tbody.innerHTML = '';
+
+      let runningSaldo = 825137; // Saldo Awal
+      let totalMasuk = 0;
+      let totalKeluar = 0;
+
+      // Row Saldo Awal
+      const trAwal = document.createElement('tr');
+      trAwal.className = "bg-slate-50 font-semibold italic text-slate-500";
+      trAwal.innerHTML = `
+        <td class="p-2.5 text-center">-</td>
+        <td class="p-2.5">-</td>
+        <td class="p-2.5">Saldo sebelumnya</td>
+        <td class="p-2.5 text-right">-</td>
+        <td class="p-2.5 text-right">-</td>
+        <td class="p-2.5 text-right font-mono text-slate-800 font-bold">Rp ${fmt(runningSaldo)}</td>
+        <td></td>
+      `;
+      tbody.appendChild(trAwal);
+
+      dbKas.forEach((item, idx) => {
+        const m = Number(item.masuk || 0);
+        const k = Number(item.keluar || 0);
+        totalMasuk += m;
+        totalKeluar += k;
+        runningSaldo = runningSaldo + m - k;
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50";
+        tr.innerHTML = `
+          <td class="p-2.5 text-center font-bold text-slate-400">${idx + 1}</td>
+          <td class="p-2.5 font-mono text-slate-600">${item.tgl}</td>
+          <td class="p-2.5 font-medium text-slate-800">${item.uraian}</td>
+          <td class="p-2.5 text-right font-mono ${m > 0 ? 'text-emerald-600 font-semibold' : 'text-slate-300'}">${m ? 'Rp ' + fmt(m) : '-'}</td>
+          <td class="p-2.5 text-right font-mono ${k > 0 ? 'text-red-600 font-semibold' : 'text-slate-300'}">${k ? 'Rp ' + fmt(k) : '-'}</td>
+          <td class="p-2.5 text-right font-mono font-bold text-slate-900">Rp ${fmt(runningSaldo)}</td>
+          <td class="p-2.5 text-center space-x-1">
+            <button onclick="openModalKas(${idx})" class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2 py-1 rounded">Edit</button>
+            <button onclick="deleteKas(${idx})" class="bg-red-50 text-red-600 text-[10px] font-bold px-2 py-1 rounded">Hapus</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('kasTotMasuk').innerText = `Rp ${fmt(totalMasuk)}`;
+      document.getElementById('kasTotKeluar').innerText = `Rp ${fmt(totalKeluar)}`;
+      document.getElementById('kasSaldoAkhir').innerText = `Rp ${fmt(runningSaldo)}`;
+    }
+
+    function openModalKas(idx = null) {
+      document.getElementById('editKasIdx').value = idx !== null ? idx : '';
+      if(idx !== null) {
+        const item = dbKas[idx];
+        document.getElementById('kTgl').value = item.tgl;
+        document.getElementById('kUraian').value = item.uraian;
+        document.getElementById('kMasuk').value = item.masuk || '';
+        document.getElementById('kKeluar').value = item.keluar || '';
+        document.getElementById('modalKasTitle').innerText = 'Edit Transaksi Kas';
+      } else {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        document.getElementById('kTgl').value = `${dd}/${mm}/2026`;
+        document.getElementById('kUraian').value = '';
+        document.getElementById('kMasuk').value = '';
+        document.getElementById('kKeluar').value = '';
+        document.getElementById('modalKasTitle').innerText = 'Tambah Transaksi Kas';
+      }
+      document.getElementById('modalKas').classList.remove('hidden');
+      document.getElementById('modalKas').classList.add('flex');
+    }
+
+    function saveKas(e) {
+      e.preventDefault();
+      const idx = document.getElementById('editKasIdx').value;
+      const obj = {
+        tgl: document.getElementById('kTgl').value,
+        uraian: document.getElementById('kUraian').value,
+        masuk: Number(document.getElementById('kMasuk').value || 0),
+        keluar: Number(document.getElementById('kKeluar').value || 0)
+      };
+
+      if(idx !== '') dbKas[idx] = obj;
+      else dbKas.push(obj);
+
+      saveAll();
+      renderKas();
+      closeModal('modalKas');
+    }
+
+    function deleteKas(idx) {
+      if(confirm("Hapus transaksi kas ini?")) {
+        dbKas.splice(idx, 1);
+        saveAll();
+        renderKas();
+      }
+    }
+
+    // ================= TAB 1: IURAN =================
     function renderIuran() {
       const tbody = document.getElementById('iuranBody');
       tbody.innerHTML = '';
@@ -438,7 +655,6 @@
         tbody.appendChild(tr);
       });
 
-      // Foot totals
       const totalsMonth = Array(12).fill(0);
       dbIuran.forEach(r => r.months.forEach((m, i) => totalsMonth[i] += Number(m.i || 0)));
       const grandTotal = totalsMonth.reduce((a, b) => a + b, 0);
@@ -711,6 +927,7 @@
 
     function renderAll() {
       renderIuran();
+      renderKas();
       renderModalAwal();
       renderPengurus();
       renderAset();
