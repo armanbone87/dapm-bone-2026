@@ -35,7 +35,7 @@
         <div id="adminBadge" class="hidden items-center gap-2 bg-emerald-50 text-emerald-700 text-xs px-3 py-2 rounded-lg font-bold border border-emerald-200">
           <i class="fa-solid fa-user-shield"></i> Mode Admin
         </div>
-        <button id="loginBtn" onclick="openModalLogin()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2.5 rounded-lg font-bold transition flex items-center gap-2">
+        <button id="loginBtn" onclick="openModalLogin()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2.5 rounded-lg font-bold transition flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-lock"></i> Login Admin
         </button>
         <button id="logoutBtn" onclick="logoutAdmin()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs px-3 py-2.5 rounded-lg font-medium transition">
@@ -82,7 +82,7 @@
 
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="p-3 border-b border-slate-100 flex justify-between items-center">
-          <input type="text" id="searchIuran" onkeyup="filterIuranTable()" placeholder="Cari kecamatan..." class="text-xs p-2 border border-slate-200 rounded-lg w-64">
+          <input type="text" id="searchIuran" onkeyup="filterIuranTable()" placeholder="Cari kecamatan..." class="text-xs p-2 border border-slate-200 rounded-lg w-64 focus:outline-indigo-600">
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-xs text-left border-collapse" id="iuranTable">
@@ -149,18 +149,103 @@
       </div>
     </div>
 
-    <!-- TAB DUMMY / LAINNYA -->
-    <div id="tabContent2" class="hidden p-6 bg-white rounded-xl border border-slate-200 text-center text-slate-500 font-medium">
-      <i class="fa-solid fa-sack-dollar text-3xl mb-2 text-slate-300"></i>
-      <p>Modul Modal Awal Informasi Asosiasi UPK DAPM Kab. Bone</p>
+    <!-- TAB 2: MODAL AWAL -->
+    <div id="tabContent2" class="space-y-4 hidden">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-xs text-slate-400 font-medium">Total Modal Awal Keseluruhan</span>
+          <p class="text-2xl font-black text-indigo-600 mt-1 font-mono" id="modalTotAwal">Rp 0</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-xs text-slate-400 font-medium">Rata-Rata Modal Awal UPK</span>
+          <p class="text-2xl font-bold text-slate-800 mt-1 font-mono" id="modalRataRata">Rp 0</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-xs text-slate-400 font-medium">Jumlah UPK Terdaftar</span>
+          <p class="text-2xl font-bold text-slate-800 mt-1">21 Kecamatan</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-3 border-b border-slate-100 flex justify-between items-center">
+          <h3 class="font-bold text-sm text-slate-800">Rincian Modal Awal UPK DAPM Per Kecamatan</h3>
+          <input type="text" id="searchModal" onkeyup="filterModalTable()" placeholder="Cari kecamatan..." class="text-xs p-2 border border-slate-200 rounded-lg w-64 focus:outline-indigo-600">
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse" id="modalTable">
+            <thead>
+              <tr class="bg-slate-800 text-white font-semibold">
+                <th class="p-2.5 text-center w-12">NO</th>
+                <th class="p-2.5">NAMA KECAMATAN</th>
+                <th class="p-2.5 text-right">MODAL AWAL (RP)</th>
+                <th class="p-2.5 text-center">STATUS AKTIF</th>
+                <th class="p-2.5">KETERANGAN</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 font-medium text-slate-700" id="modalBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div id="tabContent3" class="hidden p-6 bg-white rounded-xl border border-slate-200 text-center text-slate-500 font-medium">
-      <i class="fa-solid fa-users text-3xl mb-2 text-slate-300"></i>
-      <p>Modul Data Pengurus Asosiasi UPK DAPM Kab. Bone</p>
+
+    <!-- TAB 3: DATA PENGURUS -->
+    <div id="tabContent3" class="space-y-4 hidden">
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+        <h3 class="font-bold text-sm text-slate-800 mb-1">Struktur Pengurus Asosiasi UPK DAPM Kab. Bone</h3>
+        <p class="text-xs text-slate-500">Daftar jajaran pengurus pengelola dan pengawas Asosiasi UPK DAPM Kabupaten Bone.</p>
+      </div>
+
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-800 text-white font-semibold">
+                <th class="p-2.5 text-center w-12">NO</th>
+                <th class="p-2.5">JABATAN ASOSIASI</th>
+                <th class="p-2.5">NAMA PENGURUS</th>
+                <th class="p-2.5">UTUSAN KECAMATAN</th>
+                <th class="p-2.5 text-center">KONTAK / HP</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 font-medium text-slate-700" id="pengurusBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div id="tabContent4" class="hidden p-6 bg-white rounded-xl border border-slate-200 text-center text-slate-500 font-medium">
-      <i class="fa-solid fa-boxes-packing text-3xl mb-2 text-slate-300"></i>
-      <p>Modul Aset Asosiasi UPK DAPM Kab. Bone</p>
+
+    <!-- TAB 4: ASET SEKARANG -->
+    <div id="tabContent4" class="space-y-4 hidden">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-xs text-slate-400 font-medium">Total Est. Nilai Aset</span>
+          <p class="text-2xl font-black text-indigo-600 mt-1 font-mono" id="asetTotNilai">Rp 0</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <span class="text-xs text-slate-400 font-medium">Total Jumlah Barang</span>
+          <p class="text-2xl font-bold text-slate-800 mt-1" id="asetTotUnit">0 Unit</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-3 border-b border-slate-100">
+          <h3 class="font-bold text-sm text-slate-800">Daftar Inventaris & Aset Asosiasi UPK DAPM</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-800 text-white font-semibold">
+                <th class="p-2.5 text-center w-12">NO</th>
+                <th class="p-2.5">NAMA BARANG / ASET</th>
+                <th class="p-2.5 text-center">JUMLAH / UNIT</th>
+                <th class="p-2.5 text-center">KONDISI</th>
+                <th class="p-2.5 text-right">ESTIMASI NILAI (RP)</th>
+                <th class="p-2.5">LOKASI / KETERANGAN</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 font-medium text-slate-700" id="asetBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -207,9 +292,30 @@
       { tgl: "28/01/2026", uraian: "Terima Iuran UPK Tonra Jan-Feb 2026", masuk: 100000, keluar: 0 }
     ];
 
+    let dbModal = kecList.map((k, i) => ({
+      no: i + 1,
+      name: k,
+      modal: 50000000 + (i * 2500000),
+      status: "Aktif",
+      ket: "UPK DAPM " + k
+    }));
+
+    let dbPengurus = [
+      { no: 1, jabatan: "Ketua Asosiasi", nama: "Pengurus DAPM Bone", utusan: "Tanete Riattang", hp: "-" },
+      { no: 2, jabatan: "Sekretaris", nama: "Pengurus DAPM Bone", utusan: "Barebbo", hp: "-" },
+      { no: 3, jabatan: "Bendahara", nama: "Pengurus DAPM Bone", utusan: "Palakka", hp: "-" },
+      { no: 4, jabatan: "Anggota / Pengawas", nama: "Pengurus DAPM Bone", utusan: "Sibulue", hp: "-" }
+    ];
+
+    let dbAset = [
+      { no: 1, nama: "Laptop / Komputer Sekretariat", jumlah: 1, kondisi: "Baik", nilai: 7500000, lokasi: "Sekretariat Asosiasi" },
+      { no: 2, nama: "Printer All-in-One", jumlah: 1, kondisi: "Baik", nilai: 2500000, lokasi: "Sekretariat Asosiasi" },
+      { no: 3, nama: "Meja & Kursi Kerja", jumlah: 1, kondisi: "Baik", nilai: 3000000, lokasi: "Sekretariat Asosiasi" },
+      { no: 4, nama: "Stempel & Modul Arsip", jumlah: 1, kondisi: "Baik", nilai: 500000, lokasi: "Sekretariat Asosiasi" }
+    ];
+
     let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
 
-    // Inisialisasi Aplikasi (Gunakan LocalStorage sebagai Standar Utama yang Aman)
     function initApp() {
       const statusEl = document.getElementById('connectionStatus');
       
@@ -219,9 +325,14 @@
           const parsed = JSON.parse(localData);
           if (parsed.iuran) dbIuran = parsed.iuran;
           if (parsed.kas) dbKas = parsed.kas;
+          if (parsed.modal) dbModal = parsed.modal;
+          if (parsed.pengurus) dbPengurus = parsed.pengurus;
+          if (parsed.aset) dbAset = parsed.aset;
         } catch(e){}
       } else {
-        localStorage.setItem('dapm_data_local', JSON.stringify({ iuran: dbIuran, kas: dbKas }));
+        localStorage.setItem('dapm_data_local', JSON.stringify({ 
+          iuran: dbIuran, kas: dbKas, modal: dbModal, pengurus: dbPengurus, aset: dbAset 
+        }));
       }
 
       statusEl.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i> Sistem Siap (Penyimpanan Lokal Aktif)';
@@ -276,6 +387,15 @@
     function filterIuranTable() {
       const q = document.getElementById('searchIuran').value.toLowerCase();
       const rows = document.querySelectorAll('#iuranBody tr');
+      rows.forEach(r => {
+        const txt = r.textContent.toLowerCase();
+        r.style.display = txt.includes(q) ? '' : 'none';
+      });
+    }
+
+    function filterModalTable() {
+      const q = document.getElementById('searchModal').value.toLowerCase();
+      const rows = document.querySelectorAll('#modalBody tr');
       rows.forEach(r => {
         const txt = r.textContent.toLowerCase();
         r.style.display = txt.includes(q) ? '' : 'none';
@@ -346,6 +466,78 @@
       document.getElementById('kasSaldoAkhir').innerText = `Rp ${fmt(saldo)}`;
     }
 
+    function renderModal() {
+      const tbody = document.getElementById('modalBody');
+      if(!tbody) return;
+      tbody.innerHTML = '';
+      let totModal = 0;
+
+      dbModal.forEach((item) => {
+        const m = Number(item.modal || 0);
+        totModal += m;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-2.5 text-center font-bold text-slate-400 border-r border-slate-200">${item.no}</td>
+          <td class="p-2.5 font-bold text-slate-800 border-r border-slate-200">${item.name}</td>
+          <td class="p-2.5 text-right font-mono font-bold text-indigo-600 border-r border-slate-200">Rp ${fmt(m)}</td>
+          <td class="p-2.5 text-center border-r border-slate-200"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold text-[10px]">${item.status}</span></td>
+          <td class="p-2.5 text-slate-500">${item.ket}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('modalTotAwal').innerText = `Rp ${fmt(totModal)}`;
+      document.getElementById('modalRataRata').innerText = `Rp ${fmt(Math.round(totModal / (dbModal.length || 1)))}`;
+    }
+
+    function renderPengurus() {
+      const tbody = document.getElementById('pengurusBody');
+      if(!tbody) return;
+      tbody.innerHTML = '';
+
+      dbPengurus.forEach((item) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-2.5 text-center font-bold text-slate-400 border-r border-slate-200">${item.no}</td>
+          <td class="p-2.5 font-bold text-indigo-600 border-r border-slate-200">${item.jabatan}</td>
+          <td class="p-2.5 font-bold text-slate-800 border-r border-slate-200">${item.nama}</td>
+          <td class="p-2.5 font-medium text-slate-600 border-r border-slate-200">${item.utusan}</td>
+          <td class="p-2.5 text-center font-mono text-slate-500">${item.hp}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderAset() {
+      const tbody = document.getElementById('asetBody');
+      if(!tbody) return;
+      tbody.innerHTML = '';
+      let totNilai = 0;
+      let totUnit = 0;
+
+      dbAset.forEach((item) => {
+        const n = Number(item.nilai || 0);
+        const u = Number(item.jumlah || 0);
+        totNilai += n;
+        totUnit += u;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-2.5 text-center font-bold text-slate-400 border-r border-slate-200">${item.no}</td>
+          <td class="p-2.5 font-bold text-slate-800 border-r border-slate-200">${item.nama}</td>
+          <td class="p-2.5 text-center font-bold border-r border-slate-200">${u} Unit</td>
+          <td class="p-2.5 text-center border-r border-slate-200"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold text-[10px]">${item.kondisi}</span></td>
+          <td class="p-2.5 text-right font-mono font-bold text-indigo-600 border-r border-slate-200">Rp ${fmt(n)}</td>
+          <td class="p-2.5 text-slate-500">${item.lokasi}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('asetTotNilai').innerText = `Rp ${fmt(totNilai)}`;
+      document.getElementById('asetTotUnit').innerText = `${totUnit} Unit`;
+    }
+
     function renderAll() {
       if(isAdmin) {
         document.getElementById('loginBtn').classList.add('hidden');
@@ -359,9 +551,11 @@
       }
       renderIuran();
       renderKas();
+      renderModal();
+      renderPengurus();
+      renderAset();
     }
 
-    // Jalankan otomatis
     window.onload = initApp;
   </script>
 </body>
