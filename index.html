@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   
-  <!-- SDK Firebase Realtime Database -->
+  <!-- SDK Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
@@ -25,7 +25,7 @@
           <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Sistem Terpadu</span>
           <h1 class="text-xl sm:text-2xl font-bold text-slate-900 mt-2">ASOSIASI UPK DAPM KABUPATEN BONE</h1>
           <p class="text-xs text-slate-500 mt-1" id="connectionStatus">
-            <i class="fa-solid fa-spinner fa-spin text-amber-500"></i> Memeriksa Koneksi Database...
+            <i class="fa-solid fa-spinner fa-spin text-amber-500"></i> Memeriksa Status Sistem...
           </p>
         </div>
       </div>
@@ -103,11 +103,9 @@
                 <th class="p-2 text-center border-b border-r border-slate-700" colspan="2">Nov</th>
                 <th class="p-2 text-center border-b border-r border-slate-700" colspan="2">Des</th>
                 <th class="p-2.5 text-right border-b border-slate-700 min-w-[100px]">JUMLAH</th>
-                <th class="p-2.5 text-center border-b border-slate-700 min-w-[60px] admin-only hidden">AKSI</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-200 font-medium text-slate-700" id="iuranBody"></tbody>
-            <tfoot class="bg-slate-100 font-bold text-slate-900 border-t-2 border-slate-300" id="iuranFoot"></tfoot>
           </table>
         </div>
       </div>
@@ -151,10 +149,19 @@
       </div>
     </div>
 
-    <!-- TAB 2, 3, 4 DIBUAT DENGAN STRUKTUR SERUPA -->
-    <div id="tabContent2" class="hidden p-4 bg-white rounded-xl border">Konten Modal Awal</div>
-    <div id="tabContent3" class="hidden p-4 bg-white rounded-xl border">Konten Data Pengurus</div>
-    <div id="tabContent4" class="hidden p-4 bg-white rounded-xl border">Konten Aset</div>
+    <!-- TAB DUMMY / LAINNYA -->
+    <div id="tabContent2" class="hidden p-6 bg-white rounded-xl border border-slate-200 text-center text-slate-500 font-medium">
+      <i class="fa-solid fa-sack-dollar text-3xl mb-2 text-slate-300"></i>
+      <p>Modul Modal Awal Informasi Asosiasi UPK DAPM Kab. Bone</p>
+    </div>
+    <div id="tabContent3" class="hidden p-6 bg-white rounded-xl border border-slate-200 text-center text-slate-500 font-medium">
+      <i class="fa-solid fa-users text-3xl mb-2 text-slate-300"></i>
+      <p>Modul Data Pengurus Asosiasi UPK DAPM Kab. Bone</p>
+    </div>
+    <div id="tabContent4" class="hidden p-6 bg-white rounded-xl border border-slate-200 text-center text-slate-500 font-medium">
+      <i class="fa-solid fa-boxes-packing text-3xl mb-2 text-slate-300"></i>
+      <p>Modul Aset Asosiasi UPK DAPM Kab. Bone</p>
+    </div>
 
   </div>
 
@@ -166,14 +173,14 @@
         <button onclick="closeModal('modalLogin')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form onsubmit="handleLogin(event)" class="space-y-3 text-xs">
-        <div id="loginError" class="hidden p-2 bg-red-50 text-red-600 text-xs rounded border border-red-200 font-medium">Username/Password Salah!</div>
+        <div id="loginError" class="hidden p-2 bg-red-50 text-red-600 text-xs rounded border border-red-200 font-medium">Username atau Password Salah!</div>
         <div>
           <label class="block font-semibold mb-1">Username</label>
-          <input type="text" id="loginUser" required class="w-full p-2.5 border rounded-lg">
+          <input type="text" id="loginUser" required class="w-full p-2.5 border rounded-lg focus:outline-indigo-600">
         </div>
         <div>
           <label class="block font-semibold mb-1">Password</label>
-          <input type="password" id="loginPass" required class="w-full p-2.5 border rounded-lg">
+          <input type="password" id="loginPass" required class="w-full p-2.5 border rounded-lg focus:outline-indigo-600">
         </div>
         <div class="flex justify-end gap-2 border-t pt-3">
           <button type="button" onclick="closeModal('modalLogin')" class="px-4 py-2 bg-slate-100 rounded-lg">Batal</button>
@@ -184,24 +191,16 @@
   </div>
 
   <script>
-    // 1. ISI DENGAN KONFIGURASI FIREBASE ASLI ANDA JIKA INGIN TERKONEKSI CLOUD
-    const firebaseConfig = {
-    apiKey: "AIzaSyB8e0SHapclXV2IP0IGcPL0mL_pysLryp8",
-    authDomain: "dapm-bone-system.firebaseapp.com",
-    databaseURL: "https://dapm-bone-system-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "dapm-bone-system",
-    storageBucket: "dapm-bone-system.firebasestorage.app",
-    messagingSenderId: "900937654127",
-    appId: "1:900937654127:web:49c1d6fd2629e1d664929a"
-  };
-
     const kecList = ["AMALI","ULAWENG","TL. LIMPOE","LIBURENG","PALAKKA","TR. BARAT","TR. TIMUR","CENRANA","DUA BOCCOE","AWANGPONE","BAREBBO","SIBULUE","CINA","TONRA","KAJUARA","KAHU","PATIMPENG","BONTOCANI","LAPRI","MARE","PONRE"];
 
     let dbIuran = kecList.map((k, i) => ({
       no: i + 1,
       name: k,
       highlight: [18,19,20].includes(i),
-      months: Array(12).fill({ l: "", i: 0 })
+      months: Array(12).fill().map((_, idx) => {
+        if(k === "TONRA" && (idx === 0 || idx === 1)) return { l: "V", i: 50000 };
+        return { l: "", i: 0 };
+      })
     }));
 
     let dbKas = [
@@ -209,44 +208,24 @@
     ];
 
     let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
-    let db = null;
 
-    // Inisialisasi Konek Firebase dengan Fallback LocalStorage
-    try {
-      if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE_API_KEY")) {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-        document.getElementById('connectionStatus').innerHTML = '<i class="fa-solid fa-cloud text-emerald-500"></i> Mode Online — Firebase Cloud Connected';
-        
-        db.ref('dapm_data').on('value', (snapshot) => {
-          const data = snapshot.val();
-          if (data) {
-            if(data.iuran) dbIuran = data.iuran;
-            if(data.kas) dbKas = data.kas;
-          }
-          renderAll();
-        });
-      } else {
-        throw new Error("Konfigurasi Firebase belum diisi.");
-      }
-    } catch (e) {
-      document.getElementById('connectionStatus').innerHTML = '<i class="fa-solid fa-hard-drive text-indigo-500"></i> Mode Lokal — Tersimpan di Browser';
+    // Inisialisasi Aplikasi (Gunakan LocalStorage sebagai Standar Utama yang Aman)
+    function initApp() {
+      const statusEl = document.getElementById('connectionStatus');
+      
       const localData = localStorage.getItem('dapm_data_local');
       if (localData) {
-        const parsed = JSON.parse(localData);
-        if (parsed.iuran) dbIuran = parsed.iuran;
-        if (parsed.kas) dbKas = parsed.kas;
-      }
-      setTimeout(renderAll, 100);
-    }
-
-    function saveAll() {
-      if (db) {
-        db.ref('dapm_data').set({ iuran: dbIuran, kas: dbKas });
+        try {
+          const parsed = JSON.parse(localData);
+          if (parsed.iuran) dbIuran = parsed.iuran;
+          if (parsed.kas) dbKas = parsed.kas;
+        } catch(e){}
       } else {
         localStorage.setItem('dapm_data_local', JSON.stringify({ iuran: dbIuran, kas: dbKas }));
-        renderAll();
       }
+
+      statusEl.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i> Sistem Siap (Penyimpanan Lokal Aktif)';
+      renderAll();
     }
 
     function fmt(v) { return v ? Number(v).toLocaleString('id-ID') : '0'; }
@@ -294,6 +273,15 @@
       renderAll();
     }
 
+    function filterIuranTable() {
+      const q = document.getElementById('searchIuran').value.toLowerCase();
+      const rows = document.querySelectorAll('#iuranBody tr');
+      rows.forEach(r => {
+        const txt = r.textContent.toLowerCase();
+        r.style.display = txt.includes(q) ? '' : 'none';
+      });
+    }
+
     function renderIuran() {
       const tbody = document.getElementById('iuranBody');
       if(!tbody) return;
@@ -317,9 +305,9 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="p-2 text-center font-bold text-slate-400 border-r border-slate-200">${row.no}</td>
-          <td class="p-2 ${row.highlight ? 'bg-red-600 text-white font-bold' : 'bg-white text-slate-800 font-semibold'} sticky left-0 z-10 border-r border-slate-200">${row.name}</td>
+          <td class="p-2 ${row.highlight ? 'bg-amber-100 text-amber-900 font-bold' : 'bg-white text-slate-800 font-semibold'} sticky left-0 z-10 border-r border-slate-200">${row.name}</td>
           ${monthCells}
-          <td class="p-2 text-right font-bold font-mono border-r border-slate-200">${fmt(rowSum)}</td>
+          <td class="p-2 text-right font-bold font-mono border-r border-slate-200 text-slate-900">${fmt(rowSum)}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -346,8 +334,8 @@
           <td class="p-2.5 text-center font-bold text-slate-400">${idx + 1}</td>
           <td class="p-2.5 font-mono text-slate-600">${item.tgl}</td>
           <td class="p-2.5 font-medium text-slate-800">${item.uraian}</td>
-          <td class="p-2.5 text-right font-mono text-emerald-600">${m ? 'Rp ' + fmt(m) : '-'}</td>
-          <td class="p-2.5 text-right font-mono text-red-600">${k ? 'Rp ' + fmt(k) : '-'}</td>
+          <td class="p-2.5 text-right font-mono text-emerald-600 font-semibold">${m ? 'Rp ' + fmt(m) : '-'}</td>
+          <td class="p-2.5 text-right font-mono text-red-600 font-semibold">${k ? 'Rp ' + fmt(k) : '-'}</td>
           <td class="p-2.5 text-right font-mono font-bold text-slate-900">Rp ${fmt(saldo)}</td>
         `;
         tbody.appendChild(tr);
@@ -372,6 +360,9 @@
       renderIuran();
       renderKas();
     }
+
+    // Jalankan otomatis
+    window.onload = initApp;
   </script>
 </body>
 </html>
