@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
+<!-- Firebase SDK v9+ (Module Syntax / Compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -520,20 +523,43 @@
     ];
 
     // LocalStorage Load
-    let dbIuran = JSON.parse(localStorage.getItem('bone_iuran')) || defaultIuran;
-    let dbKas = JSON.parse(localStorage.getItem('bone_kas')) || defaultKas;
-    let dbModalAwal = JSON.parse(localStorage.getItem('bone_modal_awal')) || defaultModalAwal;
-    let dbPengurus = JSON.parse(localStorage.getItem('bone_pengurus')) || defaultPengurus;
-    let dbAset = JSON.parse(localStorage.getItem('bone_aset')) || defaultAset;
-    let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
+    // 1. Masukkan konfigurasi Firebase Anda (Didapat gratis dari console.firebase.google.com)
+const firebaseConfig = {
+    apiKey: "AIzaSyB8e0SHapclXV2IP0IGcPL0mL_pysLryp8",
+    authDomain: "dapm-bone-system.firebaseapp.com",
+    databaseURL: "https://dapm-bone-system-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "dapm-bone-system",
+    storageBucket: "dapm-bone-system.firebasestorage.app",
+    messagingSenderId: "900937654127",
+    appId: "1:900937654127:web:cc55b26fabd151ec64929a"
+  };
+};
+
+// Inisialisasi Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// Variabel Data Global
+let dbIuran = [];
+let dbKas = [];
+let dbModalAwal = [];
+let dbPengurus = [];
+let dbAset = [];
+let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
 
     function saveAll() {
-      localStorage.setItem('bone_iuran', JSON.stringify(dbIuran));
-      localStorage.setItem('bone_kas', JSON.stringify(dbKas));
-      localStorage.setItem('bone_modal_awal', JSON.stringify(dbModalAwal));
-      localStorage.setItem('bone_pengurus', JSON.stringify(dbPengurus));
-      localStorage.setItem('bone_aset', JSON.stringify(dbAset));
-    }
+  db.ref('dapm_data').set({
+    iuran: dbIuran,
+    kas: dbKas,
+    modal_awal: dbModalAwal,
+    pengurus: dbPengurus,
+    aset: dbAset
+  }).then(() => {
+    console.log("Data berhasil disinkronkan ke Cloud.");
+  }).catch((err) => {
+    alert("Gagal menyinkronkan data ke cloud: " + err.message);
+  });
+}
 
     // AUTHENTICATION LOGIC
     function openModalLogin() {
@@ -1036,15 +1062,29 @@
       }
     }
 
-    function renderAll() {
-      updateAdminUI();
-      renderIuran();
-      renderKas();
-      renderModalAwal();
-      renderPengurus();
-      renderAset();
-    }
-
+    // Mendengar perubahan data real-time dari Firebase Cloud
+db.ref('dapm_data').on('value', (snapshot) => {
+  const data = snapshot.val();
+  
+  if (data) {
+    dbIuran = data.iuran || defaultIuran;
+    dbKas = data.kas || defaultKas;
+    dbModalAwal = data.modal_awal || defaultModalAwal;
+    dbPengurus = data.pengurus || defaultPengurus;
+    dbAset = data.aset || defaultAset;
+  } else {
+    // Jika cloud masih kosong, inisialisasi dengan default
+    dbIuran = defaultIuran;
+    dbKas = defaultKas;
+    dbModalAwal = defaultModalAwal;
+    dbPengurus = defaultPengurus;
+    dbAset = defaultAset;
+    saveAll();
+  }
+  
+  // Render ulang UI setiap kali data cloud berubah
+  renderAll();
+});
     renderAll();
   </script>
 </body>
