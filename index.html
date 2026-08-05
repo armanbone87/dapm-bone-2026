@@ -13,14 +13,34 @@
     
     <!-- Header Utama -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-      <div>
-        <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Sistem Terpadu</span>
-        <h1 class="text-2xl font-bold text-slate-900 mt-2">ASOSIASI UPK DAPM KABUPATEN BONE</h1>
-        <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-cloud-check text-emerald-500"></i> Mode Online Input — Data tersimpan otomatis di browser</p>
+      <div class="flex items-center gap-4">
+        <!-- Logo DAPM -->
+        <div class="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 bg-slate-50 p-1 rounded-full border border-slate-200 shadow-inner flex items-center justify-center">
+          <img src="https://1.bp.blogspot.com/-_J0jS7lQyN8/YVq5E144K_I/AAAAAAAAX-4/6L60gIuVvN0gA3fW4zB4iS_5C3S0c_5XgCLcBGAsYHQ/s16000/Logo%2BDAPM.png" 
+               alt="Logo DAPM" 
+               class="w-full h-full object-contain rounded-full"
+               onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png'; this.parentElement.innerHTML='<i class=\"fa-solid fa-building-columns text-amber-600 text-2xl\"></i>';">
+        </div>
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Sistem Terpadu</span>
+          <h1 class="text-xl sm:text-2xl font-bold text-slate-900 mt-2">ASOSIASI UPK DAPM KABUPATEN BONE</h1>
+          <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-cloud-check text-emerald-500"></i> Mode Online Input — Data tersimpan otomatis di browser</p>
+        </div>
       </div>
-      <div class="flex items-center gap-2">
-        <button onclick="resetAllData()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs px-3 py-2.5 rounded-lg font-medium transition">
-          <i class="fa-solid fa-rotate-right"></i> Reset Semua Data
+
+      <!-- Area Login Admin / Status Access -->
+      <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+        <div id="adminBadge" class="hidden items-center gap-2 bg-emerald-50 text-emerald-700 text-xs px-3 py-2 rounded-lg font-bold border border-emerald-200">
+          <i class="fa-solid fa-user-shield"></i> Mode Admin (Akses Edit Aktif)
+        </div>
+        <button id="loginBtn" onclick="openModalLogin()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2.5 rounded-lg font-bold transition flex items-center gap-2">
+          <i class="fa-solid fa-lock"></i> Login Admin
+        </button>
+        <button id="logoutBtn" onclick="logoutAdmin()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs px-3 py-2.5 rounded-lg font-medium transition">
+          <i class="fa-solid fa-right-from-bracket"></i> Keluar
+        </button>
+        <button id="resetBtn" onclick="resetAllData()" class="admin-only hidden bg-red-100 hover:bg-red-200 text-red-700 text-xs px-3 py-2.5 rounded-lg font-medium transition">
+          <i class="fa-solid fa-rotate-right"></i> Reset Data
         </button>
       </div>
     </div>
@@ -84,7 +104,7 @@
                 <th class="p-2 text-center border-b border-r border-slate-700" colspan="2">Nov</th>
                 <th class="p-2 text-center border-b border-r border-slate-700" colspan="2">Des</th>
                 <th class="p-2.5 text-right border-b border-slate-700 min-w-[100px]">JUMLAH</th>
-                <th class="p-2.5 text-center border-b border-slate-700 min-w-[60px]">AKSI</th>
+                <th class="p-2.5 text-center border-b border-slate-700 min-w-[60px] admin-only hidden">AKSI</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-200 font-medium text-slate-700" id="iuranBody"></tbody>
@@ -117,7 +137,7 @@
 
       <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex justify-between items-center">
         <h2 class="font-bold text-slate-800 text-sm">Buku Kas Mutasi Asosiasi UPK Kab. Bone Tahun 2026</h2>
-        <button onclick="openModalKas()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3.5 py-2 rounded-lg font-bold">
+        <button onclick="openModalKas()" class="admin-only hidden bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3.5 py-2 rounded-lg font-bold">
           <i class="fa-solid fa-plus"></i> Tambah Transaksi Kas
         </button>
       </div>
@@ -133,7 +153,7 @@
                 <th class="p-2.5 text-right text-emerald-300 w-32">PENERIMAAN (RP)</th>
                 <th class="p-2.5 text-right text-red-300 w-32">PENGELUARAN (RP)</th>
                 <th class="p-2.5 text-right w-36">SALDO (RP)</th>
-                <th class="p-2.5 text-center w-20">AKSI</th>
+                <th class="p-2.5 text-center w-20 admin-only hidden">AKSI</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-200" id="kasBody"></tbody>
@@ -163,7 +183,7 @@
               <th class="p-3 min-w-[180px]">NAMA KECAMATAN</th>
               <th class="p-3 text-right">MODAL AWAL (RP)</th>
               <th class="p-3">KETERANGAN / SUMBER DANA</th>
-              <th class="p-3 text-center w-24">AKSI</th>
+              <th class="p-3 text-center w-24 admin-only hidden">AKSI</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-200" id="modalAwalBody"></tbody>
@@ -178,7 +198,7 @@
           <h2 class="font-bold text-slate-800 text-lg">Daftar Pengurus Asosiasi / UPK DAPM</h2>
           <p class="text-xs text-slate-500">Struktur organisasi dan kontak pengurus tingkat kabupaten dan kecamatan.</p>
         </div>
-        <button onclick="openModalPengurus()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold">
+        <button onclick="openModalPengurus()" class="admin-only hidden bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold">
           <i class="fa-solid fa-user-plus"></i> Tambah Pengurus
         </button>
       </div>
@@ -193,7 +213,7 @@
               <th class="p-3">KECAMATAN / TINGKAT</th>
               <th class="p-3">NO. TELEPON / HP</th>
               <th class="p-3 text-center">STATUS</th>
-              <th class="p-3 text-center w-28">AKSI</th>
+              <th class="p-3 text-center w-28 admin-only hidden">AKSI</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-200" id="pengurusBody"></tbody>
@@ -216,7 +236,7 @@
 
       <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex justify-between items-center">
         <span class="text-xs text-slate-500 font-medium">Daftar Barang & Inventaris</span>
-        <button onclick="openModalAset()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold">
+        <button onclick="openModalAset()" class="admin-only hidden bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold">
           <i class="fa-solid fa-plus"></i> Tambah Aset Baru
         </button>
       </div>
@@ -232,7 +252,7 @@
               <th class="p-3 text-right">ESTIMASI NILAI (RP)</th>
               <th class="p-3 text-center">KONDISI</th>
               <th class="p-3">KETERANGAN</th>
-              <th class="p-3 text-center w-28">AKSI</th>
+              <th class="p-3 text-center w-28 admin-only hidden">AKSI</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-200" id="asetBody"></tbody>
@@ -242,7 +262,30 @@
 
   </div>
 
-  <!-- ================= MODALS ================= -->
+  <!-- ================= MODAL LOGIN ADMIN ================= -->
+  <div id="modalLogin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-user-gear text-indigo-600"></i> Login Pengelola Admin</h3>
+        <button onclick="closeModal('modalLogin')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="handleLogin(event)" class="space-y-3 text-xs">
+        <div id="loginError" class="hidden p-2 bg-red-50 text-red-600 text-xs rounded border border-red-200 font-medium">Username atau password salah!</div>
+        <div>
+          <label class="block font-semibold mb-1">Username</label>
+          <input type="text" id="loginUser" required class="w-full p-2.5 border rounded-lg focus:outline-indigo-500">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Password</label>
+          <input type="password" id="loginPass" required class="w-full p-2.5 border rounded-lg focus:outline-indigo-500">
+        </div>
+        <div class="flex justify-end gap-2 border-t pt-3">
+          <button type="button" onclick="closeModal('modalLogin')" class="px-4 py-2 bg-slate-100 rounded-lg">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Masuk Admin</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Modal Edit Kas -->
   <div id="modalKas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
@@ -480,6 +523,7 @@
     let dbModalAwal = JSON.parse(localStorage.getItem('bone_modal_awal')) || defaultModalAwal;
     let dbPengurus = JSON.parse(localStorage.getItem('bone_pengurus')) || defaultPengurus;
     let dbAset = JSON.parse(localStorage.getItem('bone_aset')) || defaultAset;
+    let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
 
     function saveAll() {
       localStorage.setItem('bone_iuran', JSON.stringify(dbIuran));
@@ -489,7 +533,60 @@
       localStorage.setItem('bone_aset', JSON.stringify(dbAset));
     }
 
+    // AUTHENTICATION LOGIC
+    function openModalLogin() {
+      document.getElementById('loginError').classList.add('hidden');
+      document.getElementById('loginUser').value = '';
+      document.getElementById('loginPass').value = '';
+      document.getElementById('modalLogin').classList.remove('hidden');
+      document.getElementById('modalLogin').classList.add('flex');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('loginUser').value.trim();
+      const p = document.getElementById('loginPass').value.trim();
+
+      if(u === 'admin' && p === 'Admin@2026') {
+        isAdmin = true;
+        localStorage.setItem('bone_is_admin', 'true');
+        closeModal('modalLogin');
+        updateAdminUI();
+        renderAll();
+      } else {
+        document.getElementById('loginError').classList.remove('hidden');
+      }
+    }
+
+    function logoutAdmin() {
+      isAdmin = false;
+      localStorage.removeItem('bone_is_admin');
+      updateAdminUI();
+      renderAll();
+    }
+
+    function updateAdminUI() {
+      const adminEls = document.querySelectorAll('.admin-only');
+      adminEls.forEach(el => {
+        if(isAdmin) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+
+      if(isAdmin) {
+        document.getElementById('loginBtn').classList.add('hidden');
+        document.getElementById('logoutBtn').classList.remove('hidden');
+        document.getElementById('logoutBtn').classList.add('flex');
+        document.getElementById('adminBadge').classList.remove('hidden');
+        document.getElementById('adminBadge').classList.add('flex');
+      } else {
+        document.getElementById('loginBtn').classList.remove('hidden');
+        document.getElementById('logoutBtn').classList.add('hidden');
+        document.getElementById('adminBadge').classList.add('hidden');
+      }
+    }
+
     function resetAllData() {
+      if(!isAdmin) return;
       if(confirm("Apakah Anda yakin ingin mereset seluruh data ke kondisi awal?")) {
         localStorage.clear();
         dbIuran = defaultIuran;
@@ -527,11 +624,10 @@
       const tbody = document.getElementById('kasBody');
       tbody.innerHTML = '';
 
-      let runningSaldo = 825137; // Saldo Awal
+      let runningSaldo = 825137;
       let totalMasuk = 0;
       let totalKeluar = 0;
 
-      // Row Saldo Awal
       const trAwal = document.createElement('tr');
       trAwal.className = "bg-slate-50 font-semibold italic text-slate-500";
       trAwal.innerHTML = `
@@ -541,7 +637,7 @@
         <td class="p-2.5 text-right">-</td>
         <td class="p-2.5 text-right">-</td>
         <td class="p-2.5 text-right font-mono text-slate-800 font-bold">Rp ${fmt(runningSaldo)}</td>
-        <td></td>
+        <td class="admin-only ${isAdmin ? '' : 'hidden'}"></td>
       `;
       tbody.appendChild(trAwal);
 
@@ -561,7 +657,7 @@
           <td class="p-2.5 text-right font-mono ${m > 0 ? 'text-emerald-600 font-semibold' : 'text-slate-300'}">${m ? 'Rp ' + fmt(m) : '-'}</td>
           <td class="p-2.5 text-right font-mono ${k > 0 ? 'text-red-600 font-semibold' : 'text-slate-300'}">${k ? 'Rp ' + fmt(k) : '-'}</td>
           <td class="p-2.5 text-right font-mono font-bold text-slate-900">Rp ${fmt(runningSaldo)}</td>
-          <td class="p-2.5 text-center space-x-1">
+          <td class="p-2.5 text-center space-x-1 admin-only ${isAdmin ? '' : 'hidden'}">
             <button onclick="openModalKas(${idx})" class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2 py-1 rounded">Edit</button>
             <button onclick="deleteKas(${idx})" class="bg-red-50 text-red-600 text-[10px] font-bold px-2 py-1 rounded">Hapus</button>
           </td>
@@ -575,6 +671,7 @@
     }
 
     function openModalKas(idx = null) {
+      if(!isAdmin) return;
       document.getElementById('editKasIdx').value = idx !== null ? idx : '';
       if(idx !== null) {
         const item = dbKas[idx];
@@ -599,6 +696,7 @@
 
     function saveKas(e) {
       e.preventDefault();
+      if(!isAdmin) return;
       const idx = document.getElementById('editKasIdx').value;
       const obj = {
         tgl: document.getElementById('kTgl').value,
@@ -616,6 +714,7 @@
     }
 
     function deleteKas(idx) {
+      if(!isAdmin) return;
       if(confirm("Hapus transaksi kas ini?")) {
         dbKas.splice(idx, 1);
         saveAll();
@@ -648,7 +747,7 @@
           <td class="p-2 ${row.highlight ? 'bg-red-600 text-white font-bold' : 'bg-white text-slate-800 font-semibold'} sticky left-0 z-10 border-r border-slate-200">${row.name}</td>
           ${monthCells}
           <td class="p-2 text-right font-bold font-mono border-r border-slate-200">${fmt(rowSum)}</td>
-          <td class="p-2 text-center">
+          <td class="p-2 text-center admin-only ${isAdmin ? '' : 'hidden'}">
             <button onclick="openModalIuran(${idx})" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-[10px] font-bold px-2 py-1 rounded">Edit</button>
           </td>
         `;
@@ -669,7 +768,7 @@
           <td class="p-2 text-center font-bold" colspan="2">TOTAL KESELURUHAN</td>
           ${footCells}
           <td class="p-2 text-right text-indigo-700 text-xs font-mono font-black">${fmt(grandTotal)}</td>
-          <td></td>
+          <td class="admin-only ${isAdmin ? '' : 'hidden'}"></td>
         </tr>
       `;
 
@@ -678,6 +777,7 @@
     }
 
     function openModalIuran(idx) {
+      if(!isAdmin) return;
       document.getElementById('editIuranIdx').value = idx;
       document.getElementById('modalIuranTitle').innerText = `Edit Iuran: ${dbIuran[idx].name}`;
       const container = document.getElementById('iuranInputFields');
@@ -704,6 +804,7 @@
 
     function saveIuran(e) {
       e.preventDefault();
+      if(!isAdmin) return;
       const idx = document.getElementById('editIuranIdx').value;
       for(let i=0; i<12; i++) {
         dbIuran[idx].months[i] = {
@@ -740,7 +841,7 @@
           <td class="p-3 font-semibold text-slate-800">${item.name}</td>
           <td class="p-3 text-right font-mono font-bold text-indigo-600">Rp ${fmt(item.modal)}</td>
           <td class="p-3 text-slate-600">${item.ket || '-'}</td>
-          <td class="p-3 text-center">
+          <td class="p-3 text-center admin-only ${isAdmin ? '' : 'hidden'}">
             <button onclick="openModalModalAwal(${idx})" class="bg-indigo-50 text-indigo-600 text-xs font-bold px-2 py-1 rounded">Edit</button>
           </td>
         `;
@@ -751,6 +852,7 @@
     }
 
     function openModalModalAwal(idx) {
+      if(!isAdmin) return;
       document.getElementById('editModalAwalIdx').value = idx;
       document.getElementById('modalModalAwalTitle').innerText = `Edit Modal Awal: ${dbModalAwal[idx].name}`;
       document.getElementById('inputModalAwalVal').value = dbModalAwal[idx].modal || 0;
@@ -761,6 +863,7 @@
 
     function saveModalAwal(e) {
       e.preventDefault();
+      if(!isAdmin) return;
       const idx = document.getElementById('editModalAwalIdx').value;
       dbModalAwal[idx].modal = Number(document.getElementById('inputModalAwalVal').value || 0);
       dbModalAwal[idx].ket = document.getElementById('inputModalAwalKet').value;
@@ -786,7 +889,7 @@
           <td class="p-3 text-center">
             <span class="px-2 py-1 rounded-full text-[10px] font-bold ${p.status === 'Aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}">${p.status}</span>
           </td>
-          <td class="p-3 text-center space-x-1">
+          <td class="p-3 text-center space-x-1 admin-only ${isAdmin ? '' : 'hidden'}">
             <button onclick="openModalPengurus(${idx})" class="bg-indigo-50 text-indigo-600 text-xs font-bold px-2 py-1 rounded">Edit</button>
             <button onclick="deletePengurus(${idx})" class="bg-red-50 text-red-600 text-xs font-bold px-2 py-1 rounded">Hapus</button>
           </td>
@@ -796,6 +899,7 @@
     }
 
     function openModalPengurus(idx = null) {
+      if(!isAdmin) return;
       document.getElementById('editPengurusIdx').value = idx !== null ? idx : '';
       if(idx !== null) {
         const p = dbPengurus[idx];
@@ -817,6 +921,7 @@
 
     function savePengurus(e) {
       e.preventDefault();
+      if(!isAdmin) return;
       const idx = document.getElementById('editPengurusIdx').value;
       const obj = {
         nama: document.getElementById('pNama').value,
@@ -835,6 +940,7 @@
     }
 
     function deletePengurus(idx) {
+      if(!isAdmin) return;
       if(confirm("Hapus data pengurus ini?")) {
         dbPengurus.splice(idx, 1);
         saveAll();
@@ -864,7 +970,7 @@
             <span class="px-2 py-1 rounded text-[10px] font-bold ${a.kondisi === 'Baik' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${a.kondisi}</span>
           </td>
           <td class="p-3 text-slate-500">${a.ket || '-'}</td>
-          <td class="p-3 text-center space-x-1">
+          <td class="p-3 text-center space-x-1 admin-only ${isAdmin ? '' : 'hidden'}">
             <button onclick="openModalAset(${idx})" class="bg-indigo-50 text-indigo-600 text-xs font-bold px-2 py-1 rounded">Edit</button>
             <button onclick="deleteAset(${idx})" class="bg-red-50 text-red-600 text-xs font-bold px-2 py-1 rounded">Hapus</button>
           </td>
@@ -876,6 +982,7 @@
     }
 
     function openModalAset(idx = null) {
+      if(!isAdmin) return;
       document.getElementById('editAsetIdx').value = idx !== null ? idx : '';
       if(idx !== null) {
         const a = dbAset[idx];
@@ -899,6 +1006,7 @@
 
     function saveAset(e) {
       e.preventDefault();
+      if(!isAdmin) return;
       const idx = document.getElementById('editAsetIdx').value;
       const obj = {
         nama: document.getElementById('aNama').value,
@@ -918,6 +1026,7 @@
     }
 
     function deleteAset(idx) {
+      if(!isAdmin) return;
       if(confirm("Hapus aset ini dari inventaris?")) {
         dbAset.splice(idx, 1);
         saveAll();
@@ -926,6 +1035,7 @@
     }
 
     function renderAll() {
+      updateAdminUI();
       renderIuran();
       renderKas();
       renderModalAwal();
