@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iuran & Laporan UPK DAPM Kab. Bone TA 2026</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans p-2 sm:p-6">
+
+  <div class="max-w-[98%] mx-auto space-y-4">
+    
+    <!-- Header -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Sistem Informasi Keuangan</span>
+        <h1 class="text-2xl font-bold text-slate-900 mt-2">TABEL IURAN DAN LAPORAN ASOSIASI UPK DAPM KAB BONE TA.2026</h1>
+        <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-database text-emerald-500"></i> Mode Online Input - Data tersimpan otomatis</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="exportToCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2.5 rounded-lg font-medium shadow-sm transition flex items-center gap-2">
+          <i class="fa-solid fa-file-excel"></i> Export Excel/CSV
+        </button>
+        <button onclick="resetDefault()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs px-3 py-2.5 rounded-lg font-medium transition">
+          <i class="fa-solid fa-rotate-right"></i> Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 font-medium">Total Penerimaan Iuran</span>
+        <p class="text-2xl font-black text-emerald-600 mt-1 font-mono" id="statGrandTotal">Rp 0</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 font-medium">Kecamatan Sudah Lunas/Bayar</span>
+        <p class="text-2xl font-bold text-slate-800 mt-1" id="statPaidCount">0 / 21</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 font-medium">Total Kecamatan</span>
+        <p class="text-2xl font-bold text-slate-800 mt-1">21 Kecamatan</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-400 font-medium">Status Data</span>
+        <p class="text-xs font-semibold text-indigo-600 mt-2"><i class="fa-solid fa-cloud-check"></i> Siap Diinput & Diperbarui</p>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+      <div class="relative flex-1 max-w-md">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari nama kecamatan..." class="w-full pl-8 pr-4 py-1.5 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <span class="text-xs text-slate-400 hidden sm:inline">* Klik tombol "Edit" di setiap baris untuk menginput data</span>
+    </div>
+
+    <!-- Table Container -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left border-collapse" id="dataTable">
+          <thead>
+            <tr class="bg-slate-800 text-white font-semibold">
+              <th class="p-2.5 text-center border-b border-slate-700 w-8">NO</th>
+              <th class="p-2.5 border-b border-slate-700 min-w-[150px] sticky left-0 bg-slate-800 z-20">NAMA KECAMATAN</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">Januari</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">Februari</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">Maret</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">April</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">Mei</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">Juni</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">Juli</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">Agustus</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">September</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">Oktober</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">November</th>
+              <th class="p-2 text-center border-b border-r border-slate-700 min-w-[80px]" colspan="2">Desember</th>
+              <th class="p-2.5 text-right border-b border-slate-700 min-w-[110px]">JUMLAH</th>
+              <th class="p-2.5 text-center border-b border-slate-700 min-w-[70px]">AKSI</th>
+            </tr>
+            <tr class="bg-slate-700 text-slate-300 text-[10px]">
+              <th class="p-1"></th>
+              <th class="p-1 sticky left-0 bg-slate-700 z-20"></th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1 text-center border-r border-slate-600">Lap</th><th class="p-1 text-center border-r border-slate-600">Iuran</th>
+              <th class="p-1"></th>
+              <th class="p-1"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 font-medium text-slate-700" id="tableBody"></tbody>
+          <tfoot class="bg-slate-100 font-bold text-slate-900 border-t-2 border-slate-300" id="tableFoot"></tfoot>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal Input/Edit -->
+  <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <h3 class="font-bold text-lg text-slate-800" id="modalTitle">Edit Data Kecamatan</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="editForm" onsubmit="saveData(event)" class="space-y-4">
+        <input type="hidden" id="editIndex">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="monthInputs">
+          <!-- Dynamically generated inputs for 12 months -->
+        </div>
+
+        <div class="flex justify-end gap-2 border-t border-slate-100 pt-3">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg">Batal</button>
+          <button type="submit" class="px-5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm">Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+    const defaultData = [
+      { no: 1, name: "AMALI", highlight: false, months: [ {l:"V", i:50000}, {l:"V", i:50000}, {l:"V", i:50000}, {l:"V", i:50000}, {l:"V", i:50000}, {l:"V", i:50000}, {l:"V", i:0}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0} ] },
+      { no: 2, name: "ULAWENG", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 3, name: "TL. LIMPOE", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 4, name: "LIBURENG", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 5, name: "PALAKKA", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 6, name: "TR. BARAT", highlight: false, months: [ {l:"V", i:50000}, {l:"V", i:70000}, {l:"V", i:55000}, {l:"V", i:50000}, {l:"V", i:55000}, {l:"V", i:55000}, {l:"V", i:50000}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0} ] },
+      { no: 7, name: "TR. TIMUR", highlight: false, months: [ {l:"V", i:210000}, {l:"V", i:213000}, {l:"V", i:234000}, {l:"V", i:212500}, {l:"V", i:277500}, {l:"V", i:229000}, {l:"", i:230000}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0} ] },
+      { no: 8, name: "CENRANA", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 9, name: "DUA BOCCOE", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 10, name: "AWANGPONE", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 11, name: "BAREBBO", highlight: false, months: [ {l:"V", i:60000}, {l:"V", i:75000}, {l:"V", i:60000}, {l:"V", i:65000}, {l:"V", i:65000}, {l:"V", i:65000}, {l:"V", i:65000}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0}, {l:"", i:0} ] },
+      { no: 12, name: "SIBULUE", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 13, name: "CINA", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 14, name: "TONRA", highlight: false, months: [ {l:"V", i:50000}, {l:"V", i:50000}, {l:"V", i:50000}, {l:"V", i:50000}, {l:"V", i:50000}, {l:"V", i:50000}, {l:"", i:50000}, {l:"", i:50000}, {l:"", i:50000}, {l:"", i:50000}, {l:"", i:50000}, {l:"", i:50000} ] },
+      { no: 15, name: "KAJUARA", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 16, name: "KAHU", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 17, name: "PATIMPENG", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 18, name: "BONTOCANI", highlight: false, months: Array(12).fill({l:"", i:0}) },
+      { no: 19, name: "LAPRI", highlight: true, months: Array(12).fill({l:"", i:0}) },
+      { no: 20, name: "MARE", highlight: true, months: Array(12).fill({l:"", i:0}) },
+      { no: 21, name: "PONRE", highlight: true, months: Array(12).fill({l:"", i:0}) }
+    ];
+
+    let appData = JSON.parse(localStorage.getItem('dapm_bone_2026')) || defaultData;
+
+    function saveLocalStorage() {
+      localStorage.setItem('dapm_bone_2026', JSON.stringify(appData));
+    }
+
+    function resetDefault() {
+      if(confirm("Apakah Anda yakin ingin mengembalikan data ke format awal?")) {
+        appData = JSON.parse(JSON.stringify(defaultData));
+        saveLocalStorage();
+        renderTable(appData);
+      }
+    }
+
+    function fmt(val) {
+      return val ? val.toLocaleString('id-ID') : '';
+    }
+
+    function renderTable(items) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      let paidSubdistrictCount = 0;
+
+      items.forEach((row, idx) => {
+        const rowTotal = row.months.reduce((acc, m) => acc + Number(m.i || 0), 0);
+        if (rowTotal > 0) paidSubdistrictCount++;
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition-colors";
+
+        let monthCells = '';
+        row.months.forEach(m => {
+          monthCells += `
+            <td class="p-1.5 text-center border-r border-slate-200">${m.l === 'V' ? '<span class="text-emerald-600 font-bold">V</span>' : ''}</td>
+            <td class="p-1.5 text-right border-r border-slate-200 font-mono text-[11px]">${fmt(m.i)}</td>
+          `;
+        });
+
+        const nameStyle = row.highlight 
+          ? 'bg-red-600 text-white font-bold' 
+          : 'bg-white text-slate-800 font-semibold';
+
+        tr.innerHTML = `
+          <td class="p-2 text-center font-bold text-slate-400 border-r border-slate-200">${row.no}</td>
+          <td class="p-2 ${nameStyle} sticky left-0 z-10 border-r border-slate-200">${row.name}</td>
+          ${monthCells}
+          <td class="p-2 text-right font-bold font-mono border-r border-slate-200 ${rowTotal > 0 ? 'text-slate-900' : 'text-slate-400'}">${fmt(rowTotal) || 0}</td>
+          <td class="p-2 text-center">
+            <button onclick="openModal(${row.no - 1})" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-[10px] font-bold px-2 py-1 rounded border border-indigo-200 transition">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Render Totals
+      const foot = document.getElementById('tableFoot');
+      const totalsPerMonth = Array(12).fill(0);
+
+      appData.forEach(r => {
+        r.months.forEach((m, iIdx) => {
+          totalsPerMonth[iIdx] += Number(m.i || 0);
+        });
+      });
+      const grandTotal = totalsPerMonth.reduce((a, b) => a + b, 0);
+
+      let footCells = '';
+      totalsPerMonth.forEach(tot => {
+        footCells += `<td class="p-1.5 text-center border-r border-slate-300 text-[9px] text-slate-400">TOTAL</td><td class="p-1.5 text-right border-r border-slate-300 font-mono text-[11px]">${fmt(tot)}</td>`;
+      });
+
+      foot.innerHTML = `
+        <tr class="bg-slate-200/80">
+          <td class="p-2.5 text-center font-bold" colspan="2">TOTAL KESELURUHAN</td>
+          ${footCells}
+          <td class="p-2.5 text-right text-indigo-700 text-xs font-mono font-black">${fmt(grandTotal)}</td>
+          <td></td>
+        </tr>
+      `;
+
+      // Update Cards
+      document.getElementById('statGrandTotal').innerText = `Rp ${fmt(grandTotal)}`;
+      document.getElementById('statPaidCount').innerText = `${paidSubdistrictCount} / 21`;
+    }
+
+    function openModal(index) {
+      const item = appData[index];
+      document.getElementById('editIndex').value = index;
+      document.getElementById('modalTitle').innerText = `Input / Edit Data: ${item.name}`;
+
+      const container = document.getElementById('monthInputs');
+      container.innerHTML = '';
+
+      item.months.forEach((m, mIdx) => {
+        const div = document.createElement('div');
+        div.className = "p-2.5 bg-slate-50 border border-slate-200 rounded-lg space-y-2";
+        div.innerHTML = `
+          <span class="text-xs font-bold text-slate-700 block">${monthNames[mIdx]}</span>
+          <div class="flex items-center gap-3">
+            <label class="inline-flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer">
+              <input type="checkbox" id="lap_${mIdx}" ${m.l === 'V' ? 'checked' : ''} class="rounded text-indigo-600 focus:ring-indigo-500">
+              <span>Laporan (Lap)</span>
+            </label>
+            <div class="flex-1">
+              <input type="number" id="iuran_${mIdx}" value="${m.i || ''}" placeholder="Iuran (Rp)" class="w-full text-xs p-1.5 border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono">
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      document.getElementById('editModal').classList.remove('hidden');
+      document.getElementById('editModal').classList.add('flex');
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').classList.add('hidden');
+      document.getElementById('editModal').classList.remove('flex');
+    }
+
+    function saveData(e) {
+      e.preventDefault();
+      const idx = document.getElementById('editIndex').value;
+      
+      for(let mIdx = 0; mIdx < 12; mIdx++) {
+        const isChecked = document.getElementById(`lap_${mIdx}`).checked;
+        const val = document.getElementById(`iuran_${mIdx}`).value;
+        appData[idx].months[mIdx] = {
+          l: isChecked ? 'V' : '',
+          i: val ? Number(val) : 0
+        };
+      }
+
+      saveLocalStorage();
+      renderTable(appData);
+      closeModal();
+    }
+
+    function filterTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = appData.filter(d => d.name.toLowerCase().includes(q));
+      renderTable(filtered);
+    }
+
+    function exportToCSV() {
+      let csv = 'NO,NAMA KECAMATAN,';
+      monthNames.forEach(m => { csv += `Lap ${m},Iuran ${m},`; });
+      csv += 'JUMLAH\n';
+
+      appData.forEach(r => {
+        let rowSum = 0;
+        csv += `${r.no},"${r.name}",`;
+        r.months.forEach(m => {
+          rowSum += Number(m.i || 0);
+          csv += `"${m.l}",${m.i},`;
+        });
+        csv += `${rowSum}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", "Laporan_Iuran_UPK_DAPM_Bone_2026.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    renderTable(appData);
+  </script>
+</body>
+</html>
