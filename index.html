@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
-<!-- Firebase SDK v9+ (Module Syntax / Compat) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistem Informasi Asosiasi UPK DAPM Kab. Bone</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- SDK Firebase Realtime Database (v9 Compat Mode) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans p-2 sm:p-6">
 
@@ -18,18 +19,13 @@
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div class="flex items-center gap-4">
         <!-- Logo DAPM -->
-        <div class="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 bg-slate-50 p-1 rounded-full border border-slate-200 shadow-inner flex items-center justify-center">
-          <!-- Logo DAPM -->
-<div class="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 bg-white p-1 rounded-full border border-slate-200 shadow-sm flex items-center justify-center overflow-hidden">
-  <img src="logo-dapm.png" 
-       alt="Logo DAPM" 
-       class="w-full h-full object-cover rounded-full">
-</div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 bg-white p-1 rounded-full border border-slate-200 shadow-sm flex items-center justify-center overflow-hidden">
+          <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-cover rounded-full" onerror="this.src='https://via.placeholder.com/80?text=DAPM'">
         </div>
         <div>
-          <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Sistem Terpadu</span>
+          <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Sistem Terpadu Cloud</span>
           <h1 class="text-xl sm:text-2xl font-bold text-slate-900 mt-2">ASOSIASI UPK DAPM KABUPATEN BONE</h1>
-          <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-cloud-check text-emerald-500"></i> Mode Online Input — Data tersimpan otomatis di browser</p>
+          <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-cloud text-emerald-500"></i> Mode Online — Data Terhubung & Tersinkronisasi Otomatis Ke Cloud Database</p>
         </div>
       </div>
 
@@ -45,7 +41,7 @@
           <i class="fa-solid fa-right-from-bracket"></i> Keluar
         </button>
         <button id="resetBtn" onclick="resetAllData()" class="admin-only hidden bg-red-100 hover:bg-red-200 text-red-700 text-xs px-3 py-2.5 rounded-lg font-medium transition">
-          <i class="fa-solid fa-rotate-right"></i> Reset Data
+          <i class="fa-solid fa-rotate-right"></i> Reset Data Cloud
         </button>
       </div>
     </div>
@@ -321,7 +317,7 @@
         </div>
         <div class="flex justify-end gap-2 border-t pt-3">
           <button type="button" onclick="closeModal('modalKas')" class="px-4 py-2 bg-slate-100 rounded-lg">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Simpan</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Simpan ke Cloud</button>
         </div>
       </form>
     </div>
@@ -339,7 +335,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="iuranInputFields"></div>
         <div class="flex justify-end gap-2 border-t pt-3">
           <button type="button" onclick="closeModal('modalIuran')" class="px-4 py-2 text-xs bg-slate-100 rounded-lg">Batal</button>
-          <button type="submit" class="px-4 py-2 text-xs bg-indigo-600 text-white font-bold rounded-lg">Simpan</button>
+          <button type="submit" class="px-4 py-2 text-xs bg-indigo-600 text-white font-bold rounded-lg">Simpan ke Cloud</button>
         </div>
       </form>
     </div>
@@ -364,7 +360,7 @@
         </div>
         <div class="flex justify-end gap-2 border-t pt-3">
           <button type="button" onclick="closeModal('modalModalAwal')" class="px-4 py-2 bg-slate-100 rounded-lg">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Simpan</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Simpan ke Cloud</button>
         </div>
       </form>
     </div>
@@ -404,7 +400,7 @@
         </div>
         <div class="flex justify-end gap-2 border-t pt-3">
           <button type="button" onclick="closeModal('modalPengurus')" class="px-4 py-2 bg-slate-100 rounded-lg">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Simpan</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Simpan ke Cloud</button>
         </div>
       </form>
     </div>
@@ -451,18 +447,34 @@
         </div>
         <div class="flex justify-end gap-2 border-t pt-3">
           <button type="button" onclick="closeModal('modalAset')" class="px-4 py-2 bg-slate-100 rounded-lg">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Simpan</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg">Simpan ke Cloud</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Script Aplikasi -->
+  <!-- Script Logika Aplikasi & Integrasi Firebase -->
   <script>
+    // ================= 1. KONFIGURASI FIREBASE CLOUD =================
+    // Gantilah objek konfigurasi di bawah ini dengan milik akun Firebase Anda.
+    const firebaseConfig = {
+    apiKey: "AIzaSyB8e0SHapclXV2IP0IGcPL0mL_pysLryp8",
+    authDomain: "dapm-bone-system.firebaseapp.com",
+    databaseURL: "https://dapm-bone-system-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "dapm-bone-system",
+    storageBucket: "dapm-bone-system.firebasestorage.app",
+    messagingSenderId: "900937654127",
+    appId: "1:90093765
+
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // List Wilayah Kecamatan
     const kecList = ["AMALI","ULAWENG","TL. LIMPOE","LIBURENG","PALAKKA","TR. BARAT","TR. TIMUR","CENRANA","DUA BOCCOE","AWANGPONE","BAREBBO","SIBULUE","CINA","TONRA","KAJUARA","KAHU","PATIMPENG","BONTOCANI","LAPRI","MARE","PONRE"];
     const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-    // Default Datasets
+    // Datasets Default
     const defaultIuran = kecList.map((k, i) => {
       let highlight = [18,19,20].includes(i);
       let months = Array(12).fill({l:"", i:0});
@@ -522,44 +534,45 @@
       { nama: "Laptop Operasional Office", kategori: "Sekretariat", jumlah: 1, nilai: 8500000, kondisi: "Baik", ket: "Pengadaan 2024" }
     ];
 
-    // LocalStorage Load
-    // 1. Masukkan konfigurasi Firebase Anda (Didapat gratis dari console.firebase.google.com)
-const firebaseConfig = {
-    apiKey: "AIzaSyB8e0SHapclXV2IP0IGcPL0mL_pysLryp8",
-    authDomain: "dapm-bone-system.firebaseapp.com",
-    databaseURL: "https://dapm-bone-system-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "dapm-bone-system",
-    storageBucket: "dapm-bone-system.firebasestorage.app",
-    messagingSenderId: "900937654127",
-    appId: "1:900937654127:web:cc55b26fabd151ec64929a"
-  };
-};
+    // Variables Data
+    let dbIuran = [];
+    let dbKas = [];
+    let dbModalAwal = [];
+    let dbPengurus = [];
+    let dbAset = [];
+    let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
 
-// Inisialisasi Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-// Variabel Data Global
-let dbIuran = [];
-let dbKas = [];
-let dbModalAwal = [];
-let dbPengurus = [];
-let dbAset = [];
-let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
-
+    // Mengirim Data ke Firebase Cloud Database
     function saveAll() {
-  db.ref('dapm_data').set({
-    iuran: dbIuran,
-    kas: dbKas,
-    modal_awal: dbModalAwal,
-    pengurus: dbPengurus,
-    aset: dbAset
-  }).then(() => {
-    console.log("Data berhasil disinkronkan ke Cloud.");
-  }).catch((err) => {
-    alert("Gagal menyinkronkan data ke cloud: " + err.message);
-  });
-}
+      db.ref('dapm_data').set({
+        iuran: dbIuran,
+        kas: dbKas,
+        modal_awal: dbModalAwal,
+        pengurus: dbPengurus,
+        aset: dbAset
+      }).catch(err => alert("Gagal menyimpan ke cloud: " + err.message));
+    }
+
+    // Pendengar Real-time Firebase Cloud Database (Listener)
+    db.ref('dapm_data').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        dbIuran = data.iuran || defaultIuran;
+        dbKas = data.kas || defaultKas;
+        dbModalAwal = data.modal_awal || defaultModalAwal;
+        dbPengurus = data.pengurus || defaultPengurus;
+        dbAset = data.aset || defaultAset;
+      } else {
+        // Jika cloud kosong, inisialisasi awal
+        dbIuran = defaultIuran;
+        dbKas = defaultKas;
+        dbModalAwal = defaultModalAwal;
+        dbPengurus = defaultPengurus;
+        dbAset = defaultAset;
+        saveAll();
+      }
+      renderAll();
+    });
 
     // AUTHENTICATION LOGIC
     function openModalLogin() {
@@ -615,15 +628,13 @@ let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
 
     function resetAllData() {
       if(!isAdmin) return;
-      if(confirm("Apakah Anda yakin ingin mereset seluruh data ke kondisi awal?")) {
-        localStorage.clear();
+      if(confirm("Apakah Anda yakin ingin mereset seluruh data di Cloud ke kondisi awal?")) {
         dbIuran = defaultIuran;
         dbKas = defaultKas;
         dbModalAwal = defaultModalAwal;
         dbPengurus = defaultPengurus;
         dbAset = defaultAset;
         saveAll();
-        renderAll();
       }
     }
 
@@ -737,7 +748,6 @@ let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
       else dbKas.push(obj);
 
       saveAll();
-      renderKas();
       closeModal('modalKas');
     }
 
@@ -746,7 +756,6 @@ let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
       if(confirm("Hapus transaksi kas ini?")) {
         dbKas.splice(idx, 1);
         saveAll();
-        renderKas();
       }
     }
 
@@ -841,7 +850,6 @@ let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
         };
       }
       saveAll();
-      renderIuran();
       closeModal('modalIuran');
     }
 
@@ -896,7 +904,6 @@ let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
       dbModalAwal[idx].modal = Number(document.getElementById('inputModalAwalVal').value || 0);
       dbModalAwal[idx].ket = document.getElementById('inputModalAwalKet').value;
       saveAll();
-      renderModalAwal();
       closeModal('modalModalAwal');
     }
 
@@ -963,7 +970,6 @@ let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
       else dbPengurus.push(obj);
 
       saveAll();
-      renderPengurus();
       closeModal('modalPengurus');
     }
 
@@ -972,7 +978,6 @@ let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
       if(confirm("Hapus data pengurus ini?")) {
         dbPengurus.splice(idx, 1);
         saveAll();
-        renderPengurus();
       }
     }
 
@@ -1049,7 +1054,6 @@ let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
       else dbAset.push(obj);
 
       saveAll();
-      renderAset();
       closeModal('modalAset');
     }
 
@@ -1058,34 +1062,17 @@ let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
       if(confirm("Hapus aset ini dari inventaris?")) {
         dbAset.splice(idx, 1);
         saveAll();
-        renderAset();
       }
     }
 
-    // Mendengar perubahan data real-time dari Firebase Cloud
-db.ref('dapm_data').on('value', (snapshot) => {
-  const data = snapshot.val();
-  
-  if (data) {
-    dbIuran = data.iuran || defaultIuran;
-    dbKas = data.kas || defaultKas;
-    dbModalAwal = data.modal_awal || defaultModalAwal;
-    dbPengurus = data.pengurus || defaultPengurus;
-    dbAset = data.aset || defaultAset;
-  } else {
-    // Jika cloud masih kosong, inisialisasi dengan default
-    dbIuran = defaultIuran;
-    dbKas = defaultKas;
-    dbModalAwal = defaultModalAwal;
-    dbPengurus = defaultPengurus;
-    dbAset = defaultAset;
-    saveAll();
-  }
-  
-  // Render ulang UI setiap kali data cloud berubah
-  renderAll();
-});
-    renderAll();
+    function renderAll() {
+      updateAdminUI();
+      renderIuran();
+      renderKas();
+      renderModalAwal();
+      renderPengurus();
+      renderAset();
+    }
   </script>
 </body>
 </html>
