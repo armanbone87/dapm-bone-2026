@@ -407,12 +407,26 @@ window.set = set;
 window.ref = ref;
 
     // Mendengarkan Perubahan Data Cloud secara Realtime (Auto Sync)
-    onSnapshot(collectionRef, (snapshot) => {
-      let dataTemp = [];
-      snapshot.forEach((doc) => {
-        dataTemp.push({ id: doc.id, ...doc.data() });
-      });
+    // KODE BARU (REALTIME DATABASE)
+onValue(dbRef, (snapshot) => {
+  let dataTemp = [];
+  const data = snapshot.val();
 
+  if (data) {
+    Object.keys(data).forEach((key) => {
+      dataTemp.push({ id: key, ...data[key] });
+    });
+  }
+
+  // Urutkan berdasarkan nama
+  dataTemp.sort((a, b) => (a.nama || "").localeCompare(b.nama || ""));
+
+  // Masukkan ke variabel global / render ulang tabel Anda
+  window.districtData = dataTemp;
+  if (typeof renderTable === "function") {
+    renderTable();
+  }
+});
       // Urutkan berdasarkan nama
       dataTemp.sort((a, b) => a.nama.localeCompare(b.nama));
       
