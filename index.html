@@ -384,7 +384,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-  // Konfigurasi Firebase Realtime Database
+  // Konfigurasi Firebase Realtime Database Anda
   const firebaseConfig = {
     apiKey: "AIzaSyCJ4QDU1dPtQ1C9Y9bb5sdIhCJR7JRiFuE",
     authDomain: "upk-dapm-bone.firebaseapp.com",
@@ -400,7 +400,7 @@
   const db = getDatabase(app);
   const dbRef = ref(db, "iuran_upk");
 
-  // Ekspos variabel & fungsi penting ke window global
+  // Ekspos variabel ke window global
   window.districtData = [];
   window.db = db;
   window.dbRef = dbRef;
@@ -408,8 +408,9 @@
   window.set = set;
   window.ref = ref;
 
-  // Fungsi membuat data awal (default) di Realtime Database jika Cloud masih kosong
+  // Fungsi untuk mengisi data awal (seed) ke Realtime Database jika kosong
   async function seedDefaultData() {
+    console.log("Memulai seed data default ke Realtime Database...");
     const defaultData = [
       { nama: "AMALI", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
       { nama: "ULAWENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
@@ -435,12 +436,17 @@
     ];
 
     for (let item of defaultData) {
-      const newRef = push(dbRef);
-      await set(newRef, item);
+      try {
+        const newRef = push(dbRef);
+        await set(newRef, item);
+      } catch (e) {
+        console.error("Gagal seed item:", item.nama, e);
+      }
     }
+    console.log("Seed data default selesai.");
   }
 
-  // Mendengarkan perubahan data Realtime dari Firebase
+  // Mendengarkan perubahan data secara Realtime dari Firebase
   onValue(dbRef, (snapshot) => {
     let dataTemp = [];
     const data = snapshot.val();
@@ -456,15 +462,16 @@
 
     window.districtData = dataTemp;
 
-    // Render tabel atau isi data awal jika database masih kosong
+    // Tampilkan data ke tabel atau isi data awal jika database kosong
     if (dataTemp.length > 0) {
-      if (typeof renderTable === "function") renderTable();
+      // Pastikan fungsi render Anda dipanggil di sini
       if (typeof renderAllTables === "function") renderAllTables();
+      if (typeof renderTable === "function") renderTable();
     } else {
       seedDefaultData();
     }
 
-    // Update Status Indikator Sync UI
+    // Update Indikator UI
     const badge = document.getElementById('syncStatusBadge');
     const statusText = document.getElementById('syncStatusText');
     const cloudText = document.getElementById('cloudSyncText');
@@ -472,6 +479,8 @@
     if (badge) badge.className = "w-2 h-2 rounded-full bg-emerald-400 inline-block";
     if (statusText) statusText.textContent = "Online Sync Active";
     if (cloudText) cloudText.textContent = "Terhubung";
+    
+    console.log("Data berhasil disinkronisasi secara Realtime.");
   }, (error) => {
     console.error("Firebase Sync Error: ", error);
     const badge = document.getElementById('syncStatusBadge');
