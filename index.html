@@ -382,7 +382,7 @@
   <!-- ==================== FIREBASE SDK & SYNC LOGIC ==================== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, doc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     // GANTI DENGAN CONFIGURASI FIREBASE PROYEK ANDA
     const firebaseConfig = {
@@ -396,15 +396,16 @@
   };
     // Inisialisasi Firebase
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const collectionRef = collection(db, "iuran_upk");
+    // KODE BARU (REALTIME DATABASE)
+const db = getDatabase(app);
+const dbRef = ref(db, "iuran_upk");
 
-    window.districtData = [];
-    window.db = db;
-    window.collectionRef = collectionRef;
-    window.setDoc = setDoc;
-    window.addDoc = addDoc;
-    window.doc = doc;
+window.districtData = [];
+window.db = db;
+window.dbRef = dbRef;
+window.push = push;
+window.set = set;
+window.ref = ref;
 
     // Mendengarkan Perubahan Data Cloud secara Realtime (Auto Sync)
     onSnapshot(collectionRef, (snapshot) => {
