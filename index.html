@@ -381,9 +381,8 @@
 
   <!-- ==================== FIREBASE SDK & SYNC LOGIC ==================== -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
     // GANTI DENGAN CONFIGURASI FIREBASE PROYEK ANDA
     const firebaseConfig = {
     apiKey: "AIzaSyCJ4QDU1dPtQ1C9Y9bb5sdIhCJR7JRiFuE",
