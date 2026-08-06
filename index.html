@@ -36,21 +36,9 @@
     <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
       <div class="flex items-center space-x-3">
         
-        <!-- LOGO DAPM (SVG VECTOR) -->
-        <div class="w-10 h-10 bg-white rounded-full p-1 flex items-center justify-center shadow-md border border-amber-400">
-          <svg viewBox="0 0 100 100" class="w-full h-full">
-            <!-- Lingkaran Luar Hijau -->
-            <circle cx="50" cy="50" r="46" fill="none" stroke="#16a34a" stroke-width="6"/>
-            <!-- Daun / Gelombang Hijau DAPM -->
-            <path d="M 20 65 C 30 40, 50 35, 80 40 C 65 60, 45 70, 20 65 Z" fill="#22c55e" />
-            <path d="M 15 50 C 35 25, 65 20, 85 30 C 65 50, 40 55, 15 50 Z" fill="#15803d" opacity="0.8"/>
-            <!-- Simbol Gedung / Rumah Pemberdayaan -->
-            <polygon points="50,22 25,42 75,42" fill="#1e3a8a" />
-            <rect x="32" y="42" width="36" height="30" fill="#1e3a8a" />
-            <rect x="42" y="52" width="16" height="20" fill="#ffffff" />
-            <rect x="35" y="46" width="7" height="9" fill="#ffffff" />
-            <rect x="58" y="46" width="7" height="9" fill="#ffffff" />
-          </svg>
+        <!-- LOGO DAPM -->
+        <div class="w-10 h-10 bg-white rounded-full p-0.5 flex items-center justify-center shadow-md overflow-hidden">
+          <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full">
         </div>
 
         <div>
@@ -91,17 +79,8 @@
       <div class="flex items-start gap-5 max-w-2xl">
         
         <!-- LOGO BESAR HERO -->
-        <div class="w-20 h-20 bg-white rounded-full p-2 flex-shrink-0 shadow-2xl border-2 border-amber-400 hidden sm:flex items-center justify-center">
-          <svg viewBox="0 0 100 100" class="w-full h-full">
-            <circle cx="50" cy="50" r="46" fill="none" stroke="#16a34a" stroke-width="6"/>
-            <path d="M 20 65 C 30 40, 50 35, 80 40 C 65 60, 45 70, 20 65 Z" fill="#22c55e" />
-            <path d="M 15 50 C 35 25, 65 20, 85 30 C 65 50, 40 55, 15 50 Z" fill="#15803d" opacity="0.8"/>
-            <polygon points="50,22 25,42 75,42" fill="#1e3a8a" />
-            <rect x="32" y="42" width="36" height="30" fill="#1e3a8a" />
-            <rect x="42" y="52" width="16" height="20" fill="#ffffff" />
-            <rect x="35" y="46" width="7" height="9" fill="#ffffff" />
-            <rect x="58" y="46" width="7" height="9" fill="#ffffff" />
-          </svg>
+        <div class="w-20 h-20 bg-white rounded-full p-1 flex-shrink-0 shadow-2xl hidden sm:flex items-center justify-center overflow-hidden">
+          <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full">
         </div>
 
         <div class="space-y-3">
@@ -256,10 +235,8 @@
                 <th class="border-r border-gray-300 p-1" colspan="2">Desember</th>
               </tr>
               <tr class="bg-gray-50 text-gray-600 border-b border-gray-300 text-[10px] text-center font-semibold">
-                <!-- Subcolumn Lap / Iuran -->
                 <td class="border-r border-gray-300"></td>
                 <td class="border-r border-gray-300"></td>
-                <!-- 12 pasang Lap & Iuran -->
                 <script>
                   for(let i=0; i<12; i++){
                     document.write('<td class="border-r border-gray-200 p-1 bg-amber-50/50">Lap</td><td class="border-r border-gray-300 p-1">Iuran</td>');
@@ -345,17 +322,8 @@
       <div class="text-center space-y-1">
         
         <!-- LOGO DAPM DI MODAL LOGIN -->
-        <div class="w-14 h-14 bg-white rounded-full p-1 mx-auto shadow-md border-2 border-amber-400 flex items-center justify-center">
-          <svg viewBox="0 0 100 100" class="w-full h-full">
-            <circle cx="50" cy="50" r="46" fill="none" stroke="#16a34a" stroke-width="6"/>
-            <path d="M 20 65 C 30 40, 50 35, 80 40 C 65 60, 45 70, 20 65 Z" fill="#22c55e" />
-            <path d="M 15 50 C 35 25, 65 20, 85 30 C 65 50, 40 55, 15 50 Z" fill="#15803d" opacity="0.8"/>
-            <polygon points="50,22 25,42 75,42" fill="#1e3a8a" />
-            <rect x="32" y="42" width="36" height="30" fill="#1e3a8a" />
-            <rect x="42" y="52" width="16" height="20" fill="#ffffff" />
-            <rect x="35" y="46" width="7" height="9" fill="#ffffff" />
-            <rect x="58" y="46" width="7" height="9" fill="#ffffff" />
-          </svg>
+        <div class="w-14 h-14 bg-white rounded-full p-0.5 mx-auto shadow-md overflow-hidden flex items-center justify-center">
+          <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full">
         </div>
 
         <h3 class="font-bold text-xl text-gray-800 pt-2">Autentikasi Admin</h3>
@@ -475,7 +443,6 @@
 
   <!-- ==================== JAVASCRIPT DATA & LOGIC ==================== -->
   <script>
-    // Data 21 Kecamatan sesuai Spreadsheet Excel Asosiasi UPK DAPM Kab. Bone TA.2026
     let districtData = [
       { nama: "AMALI", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
       { nama: "ULAWENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
@@ -540,7 +507,6 @@
       renderKuartalTable();
     }
 
-    // RENDER TABEL DETAIL (12 BULAN)
     function renderDetailTable() {
       const tbody = document.getElementById('detailTableBody');
       tbody.innerHTML = '';
@@ -587,7 +553,6 @@
         tbody.appendChild(tr);
       });
 
-      // Render Footer Detail
       const footTr = document.getElementById('detailTableFoot');
       let footHtml = `
         <td colspan="2" class="p-2 text-center border-r border-gray-300 font-bold">TOTAL</td>
@@ -607,12 +572,10 @@
 
       footTr.innerHTML = footHtml;
 
-      // Update Dashboard Indicators
       document.getElementById('statTotalTerkumpul').textContent = formatRupiah(grandTotalAll);
       document.getElementById('statKecAktif').textContent = kecAktifCount + " / 21";
     }
 
-    // RENDER TABEL KUARTAL (Q1 - Q4)
     function renderKuartalTable() {
       const tbody = document.getElementById('kuartalTableBody');
       tbody.innerHTML = '';
@@ -651,7 +614,6 @@
         tbody.appendChild(tr);
       });
 
-      // Footer Kuartal
       const footTr = document.getElementById('kuartalTableFoot');
       footTr.innerHTML = `
         <td colspan="2" class="px-4 py-3 text-center">TOTAL REKAPITULASI</td>
@@ -665,7 +627,6 @@
       `;
     }
 
-    // Modal & Auth Handlers
     function openLoginModal() {
       document.getElementById('loginModal').classList.remove('hidden');
       document.getElementById('loginModal').classList.add('flex');
@@ -714,7 +675,6 @@
       }
     }
 
-    // Form Modal CRUD
     function openFormModal(isEdit = false) {
       document.getElementById('formModalTitle').textContent = isEdit ? 'Edit Data Setoran Kecamatan' : 'Tambah Kecamatan Baru';
       document.getElementById('formModal').classList.remove('hidden');
@@ -772,7 +732,6 @@
       renderAllTables();
     }
 
-    // Filter Pencarian
     function filterTables() {
       const input = document.getElementById('searchInput').value.toLowerCase();
       
@@ -789,7 +748,6 @@
       });
     }
 
-    // Ekspor CSV
     function exportCSV() {
       let csv = [];
       const tableId = activeTab === 'detail' ? 'tableDetail' : 'tableKuartal';
