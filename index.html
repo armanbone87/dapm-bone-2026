@@ -491,46 +491,6 @@
     if (statusText) statusText.textContent = "Mode Offline (Lokal)";
     if (cloudText) cloudText.textContent = "Offline";
   });
-</script>
-
-      renderAllTables();
-    }, (error) => {
-      console.error("Firestore Error: ", error);
-      document.getElementById('syncStatusBadge').className = "w-2 h-2 rounded-full bg-red-500 inline-block";
-      document.getElementById('syncStatusText').textContent = "Mode Offline (Lokal)";
-      document.getElementById('cloudSyncText').textContent = "Offline";
-    });
-
-    // Seed Data Awal Jika Firestore Kosong
-    async function seedDefaultData() {
-      const defaultData = [
-        { nama: "AMALI", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "ULAWENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "TL.LIMPOE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "LIBURENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "PALAKKA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "TR.BARAT", iuran: [50000, 70000, 55000, 50000, 55000, 55000, 50000, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "TR.TIMUR", iuran: [210000, 213000, 234000, 212500, 277500, 229000, 230000, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "CENRANA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "DUA BOCCOE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "AWANGPONE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "BAREBBO", iuran: [60000, 75000, 60000, 65000, 65000, 65000, 65000, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "SIBULUE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "CINA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "TONRA", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000], ket: "", isRed: false },
-        { nama: "KAJUARA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "KAHU", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "PATIMPENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "BONTOCANI", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-        { nama: "LAPRI", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true },
-        { nama: "MARE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true },
-        { nama: "PONRE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true }
-      ];
-
-      for (let item of defaultData) {
-        await addDoc(collectionRef, item);
-      }
-    }
   </script>
 
   <!-- ==================== JAVASCRIPT UI LOGIC ==================== -->
