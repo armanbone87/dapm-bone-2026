@@ -380,11 +380,11 @@
   </footer>
 
   <!-- ==================== FIREBASE SDK & SYNC LOGIC ==================== -->
-  <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-  // KONFIGURASI FIREBASE PROYEK ANDA
+  // Konfigurasi Firebase Realtime Database
   const firebaseConfig = {
     apiKey: "AIzaSyCJ4QDU1dPtQ1C9Y9bb5sdIhCJR7JRiFuE",
     authDomain: "upk-dapm-bone.firebaseapp.com",
@@ -395,12 +395,12 @@
     appId: "1:40540518248:web:fb0e338b8eaf94ee0b08dd"
   };
 
-  // Inisialisasi Firebase Realtime Database
+  // Inisialisasi Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const dbRef = ref(db, "iuran_upk");
 
-  // Ekspos variabel & fungsi ke window agar bisa diakses script biasa/HTML
+  // Ekspos variabel & fungsi penting ke window global
   window.districtData = [];
   window.db = db;
   window.dbRef = dbRef;
@@ -408,7 +408,39 @@
   window.set = set;
   window.ref = ref;
 
-  // Mendengarkan Perubahan Data Cloud secara Realtime (Auto Sync)
+  // Fungsi membuat data awal (default) di Realtime Database jika Cloud masih kosong
+  async function seedDefaultData() {
+    const defaultData = [
+      { nama: "AMALI", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "ULAWENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "TL.LIMPOE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "LIBURENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "PALAKKA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "TR.BARAT", iuran: [50000, 70000, 55000, 50000, 55000, 55000, 50000, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "TR.TIMUR", iuran: [210000, 213000, 234000, 212500, 277500, 229000, 230000, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "CENRANA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "DUA BOCCOE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "AWANGPONE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "BAREBBO", iuran: [60000, 75000, 60000, 65000, 65000, 65000, 65000, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "SIBULUE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "CINA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "TONRA", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000], ket: "", isRed: false },
+      { nama: "KAJUARA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "KAHU", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "PATIMPENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "BONTOCANI", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+      { nama: "LAPRI", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true },
+      { nama: "MARE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true },
+      { nama: "PONRE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true }
+    ];
+
+    for (let item of defaultData) {
+      const newRef = push(dbRef);
+      await set(newRef, item);
+    }
+  }
+
+  // Mendengarkan perubahan data Realtime dari Firebase
   onValue(dbRef, (snapshot) => {
     let dataTemp = [];
     const data = snapshot.val();
@@ -419,24 +451,20 @@
       });
     }
 
-    // 1. Urutkan berdasarkan nama
+    // Urutkan berdasarkan nama kecamatan
     dataTemp.sort((a, b) => (a.nama || "").localeCompare(b.nama || ""));
 
-    // 2. Simpan ke data global
     window.districtData = dataTemp;
 
-    // 3. Render tabel / Isi data default jika kosong
+    // Render tabel atau isi data awal jika database masih kosong
     if (dataTemp.length > 0) {
-      if (typeof renderTable === "function") {
-        renderTable();
-      }
+      if (typeof renderTable === "function") renderTable();
+      if (typeof renderAllTables === "function") renderAllTables();
     } else {
-      if (typeof seedDefaultData === "function") {
-        seedDefaultData();
-      }
+      seedDefaultData();
     }
 
-    // 4. Update Status Indikator UI
+    // Update Status Indikator Sync UI
     const badge = document.getElementById('syncStatusBadge');
     const statusText = document.getElementById('syncStatusText');
     const cloudText = document.getElementById('cloudSyncText');
@@ -445,7 +473,14 @@
     if (statusText) statusText.textContent = "Online Sync Active";
     if (cloudText) cloudText.textContent = "Terhubung";
   }, (error) => {
-    console.error("Gagal sinkronisasi dari Firebase:", error);
+    console.error("Firebase Sync Error: ", error);
+    const badge = document.getElementById('syncStatusBadge');
+    const statusText = document.getElementById('syncStatusText');
+    const cloudText = document.getElementById('cloudSyncText');
+
+    if (badge) badge.className = "w-2 h-2 rounded-full bg-red-500 inline-block";
+    if (statusText) statusText.textContent = "Mode Offline (Lokal)";
+    if (cloudText) cloudText.textContent = "Offline";
   });
 </script>
 
