@@ -13,20 +13,11 @@
   
   <style>
     @media print {
-      .no-print {
-        display: none !important;
-      }
-      body {
-        background-color: #fff !important;
-      }
+      .no-print { display: none !important; }
+      body { background-color: #fff !important; }
     }
-    .table-scroll::-webkit-scrollbar {
-      height: 8px;
-    }
-    .table-scroll::-webkit-scrollbar-thumb {
-      background-color: #cbd5e1;
-      border-radius: 4px;
-    }
+    .table-scroll::-webkit-scrollbar { height: 8px; }
+    .table-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
@@ -35,34 +26,29 @@
   <header class="bg-blue-900 text-white shadow-md sticky top-0 z-50 no-print">
     <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
       <div class="flex items-center space-x-3">
-        
-        <!-- LOGO DAPM -->
         <div class="w-10 h-10 bg-white rounded-full p-0.5 flex items-center justify-center shadow-md overflow-hidden">
           <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full">
         </div>
-
         <div>
           <h1 class="font-bold text-lg leading-tight tracking-wide">DAPM KAB. BONE</h1>
-          <p class="text-xs text-blue-200">Portal Laporan & Iuran UPK</p>
+          <p class="text-xs text-blue-200 flex items-center gap-1">
+            <span id="syncStatusBadge" class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
+            <span id="syncStatusText">Menghubungkan Database...</span>
+          </p>
         </div>
       </div>
-      <nav class="hidden md:flex space-x-6 text-sm font-medium">
-        <a href="#beranda" class="hover:text-blue-300 transition">Beranda</a>
-        <a href="#ringkasan" class="hover:text-blue-300 transition">Ringkasan</a>
-        <a href="#tabel-section" class="hover:text-blue-300 transition">Tabel Laporan</a>
-        <a href="#panduan" class="hover:text-blue-300 transition">Panduan & Kontak</a>
-      </nav>
-      <div class="flex items-center space-x-3">
-        <button onclick="window.print()" class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 shadow transition">
-          <i class="fa-solid fa-print"></i> Cetak Laporan
+
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <button onclick="window.print()" class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-1 sm:gap-2 shadow transition">
+          <i class="fa-solid fa-print"></i> <span class="hidden sm:inline">Cetak</span>
         </button>
         
         <!-- Auth Admin -->
-        <button id="btnLogin" onclick="openLoginModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 shadow transition">
+        <button id="btnLogin" onclick="openLoginModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold flex items-center gap-1 sm:gap-2 shadow transition">
           <i class="fa-solid fa-lock"></i> Login Admin
         </button>
-        <button id="btnLogout" onclick="logoutAdmin()" class="hidden bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 shadow transition">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout Admin
+        <button id="btnLogout" onclick="logoutAdmin()" class="hidden bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold flex items-center gap-1 sm:gap-2 shadow transition">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
         </button>
       </div>
     </div>
@@ -70,93 +56,92 @@
 
   <!-- Status Bar Admin -->
   <div id="adminStatusBar" class="hidden bg-amber-500 text-slate-900 px-4 py-2 font-semibold text-xs text-center border-b border-amber-600 shadow-inner no-print">
-    <i class="fa-solid fa-user-shield mr-1"></i> Mode Admin Aktif: Anda dapat menambah, mengedit, dan menghapus data laporan iuran.
+    <i class="fa-solid fa-user-shield mr-1"></i> Mode Admin Aktif: Input dari HP/Laptop akan langsung tersinkronkan secara Realtime!
   </div>
 
   <!-- ==================== HERO SECTION ==================== -->
-  <section id="beranda" class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-[96rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-      <div class="flex items-start gap-5 max-w-2xl">
-        
-        <!-- LOGO BESAR HERO -->
-        <div class="w-20 h-20 bg-white rounded-full p-1 flex-shrink-0 shadow-2xl hidden sm:flex items-center justify-center overflow-hidden">
+  <section id="beranda" class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-[96rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
+      <div class="flex items-start gap-4 sm:gap-5 max-w-2xl">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full p-1 flex-shrink-0 shadow-2xl hidden sm:flex items-center justify-center overflow-hidden">
           <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full">
         </div>
-
-        <div class="space-y-3">
-          <span class="bg-blue-700/60 text-blue-200 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider border border-blue-500/30">
-            Sistem Informasi Akuntabilitas Publik
+        <div class="space-y-2 sm:space-y-3">
+          <span class="bg-blue-700/60 text-blue-200 text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider border border-blue-500/30">
+            Sistem Cloud Sync Realtime
           </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Laporan Rekapitulasi Iuran & Keuangan UPK DAPM Kab. Bone
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+            Laporan Rekapitulasi Iuran UPK DAPM Kab. Bone
           </h2>
-          <p class="text-blue-100 text-sm sm:text-base leading-relaxed">
-            Platform resmi pemantauan setoran iuran Unit Pengelola Kegiatan (UPK) Dana Amanah Pemberdayaan Masyarakat Kabupaten Bone TA 2026 secara transparan dan akuntabel.
+          <p class="text-blue-100 text-xs sm:text-base leading-relaxed">
+            Platform pemantauan setoran iuran Unit Pengelola Kegiatan (UPK) terintegrasi Cloud secara transparan & akuntabel.
           </p>
         </div>
       </div>
 
-      <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 w-full md:w-80 shadow-xl">
-        <div class="text-center space-y-2">
-          <p class="text-xs text-blue-200 uppercase font-semibold">Status Pembaharuan</p>
-          <p class="text-2xl font-bold text-white"><i class="fa-solid fa-calendar-check text-green-400 mr-2"></i>Tahun 2026</p>
+      <div class="bg-white/10 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-white/20 w-full md:w-80 shadow-xl">
+        <div class="text-center space-y-1 sm:space-y-2">
+          <p class="text-xs text-blue-200 uppercase font-semibold">Status Sync Online</p>
+          <p class="text-xl sm:text-2xl font-bold text-white flex items-center justify-center gap-2">
+            <i class="fa-solid fa-wifi text-green-400"></i> Realtime Cloud
+          </p>
           <hr class="border-white/20 my-2">
-          <p class="text-xs text-blue-100">Menampilkan rekapitulasi bulanan dari 21 Kecamatan se-Kabupaten Bone.</p>
+          <p class="text-[11px] sm:text-xs text-blue-100">Setiap perubahan di HP atau PC langsung terupdate otomatis.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <main class="flex-grow max-w-[96rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+  <main class="flex-grow max-w-[96rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10">
 
     <!-- ==================== DASHBOARD RINGKASAN ==================== -->
     <section id="ringkasan" class="space-y-4">
-      <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+      <h3 class="text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2">
         <i class="fa-solid fa-chart-pie text-blue-800"></i> Ringkasan Indikator Keuangan
       </h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         
-        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-xs text-gray-500 font-medium">Total UPK Kecamatan</p>
-            <p class="text-2xl font-bold text-gray-800 mt-1" id="statTotalUnit">21 Kecamatan</p>
-            <p class="text-xs text-green-600 mt-1"><i class="fa-solid fa-circle-check"></i> Terdaftar</p>
+            <p class="text-[11px] sm:text-xs text-gray-500 font-medium">Total UPK</p>
+            <p class="text-lg sm:text-2xl font-bold text-gray-800 mt-1" id="statTotalUnit">21 Kec.</p>
+            <p class="text-[10px] sm:text-xs text-green-600 mt-0.5"><i class="fa-solid fa-circle-check"></i> Terdaftar</p>
           </div>
-          <div class="w-12 h-12 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center text-xl">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center text-lg sm:text-xl">
             <i class="fa-solid fa-map-location-dot"></i>
           </div>
         </div>
 
-        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-xs text-gray-500 font-medium">Total Terkumpul (Tabel Detail)</p>
-            <p class="text-2xl font-bold text-green-700 mt-1" id="statTotalTerkumpul">Rp 3.346.000</p>
-            <p class="text-xs text-green-600 mt-1"><i class="fa-solid fa-wallet"></i> Realisasi Setoran</p>
+            <p class="text-[11px] sm:text-xs text-gray-500 font-medium">Total Terkumpul</p>
+            <p class="text-lg sm:text-2xl font-bold text-green-700 mt-1" id="statTotalTerkumpul">Rp 0</p>
+            <p class="text-[10px] sm:text-xs text-green-600 mt-0.5"><i class="fa-solid fa-wallet"></i> Realisasi Setoran</p>
           </div>
-          <div class="w-12 h-12 bg-green-50 text-green-700 rounded-xl flex items-center justify-center text-xl">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-green-50 text-green-700 rounded-xl flex items-center justify-center text-lg sm:text-xl">
             <i class="fa-solid fa-money-bill-wave"></i>
           </div>
         </div>
 
-        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-xs text-gray-500 font-medium">Kecamatan Aktif Setor</p>
-            <p class="text-2xl font-bold text-indigo-700 mt-1" id="statKecAktif">6 / 21</p>
-            <p class="text-xs text-indigo-600 mt-1">Sudah Memulai Setoran</p>
+            <p class="text-[11px] sm:text-xs text-gray-500 font-medium">Kecamatan Aktif</p>
+            <p class="text-lg sm:text-2xl font-bold text-indigo-700 mt-1" id="statKecAktif">0 / 21</p>
+            <p class="text-[10px] sm:text-xs text-indigo-600 mt-0.5">Sudah Ada Setoran</p>
           </div>
-          <div class="w-12 h-12 bg-indigo-50 text-indigo-700 rounded-xl flex items-center justify-center text-xl">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-50 text-indigo-700 rounded-xl flex items-center justify-center text-lg sm:text-xl">
             <i class="fa-solid fa-user-check"></i>
           </div>
         </div>
 
-        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-xs text-gray-500 font-medium">Bulan Tertinggi Setoran</p>
-            <p class="text-2xl font-bold text-amber-600 mt-1">Mei 2026</p>
-            <p class="text-xs text-amber-600 mt-1">Rp 497.500 Total</p>
+            <p class="text-[11px] sm:text-xs text-gray-500 font-medium">Status Database</p>
+            <p class="text-lg sm:text-2xl font-bold text-amber-600 mt-1" id="cloudSyncText">Syncing...</p>
+            <p class="text-[10px] sm:text-xs text-amber-600 mt-0.5">Cloud Storage</p>
           </div>
-          <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl">
-            <i class="fa-solid fa-chart-line"></i>
+          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-lg sm:text-xl">
+            <i class="fa-solid fa-cloud"></i>
           </div>
         </div>
 
@@ -164,49 +149,48 @@
     </section>
 
     <!-- ==================== TABEL SECTION ==================== -->
-    <section id="tabel-section" class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden p-6 space-y-6">
+    <section id="tabel-section" class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 space-y-6">
       
       <!-- Tab Header & Filter -->
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-gray-200 pb-4">
         <div>
-          <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+          <h3 class="text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2">
             <i class="fa-solid fa-table text-blue-800"></i> Data Laporan & Setoran Iuran Asosiasi UPK
           </h3>
-          <p class="text-xs text-gray-500 mt-1">Pilih tampilan tabel ringkasan atau detail iuran bulanan di bawah ini.</p>
+          <p class="text-xs text-gray-500 mt-1">Tabel terhubung langsung ke cloud database.</p>
         </div>
 
-        <!-- Tab Switching Buttons -->
         <div class="flex items-center gap-2 bg-gray-100 p-1.5 rounded-xl border border-gray-200 no-print">
-          <button id="tabDetailBtn" onclick="switchTab('detail')" class="px-4 py-2 text-xs font-bold rounded-lg transition bg-blue-900 text-white shadow">
-            <i class="fa-solid fa-calendar-days mr-1"></i> Tabel Detail Bulanan (12 Bulan)
+          <button id="tabDetailBtn" onclick="switchTab('detail')" class="px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition bg-blue-900 text-white shadow">
+            <i class="fa-solid fa-calendar-days mr-1"></i> Detail Bulanan
           </button>
-          <button id="tabKuartalBtn" onclick="switchTab('kuartal')" class="px-4 py-2 text-xs font-bold rounded-lg transition text-gray-600 hover:bg-gray-200">
-            <i class="fa-solid fa-chart-simple mr-1"></i> Rekapitulasi Kuartal (Q1-Q4)
+          <button id="tabKuartalBtn" onclick="switchTab('kuartal')" class="px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition text-gray-600 hover:bg-gray-200">
+            <i class="fa-solid fa-chart-simple mr-1"></i> Rekap Kuartal
           </button>
         </div>
       </div>
 
       <!-- Action Tools (Search & Export) -->
       <div class="flex flex-wrap items-center justify-between gap-3 no-print">
-        <div class="relative">
-          <input type="text" id="searchInput" onkeyup="filterTables()" placeholder="Cari nama kecamatan..." class="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none w-64">
+        <div class="relative w-full sm:w-auto">
+          <input type="text" id="searchInput" onkeyup="filterTables()" placeholder="Cari nama kecamatan..." class="w-full sm:w-64 pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
         </div>
 
-        <div class="flex items-center gap-2">
-          <button onclick="exportCSV()" class="bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition">
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <button onclick="exportCSV()" class="bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center gap-2 transition">
             <i class="fa-solid fa-file-excel"></i> Ekspor CSV
           </button>
-          <button id="btnTambahData" onclick="openFormModal()" class="hidden bg-blue-800 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow transition">
+          <button id="btnTambahData" onclick="openFormModal()" class="hidden bg-blue-800 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs sm:text-sm font-bold flex items-center gap-2 shadow transition">
             <i class="fa-solid fa-plus"></i> Tambah Kecamatan
           </button>
         </div>
       </div>
 
-      <!-- VIEW 1: TABEL IURAN DAN LAPORAN BULANAN (FORMAT EXCEL SPREADSHEET) -->
+      <!-- VIEW 1: TABEL IURAN DAN LAPORAN BULANAN -->
       <div id="viewDetail" class="space-y-3">
-        <div class="text-center font-bold text-gray-800 text-base py-2 bg-gray-50 rounded-lg border border-gray-200 uppercase tracking-wide flex items-center justify-center gap-2">
-          <span>TABEL IURAN DAN LAPORAN ASOSIASI UPK DAPM KAB BONE TA.2026</span>
+        <div class="text-center font-bold text-gray-800 text-xs sm:text-sm py-2 bg-gray-50 rounded-lg border border-gray-200 uppercase tracking-wide">
+          TABEL IURAN DAN LAPORAN ASOSIASI UPK DAPM KAB BONE TA.2026
         </div>
 
         <div class="overflow-x-auto border border-gray-300 rounded-lg table-scroll">
@@ -214,25 +198,24 @@
             <thead>
               <tr class="bg-gray-200 text-gray-800 border-b border-gray-300 font-bold uppercase text-center">
                 <th class="border-r border-gray-300 p-2 w-10" rowspan="2">NO</th>
-                <th class="border-r border-gray-300 p-2 min-w-[160px]" rowspan="2">NAMA KECAMATAN</th>
+                <th class="border-r border-gray-300 p-2 min-w-[150px]" rowspan="2">NAMA KECAMATAN</th>
                 <th class="border-r border-gray-300 p-2" colspan="24">BULAN</th>
-                <th class="border-r border-gray-300 p-2 min-w-[100px]" rowspan="2">JUMLAH</th>
-                <th class="p-2 min-w-[100px]" rowspan="2">KET.</th>
+                <th class="border-r border-gray-300 p-2 min-w-[90px]" rowspan="2">JUMLAH</th>
+                <th class="p-2 min-w-[90px]" rowspan="2">KET.</th>
               </tr>
               <tr class="bg-gray-100 text-gray-700 border-b border-gray-300 font-bold text-center">
-                <!-- 12 Bulan Subheaders -->
-                <th class="border-r border-gray-300 p-1" colspan="2">Januari</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">Februari</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">Maret</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">April</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Jan</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Feb</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Mar</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Apr</th>
                 <th class="border-r border-gray-300 p-1" colspan="2">Mei</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">Juni</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">Juli</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">Agustus</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">September</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">Oktober</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">November</th>
-                <th class="border-r border-gray-300 p-1" colspan="2">Desember</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Jun</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Jul</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Agt</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Sep</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Okt</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Nov</th>
+                <th class="border-r border-gray-300 p-1" colspan="2">Des</th>
               </tr>
               <tr class="bg-gray-50 text-gray-600 border-b border-gray-300 text-[10px] text-center font-semibold">
                 <td class="border-r border-gray-300"></td>
@@ -247,12 +230,10 @@
               </tr>
             </thead>
             <tbody id="detailTableBody" class="divide-y divide-gray-200 font-medium">
-              <!-- Rendered via JS -->
+              <!-- Render via Firebase -->
             </tbody>
             <tfoot class="bg-gray-200 text-gray-900 font-bold border-t-2 border-gray-400">
-              <tr id="detailTableFoot">
-                <!-- Total Rendered via JS -->
-              </tr>
+              <tr id="detailTableFoot"></tr>
             </tfoot>
           </table>
         </div>
@@ -261,27 +242,25 @@
       <!-- VIEW 2: TABEL KUARTAL (Q1 - Q4) -->
       <div id="viewKuartal" class="hidden space-y-3">
         <div class="overflow-x-auto border border-gray-200 rounded-lg">
-          <table class="w-full text-sm text-left text-gray-600" id="tableKuartal">
+          <table class="w-full text-xs sm:text-sm text-left text-gray-600" id="tableKuartal">
             <thead class="text-xs text-gray-700 uppercase bg-gray-100 border-b border-gray-200">
               <tr>
-                <th class="px-4 py-3 text-center w-12">No</th>
-                <th class="px-4 py-3">Nama UPK / Kecamatan</th>
-                <th class="px-4 py-3 text-center">Estimasi / Bln</th>
-                <th class="px-4 py-3 text-center">Jan - Mar (Q1)</th>
-                <th class="px-4 py-3 text-center">Apr - Jun (Q2)</th>
-                <th class="px-4 py-3 text-center">Jul - Sep (Q3)</th>
-                <th class="px-4 py-3 text-center">Okt - Des (Q4)</th>
-                <th class="px-4 py-3 text-right">Total Setor</th>
-                <th class="px-4 py-3 text-center">Status</th>
+                <th class="px-3 py-3 text-center w-10">No</th>
+                <th class="px-3 py-3">Nama UPK / Kecamatan</th>
+                <th class="px-3 py-3 text-center">Estimasi</th>
+                <th class="px-3 py-3 text-center">Q1</th>
+                <th class="px-3 py-3 text-center">Q2</th>
+                <th class="px-3 py-3 text-center">Q3</th>
+                <th class="px-3 py-3 text-center">Q4</th>
+                <th class="px-3 py-3 text-right">Total</th>
+                <th class="px-3 py-3 text-center">Status</th>
               </tr>
             </thead>
             <tbody id="kuartalTableBody" class="divide-y divide-gray-200">
-              <!-- Rendered via JS -->
+              <!-- Render via Firebase -->
             </tbody>
             <tfoot class="bg-gray-100 font-bold text-gray-900 border-t border-gray-300">
-              <tr id="kuartalTableFoot">
-                <!-- Total Rendered via JS -->
-              </tr>
+              <tr id="kuartalTableFoot"></tr>
             </tfoot>
           </table>
         </div>
@@ -291,25 +270,24 @@
 
     <!-- ==================== PANDUAN & KONTAK ==================== -->
     <section id="panduan" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
-        <h4 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+      <div class="bg-white p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm space-y-3">
+        <h4 class="text-base sm:text-lg font-bold text-gray-800 flex items-center gap-2">
           <i class="fa-solid fa-list-check text-blue-800"></i> Prosedur Penyetoran Iuran
         </h4>
-        <ol class="space-y-3 text-sm text-gray-600 list-decimal list-inside">
-          <li class="leading-relaxed"><span class="font-semibold text-gray-800">Setoran Rutin:</span> Dilakukan maksimal tanggal 10 setiap bulannya.</li>
-          <li class="leading-relaxed"><span class="font-semibold text-gray-800">Metode Pembayaran:</span> Transfer Bank BRI / Rekening Resmi Asosiasi UPK DAPM Kab. Bone.</li>
-          <li class="leading-relaxed"><span class="font-semibold text-gray-800">Konfirmasi Laporan:</span> Kirimkan laporan bulanan beserta bukti pembayaran ke Sekretariat.</li>
+        <ol class="space-y-2 text-xs sm:text-sm text-gray-600 list-decimal list-inside">
+          <li class="leading-relaxed"><span class="font-semibold text-gray-800">Setoran Rutin:</span> Maksimal tanggal 10 setiap bulan.</li>
+          <li class="leading-relaxed"><span class="font-semibold text-gray-800">Metode Pembayaran:</span> Transfer Rekening Resmi Asosiasi UPK DAPM Kab. Bone.</li>
+          <li class="leading-relaxed"><span class="font-semibold text-gray-800">Konfirmasi:</span> Kirim bukti via kontak sekretariat bawah ini.</li>
         </ol>
       </div>
 
-      <!-- BAGIAN TERKAIT KONTAK YANG DIPERBARUI -->
-      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
-        <h4 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+      <div class="bg-white p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm space-y-3">
+        <h4 class="text-base sm:text-lg font-bold text-gray-800 flex items-center gap-2">
           <i class="fa-solid fa-headset text-blue-800"></i> Layanan Sekretariat UPK DAPM Kab. Bone
         </h4>
-        <div class="space-y-2 text-sm text-gray-600">
+        <div class="space-y-2 text-xs sm:text-sm text-gray-600">
           <p class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-red-500 w-5"></i> Watampone, Kabupaten Bone, Sulawesi Selatan</p>
-          <p class="flex items-center gap-2"><i class="fa-solid fa-envelope text-blue-500 w-5"></i> upk.dapm.bone@gmail.com</p>
+          <p class="flex items-center gap-2"><i class="fa-solid fa-envelope text-blue-500 w-5"></i> bkad.dapm.bone@gmail.com</p>
           <p class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-500 w-5"></i> 085398087772</p>
         </div>
       </div>
@@ -319,23 +297,20 @@
 
   <!-- ==================== MODAL LOGIN ADMIN ==================== -->
   <div id="loginModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4 no-print">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-5">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
       <div class="text-center space-y-1">
-        
-        <!-- LOGO DAPM DI MODAL LOGIN -->
-        <div class="w-14 h-14 bg-white rounded-full p-0.5 mx-auto shadow-md overflow-hidden flex items-center justify-center">
+        <div class="w-12 h-12 bg-white rounded-full p-0.5 mx-auto shadow-md overflow-hidden flex items-center justify-center">
           <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full">
         </div>
-
-        <h3 class="font-bold text-xl text-gray-800 pt-2">Autentikasi Admin</h3>
-        <p class="text-xs text-gray-500">Masukan kredensial untuk mengelola data DAPM</p>
+        <h3 class="font-bold text-lg text-gray-800 pt-1">Autentikasi Admin</h3>
+        <p class="text-xs text-gray-500">Masukan kredensial untuk mengedit data online</p>
       </div>
       
-      <div id="loginError" class="hidden bg-red-100 text-red-700 p-3 rounded-lg text-xs font-semibold text-center">
+      <div id="loginError" class="hidden bg-red-100 text-red-700 p-2.5 rounded-lg text-xs font-semibold text-center">
         Username atau Password Salah!
       </div>
 
-      <form onsubmit="handleLogin(event)" class="space-y-4">
+      <form onsubmit="handleLogin(event)" class="space-y-3">
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Username</label>
           <input type="text" id="usernameInput" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="admin">
@@ -345,135 +320,158 @@
           <input type="password" id="passwordInput" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="••••••••">
         </div>
         <div class="flex gap-2 pt-2">
-          <button type="button" onclick="closeLoginModal()" class="w-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 rounded-lg text-sm font-semibold">Batal</button>
-          <button type="submit" class="w-1/2 bg-blue-900 hover:bg-blue-800 text-white py-2 rounded-lg text-sm font-bold shadow">Masuk</button>
+          <button type="button" onclick="closeLoginModal()" class="w-1/2 bg-gray-200 text-gray-700 py-2 rounded-lg text-xs font-semibold">Batal</button>
+          <button type="submit" class="w-1/2 bg-blue-900 text-white py-2 rounded-lg text-xs font-bold shadow">Masuk</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- ==================== MODAL FORM EDIT / TAMBAH DATA ==================== -->
-  <div id="formModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4 no-print">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-lg text-gray-800" id="formModalTitle">Tambah / Edit Data Kecamatan</h3>
+  <div id="formModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4 no-print overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-5 space-y-4 my-8">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-base text-gray-800" id="formModalTitle">Tambah / Edit Data Kecamatan</h3>
         <button onclick="closeFormModal()" class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
       </div>
 
-      <form onsubmit="saveData(event)" class="space-y-3 text-sm">
-        <input type="hidden" id="editIndex">
+      <form onsubmit="saveData(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="editDocId">
 
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Kecamatan</label>
-          <input type="text" id="inputNama" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Contoh: AMALI">
+          <label class="block font-semibold text-gray-700 mb-1">Nama Kecamatan</label>
+          <input type="text" id="inputNama" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" placeholder="Contoh: AMALI">
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Keterangan / Status Khusus</label>
-          <input type="text" id="inputKet" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Opsional (misal: Warna Merah/Khusus)">
+          <label class="block font-semibold text-gray-700 mb-1">Keterangan / Status</label>
+          <input type="text" id="inputKet" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" placeholder="Opsional (Catatan khusus)">
         </div>
 
-        <p class="text-xs font-bold text-gray-500 border-b pb-1 pt-2">Setoran Iuran Bulanan (Sesuai Laporan)</p>
+        <p class="font-bold text-gray-500 border-b pb-1 pt-2">Setoran Iuran Bulanan (Nominal Rp)</p>
 
-        <div class="grid grid-cols-3 gap-2 text-xs">
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">Januari</label>
-            <input type="number" id="m0" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">Februari</label>
-            <input type="number" id="m1" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">Maret</label>
-            <input type="number" id="m2" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">April</label>
-            <input type="number" id="m3" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">Mei</label>
-            <input type="number" id="m4" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">Juni</label>
-            <input type="number" id="m5" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">Juli</label>
-            <input type="number" id="m6" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">Agustus</label>
-            <input type="number" id="m7" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">September</label>
-            <input type="number" id="m8" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">Oktober</label>
-            <input type="number" id="m9" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">November</label>
-            <input type="number" id="m10" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
-          <div>
-            <label class="block font-semibold text-gray-600 mb-1">Desember</label>
-            <input type="number" id="m11" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0">
-          </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div><label class="block font-medium text-gray-600 mb-0.5">Januari</label><input type="number" id="m0" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">Februari</label><input type="number" id="m1" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">Maret</label><input type="number" id="m2" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">April</label><input type="number" id="m3" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">Mei</label><input type="number" id="m4" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">Juni</label><input type="number" id="m5" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">Juli</label><input type="number" id="m6" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">Agustus</label><input type="number" id="m7" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">September</label><input type="number" id="m8" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">Oktober</label><input type="number" id="m9" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">November</label><input type="number" id="m10" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
+          <div><label class="block font-medium text-gray-600 mb-0.5">Desember</label><input type="number" id="m11" class="w-full p-1.5 border rounded focus:ring-1 focus:ring-blue-500" placeholder="0"></div>
         </div>
 
         <div class="pt-3 flex justify-end gap-2 border-t">
-          <button type="button" onclick="closeFormModal()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-blue-900 text-white rounded-lg text-sm font-bold">Simpan Data</button>
+          <button type="button" onclick="closeFormModal()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-xs font-semibold">Batal</button>
+          <button type="submit" id="btnSaveSubmit" class="px-4 py-2 bg-blue-900 text-white rounded-lg text-xs font-bold">Simpan ke Cloud</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ==================== FOOTER ==================== -->
   <footer class="bg-gray-900 text-gray-400 py-6 mt-12 border-t border-gray-800 no-print">
-    <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs space-y-2">
-      <p>&copy; 2026 Asosiasi UPK DAPM Kabupaten Bone. Seluruh hak cipta dilindungi undang-undang.</p>
-      <p class="text-gray-500">Dikembangkan untuk Akuntabilitas dan Transparansi UPK DAPM Kab. Bone.</p>
+    <div class="max-w-[96rem] mx-auto px-4 text-center text-xs space-y-1">
+      <p>&copy; 2026 Asosiasi UPK DAPM Kabupaten Bone. Realtime Cloud Synchronization Active.</p>
     </div>
   </footer>
 
-  <!-- ==================== JAVASCRIPT DATA & LOGIC ==================== -->
-  <script>
-    let districtData = [
-      { nama: "AMALI", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "ULAWENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "TL.LIMPOE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "LIBURENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "PALAKKA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "TR.BARAT", iuran: [50000, 70000, 55000, 50000, 55000, 55000, 50000, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "TR.TIMUR", iuran: [210000, 213000, 234000, 212500, 277500, 229000, 230000, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "CENRANA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "DUA BOCCOE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "AWANGPONE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "BAREBBO", iuran: [60000, 75000, 60000, 65000, 65000, 65000, 65000, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "SIBULUE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "CINA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "TONRA", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000], ket: "", isRed: false },
-      { nama: "KAJUARA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "KAHU", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "PATIMPENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "BONTOCANI", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
-      { nama: "LAPRI", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true },
-      { nama: "MARE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true },
-      { nama: "PONRE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true }
-    ];
+  <!-- ==================== FIREBASE SDK & SYNC LOGIC ==================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, doc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    // GANTI DENGAN CONFIGURASI FIREBASE PROYEK ANDA
+    const firebaseConfig = {
+    apiKey: "AIzaSyCJ4QDU1dPtQ1C9Y9bb5sdIhCJR7JRiFuE",
+    authDomain: "upk-dapm-bone.firebaseapp.com",
+    databaseURL: "https://upk-dapm-bone-default-rtdb.firebaseio.com",
+    projectId: "upk-dapm-bone",
+    storageBucket: "upk-dapm-bone.firebasestorage.app",
+    messagingSenderId: "40540518248",
+    appId: "1:40540518248:web:fb0e338b8eaf94ee0b08dd"
+  };
+    // Inisialisasi Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const collectionRef = collection(db, "iuran_upk");
+
+    window.districtData = [];
+    window.db = db;
+    window.collectionRef = collectionRef;
+    window.setDoc = setDoc;
+    window.addDoc = addDoc;
+    window.doc = doc;
+
+    // Mendengarkan Perubahan Data Cloud secara Realtime (Auto Sync)
+    onSnapshot(collectionRef, (snapshot) => {
+      let dataTemp = [];
+      snapshot.forEach((doc) => {
+        dataTemp.push({ id: doc.id, ...doc.data() });
+      });
+
+      // Urutkan berdasarkan nama
+      dataTemp.sort((a, b) => a.nama.localeCompare(b.nama));
+      
+      // Update data global & Tampilan UI
+      if(dataTemp.length > 0) {
+        window.districtData = dataTemp;
+      } else {
+        // Jika DB Firebase masih kosong, seed data default
+        seedDefaultData();
+      }
+
+      document.getElementById('syncStatusBadge').className = "w-2 h-2 rounded-full bg-emerald-400 inline-block";
+      document.getElementById('syncStatusText').textContent = "Online Sync Active";
+      document.getElementById('cloudSyncText').textContent = "Terhubung";
+
+      renderAllTables();
+    }, (error) => {
+      console.error("Firestore Error: ", error);
+      document.getElementById('syncStatusBadge').className = "w-2 h-2 rounded-full bg-red-500 inline-block";
+      document.getElementById('syncStatusText').textContent = "Mode Offline (Lokal)";
+      document.getElementById('cloudSyncText').textContent = "Offline";
+    });
+
+    // Seed Data Awal Jika Firestore Kosong
+    async function seedDefaultData() {
+      const defaultData = [
+        { nama: "AMALI", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "ULAWENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "TL.LIMPOE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "LIBURENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "PALAKKA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "TR.BARAT", iuran: [50000, 70000, 55000, 50000, 55000, 55000, 50000, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "TR.TIMUR", iuran: [210000, 213000, 234000, 212500, 277500, 229000, 230000, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "CENRANA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "DUA BOCCOE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "AWANGPONE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "BAREBBO", iuran: [60000, 75000, 60000, 65000, 65000, 65000, 65000, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "SIBULUE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "CINA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "TONRA", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000], ket: "", isRed: false },
+        { nama: "KAJUARA", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "KAHU", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "PATIMPENG", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "BONTOCANI", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: false },
+        { nama: "LAPRI", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true },
+        { nama: "MARE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true },
+        { nama: "PONRE", iuran: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ket: "", isRed: true }
+      ];
+
+      for (let item of defaultData) {
+        await addDoc(collectionRef, item);
+      }
+    }
+  </script>
+
+  <!-- ==================== JAVASCRIPT UI LOGIC ==================== -->
+  <script>
     let isAdminLoggedIn = false;
     let activeTab = 'detail';
-
-    document.addEventListener("DOMContentLoaded", () => {
-      renderAllTables();
-    });
 
     function formatNumber(num) {
       return num > 0 ? num.toLocaleString('id-ID') : '0';
@@ -493,13 +491,13 @@
       if(tab === 'detail') {
         viewDetail.classList.remove('hidden');
         viewKuartal.classList.add('hidden');
-        tabDetailBtn.className = "px-4 py-2 text-xs font-bold rounded-lg transition bg-blue-900 text-white shadow";
-        tabKuartalBtn.className = "px-4 py-2 text-xs font-bold rounded-lg transition text-gray-600 hover:bg-gray-200";
+        tabDetailBtn.className = "px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition bg-blue-900 text-white shadow";
+        tabKuartalBtn.className = "px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition text-gray-600 hover:bg-gray-200";
       } else {
         viewDetail.classList.add('hidden');
         viewKuartal.classList.remove('hidden');
-        tabKuartalBtn.className = "px-4 py-2 text-xs font-bold rounded-lg transition bg-blue-900 text-white shadow";
-        tabDetailBtn.className = "px-4 py-2 text-xs font-bold rounded-lg transition text-gray-600 hover:bg-gray-200";
+        tabKuartalBtn.className = "px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition bg-blue-900 text-white shadow";
+        tabDetailBtn.className = "px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition text-gray-600 hover:bg-gray-200";
       }
     }
 
@@ -510,14 +508,17 @@
 
     function renderDetailTable() {
       const tbody = document.getElementById('detailTableBody');
+      if(!tbody) return;
       tbody.innerHTML = '';
 
       let monthlyTotals = Array(12).fill(0);
       let grandTotalAll = 0;
       let kecAktifCount = 0;
 
-      districtData.forEach((item, index) => {
-        const rowTotal = item.iuran.reduce((a, b) => a + b, 0);
+      const data = window.districtData || [];
+
+      data.forEach((item, index) => {
+        const rowTotal = item.iuran ? item.iuran.reduce((a, b) => a + b, 0) : 0;
         grandTotalAll += rowTotal;
 
         if (rowTotal > 0) kecAktifCount++;
@@ -530,22 +531,24 @@
           <td class="p-2 border-r border-gray-300 font-bold ${item.isRed ? 'text-white' : 'text-gray-900'}">${item.nama}</td>
         `;
 
-        item.iuran.forEach((val, mIdx) => {
-          monthlyTotals[mIdx] += val;
-          const hasReport = val > 0 ? "V" : "";
-          
-          cellsHtml += `
-            <td class="text-center p-1 border-r border-gray-200 ${item.isRed ? 'bg-red-700' : 'bg-amber-50/40'} font-semibold text-[11px]">${hasReport}</td>
-            <td class="text-right p-1 border-r border-gray-300 text-[11px]">${formatNumber(val)}</td>
-          `;
-        });
+        if(item.iuran) {
+          item.iuran.forEach((val, mIdx) => {
+            monthlyTotals[mIdx] += val;
+            const hasReport = val > 0 ? "V" : "";
+            
+            cellsHtml += `
+              <td class="text-center p-1 border-r border-gray-200 ${item.isRed ? 'bg-red-700' : 'bg-amber-50/40'} font-semibold text-[10px]">${hasReport}</td>
+              <td class="text-right p-1 border-r border-gray-300 text-[10px]">${formatNumber(val)}</td>
+            `;
+          });
+        }
 
         cellsHtml += `
           <td class="text-right p-2 border-r border-gray-300 font-bold ${item.isRed ? 'text-white' : 'text-blue-900'}">${formatNumber(rowTotal)}</td>
-          <td class="p-2 text-center text-[11px]">
-            ${item.ket}
+          <td class="p-2 text-center text-[10px]">
+            ${item.ket || ''}
             ${isAdminLoggedIn ? `
-              <button onclick="editData(${index})" class="ml-1 ${item.isRed ? 'bg-white text-red-700' : 'bg-blue-100 text-blue-700'} px-1.5 py-0.5 rounded text-[10px] font-bold">Edit</button>
+              <button onclick="editData('${item.id}')" class="ml-1 ${item.isRed ? 'bg-white text-red-700' : 'bg-blue-100 text-blue-700'} px-1.5 py-0.5 rounded text-[10px] font-bold">Edit</button>
             ` : ''}
           </td>
         `;
@@ -555,14 +558,12 @@
       });
 
       const footTr = document.getElementById('detailTableFoot');
-      let footHtml = `
-        <td colspan="2" class="p-2 text-center border-r border-gray-300 font-bold">TOTAL</td>
-      `;
+      let footHtml = `<td colspan="2" class="p-2 text-center border-r border-gray-300 font-bold">TOTAL</td>`;
 
       monthlyTotals.forEach(val => {
         footHtml += `
           <td class="border-r border-gray-300"></td>
-          <td class="text-right p-1.5 border-r border-gray-300 text-[11px] text-blue-900">${formatNumber(val)}</td>
+          <td class="text-right p-1.5 border-r border-gray-300 text-[10px] text-blue-900">${formatNumber(val)}</td>
         `;
       });
 
@@ -574,20 +575,23 @@
       footTr.innerHTML = footHtml;
 
       document.getElementById('statTotalTerkumpul').textContent = formatRupiah(grandTotalAll);
-      document.getElementById('statKecAktif').textContent = kecAktifCount + " / 21";
+      document.getElementById('statKecAktif').textContent = kecAktifCount + " / " + data.length;
+      document.getElementById('statTotalUnit').textContent = data.length + " Kec.";
     }
 
     function renderKuartalTable() {
       const tbody = document.getElementById('kuartalTableBody');
+      if(!tbody) return;
       tbody.innerHTML = '';
 
       let totalQ1 = 0, totalQ2 = 0, totalQ3 = 0, totalQ4 = 0, grandTotal = 0;
+      const data = window.districtData || [];
 
-      districtData.forEach((item, index) => {
-        const q1 = item.iuran[0] + item.iuran[1] + item.iuran[2];
-        const q2 = item.iuran[3] + item.iuran[4] + item.iuran[5];
-        const q3 = item.iuran[6] + item.iuran[7] + item.iuran[8];
-        const q4 = item.iuran[9] + item.iuran[10] + item.iuran[11];
+      data.forEach((item, index) => {
+        const q1 = (item.iuran[0]||0) + (item.iuran[1]||0) + (item.iuran[2]||0);
+        const q2 = (item.iuran[3]||0) + (item.iuran[4]||0) + (item.iuran[5]||0);
+        const q3 = (item.iuran[6]||0) + (item.iuran[7]||0) + (item.iuran[8]||0);
+        const q4 = (item.iuran[9]||0) + (item.iuran[10]||0) + (item.iuran[11]||0);
 
         const rowTotal = q1 + q2 + q3 + q4;
         totalQ1 += q1; totalQ2 += q2; totalQ3 += q3; totalQ4 += q4;
@@ -597,16 +601,16 @@
         tr.className = "hover:bg-gray-50 transition";
 
         tr.innerHTML = `
-          <td class="px-4 py-3 text-center font-medium text-gray-900">${index + 1}</td>
-          <td class="px-4 py-3 font-semibold text-gray-900">${item.nama}</td>
-          <td class="px-4 py-3 text-center text-xs">Rp 50.000</td>
-          <td class="px-4 py-3 text-center ${q1 > 0 ? 'text-green-600 font-semibold' : 'text-gray-400'}">${formatRupiah(q1)}</td>
-          <td class="px-4 py-3 text-center ${q2 > 0 ? 'text-green-600 font-semibold' : 'text-gray-400'}">${formatRupiah(q2)}</td>
-          <td class="px-4 py-3 text-center ${q3 > 0 ? 'text-green-600 font-semibold' : 'text-gray-400'}">${formatRupiah(q3)}</td>
-          <td class="px-4 py-3 text-center ${q4 > 0 ? 'text-green-600 font-semibold' : 'text-gray-400'}">${formatRupiah(q4)}</td>
-          <td class="px-4 py-3 text-right font-bold text-gray-900">${formatRupiah(rowTotal)}</td>
-          <td class="px-4 py-3 text-center">
-            <span class="${rowTotal > 0 ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'} text-xs px-2.5 py-0.5 rounded-full font-semibold">
+          <td class="px-3 py-2 text-center font-medium text-gray-900">${index + 1}</td>
+          <td class="px-3 py-2 font-semibold text-gray-900">${item.nama}</td>
+          <td class="px-3 py-2 text-center text-xs">Rp 50.000</td>
+          <td class="px-3 py-2 text-center ${q1 > 0 ? 'text-green-600 font-semibold' : 'text-gray-400'}">${formatRupiah(q1)}</td>
+          <td class="px-3 py-2 text-center ${q2 > 0 ? 'text-green-600 font-semibold' : 'text-gray-400'}">${formatRupiah(q2)}</td>
+          <td class="px-3 py-2 text-center ${q3 > 0 ? 'text-green-600 font-semibold' : 'text-gray-400'}">${formatRupiah(q3)}</td>
+          <td class="px-3 py-2 text-center ${q4 > 0 ? 'text-green-600 font-semibold' : 'text-gray-400'}">${formatRupiah(q4)}</td>
+          <td class="px-3 py-2 text-right font-bold text-gray-900">${formatRupiah(rowTotal)}</td>
+          <td class="px-3 py-2 text-center">
+            <span class="${rowTotal > 0 ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'} text-[10px] px-2 py-0.5 rounded-full font-semibold">
               ${rowTotal > 0 ? 'Aktif' : 'Belum Setor'}
             </span>
           </td>
@@ -617,14 +621,14 @@
 
       const footTr = document.getElementById('kuartalTableFoot');
       footTr.innerHTML = `
-        <td colspan="2" class="px-4 py-3 text-center">TOTAL REKAPITULASI</td>
-        <td class="px-4 py-3 text-center">-</td>
-        <td class="px-4 py-3 text-center text-green-700">${formatRupiah(totalQ1)}</td>
-        <td class="px-4 py-3 text-center text-green-700">${formatRupiah(totalQ2)}</td>
-        <td class="px-4 py-3 text-center text-green-700">${formatRupiah(totalQ3)}</td>
-        <td class="px-4 py-3 text-center text-green-700">${formatRupiah(totalQ4)}</td>
-        <td class="px-4 py-3 text-right text-blue-900 font-extrabold text-base">${formatRupiah(grandTotal)}</td>
-        <td class="px-4 py-3 text-center text-xs text-gray-500 font-normal">Sistem Otomatis</td>
+        <td colspan="2" class="px-3 py-2 text-center">TOTAL REKAPITULASI</td>
+        <td class="px-3 py-2 text-center">-</td>
+        <td class="px-3 py-2 text-center text-green-700">${formatRupiah(totalQ1)}</td>
+        <td class="px-3 py-2 text-center text-green-700">${formatRupiah(totalQ2)}</td>
+        <td class="px-3 py-2 text-center text-green-700">${formatRupiah(totalQ3)}</td>
+        <td class="px-3 py-2 text-center text-green-700">${formatRupiah(totalQ4)}</td>
+        <td class="px-3 py-2 text-right text-blue-900 font-extrabold text-sm">${formatRupiah(grandTotal)}</td>
+        <td class="px-3 py-2 text-center text-[10px] text-gray-500 font-normal">Realtime Sync</td>
       `;
     }
 
@@ -649,7 +653,7 @@
         closeLoginModal();
         updateAdminUI();
         renderAllTables();
-        alert('Login Admin Berhasil!');
+        alert('Login Admin Berhasil! Silahkan kelola data dari HP atau Laptop.');
       } else {
         document.getElementById('loginError').classList.remove('hidden');
       }
@@ -659,7 +663,7 @@
       isAdminLoggedIn = false;
       updateAdminUI();
       renderAllTables();
-      alert('Logout dari mode Admin berhasil.');
+      alert('Logout Admin Berhasil.');
     }
 
     function updateAdminUI() {
@@ -677,7 +681,7 @@
     }
 
     function openFormModal(isEdit = false) {
-      document.getElementById('formModalTitle').textContent = isEdit ? 'Edit Data Setoran Kecamatan' : 'Tambah Kecamatan Baru';
+      document.getElementById('formModalTitle').textContent = isEdit ? 'Edit Data Kecamatan (Cloud Sync)' : 'Tambah Kecamatan Baru';
       document.getElementById('formModal').classList.remove('hidden');
       document.getElementById('formModal').classList.add('flex');
     }
@@ -685,7 +689,7 @@
     function closeFormModal() {
       document.getElementById('formModal').classList.add('hidden');
       document.getElementById('formModal').classList.remove('flex');
-      document.getElementById('editIndex').value = '';
+      document.getElementById('editDocId').value = '';
       document.getElementById('inputNama').value = '';
       document.getElementById('inputKet').value = '';
       for(let i=0; i<12; i++){
@@ -693,23 +697,29 @@
       }
     }
 
-    function editData(index) {
-      const item = districtData[index];
-      document.getElementById('editIndex').value = index;
+    function editData(docId) {
+      const item = (window.districtData || []).find(d => d.id === docId);
+      if(!item) return;
+
+      document.getElementById('editDocId').value = item.id;
       document.getElementById('inputNama').value = item.nama;
       document.getElementById('inputKet').value = item.ket || '';
 
       for(let i=0; i<12; i++){
-        document.getElementById(`m${i}`).value = item.iuran[i] || 0;
+        document.getElementById(`m${i}`).value = item.iuran ? item.iuran[i] : 0;
       }
 
       openFormModal(true);
     }
 
-    function saveData(event) {
+    async function saveData(event) {
       event.preventDefault();
-      const index = document.getElementById('editIndex').value;
+      const docId = document.getElementById('editDocId').value;
+      const btnSubmit = document.getElementById('btnSaveSubmit');
       
+      btnSubmit.innerText = "Menyimpan...";
+      btnSubmit.disabled = true;
+
       let newIuran = [];
       for(let i=0; i<12; i++){
         newIuran.push(parseInt(document.getElementById(`m${i}`).value) || 0);
@@ -722,15 +732,22 @@
         isRed: false
       };
 
-      if(index === '') {
-        districtData.push(newData);
-      } else {
-        newData.isRed = districtData[index].isRed;
-        districtData[index] = newData;
+      try {
+        if(!docId) {
+          // Data Baru
+          await window.addDoc(window.collectionRef, newData);
+        } else {
+          // Update Data Cloud
+          const docRef = window.doc(window.db, "iuran_upk", docId);
+          await window.setDoc(docRef, newData, { merge: true });
+        }
+        closeFormModal();
+      } catch (err) {
+        alert("Gagal menyimpan ke Cloud: " + err.message);
+      } finally {
+        btnSubmit.innerText = "Simpan ke Cloud";
+        btnSubmit.disabled = false;
       }
-
-      closeFormModal();
-      renderAllTables();
     }
 
     function filterTables() {
@@ -770,6 +787,19 @@
       document.body.appendChild(downloadLink);
       downloadLink.click();
     }
+
+    // Expose fungsi ke global scope agar fungsi onclick tombol HTML berfungsi
+    window.openLoginModal = openLoginModal;
+    window.closeLoginModal = closeLoginModal;
+    window.handleLogin = handleLogin;
+    window.logoutAdmin = logoutAdmin;
+    window.openFormModal = openFormModal;
+    window.closeFormModal = closeFormModal;
+    window.editData = editData;
+    window.saveData = saveData;
+    window.switchTab = switchTab;
+    window.filterTables = filterTables;
+    window.exportCSV = exportCSV;
   </script>
 </body>
 </html>
