@@ -519,13 +519,50 @@
       { nama: "Laptop Operasional Office", kategori: "Sekretariat", jumlah: 1, nilai: 8500000, kondisi: "Baik", ket: "Pengadaan 2024" }
     ];
 
-    // LocalStorage Load
-    let dbIuran = JSON.parse(localStorage.getItem('bone_iuran')) || defaultIuran;
-    let dbKas = JSON.parse(localStorage.getItem('bone_kas')) || defaultKas;
-    let dbModalAwal = JSON.parse(localStorage.getItem('bone_modal_awal')) || defaultModalAwal;
-    let dbPengurus = JSON.parse(localStorage.getItem('bone_pengurus')) || defaultPengurus;
-    let dbAset = JSON.parse(localStorage.getItem('bone_aset')) || defaultAset;
-    let isAdmin = localStorage.getItem('bone_is_admin') === 'true';
+  // 1. Deklarasi Variabel Awal
+let dbIuran = defaultIuran;
+let dbKas = defaultKas;
+let dbModalAwal = defaultModalAwal;
+let dbPengurus = defaultPengurus;
+let dbAset = defaultAset;
+let isAdmin = localStorage.getItem('bone_is_admin') === 'true'; // Status login tetap disimpan lokal per browser
+
+// 2. Load & Sync Real-time dari Firebase Database
+db.ref('bone_app').on('value', (snapshot) => {
+  const data = snapshot.val();
+  
+  if (data) {
+    dbIuran = data.bone_iuran || defaultIuran;
+    dbKas = data.bone_kas || defaultKas;
+    dbModalAwal = data.bone_modal_awal || defaultModalAwal;
+    dbPengurus = data.bone_pengurus || defaultPengurus;
+    dbAset = data.bone_aset || defaultAset;
+  } else {
+    // Jika database masih kosong pertama kali, unggah data default ke cloud
+    simpanKeCloud();
+  }
+
+  // PANGGIL FUNGSI RENDER TAMPILAN ANDA DI SINI
+  // (Sesuaikan nama fungsi render tabel/UI yang ada di script Anda, contoh: renderTabel() / renderApp())
+  if (typeof renderAll === 'function') renderAll();
+  else if (typeof renderTabel === 'function') renderTabel();
+});
+
+// 3. Fungsi Pengganti localStorage.setItem()
+// Panggil fungsi ini setiap kali Anda menambah/mengedit data dari aplikasi
+function simpanKeCloud() {
+  db.ref('bone_app').set({
+    bone_iuran: dbIuran,
+    bone_kas: dbKas,
+    bone_modal_awal: dbModalAwal,
+    bone_pengurus: dbPengurus,
+    bone_aset: dbAset
+  }).then(() => {
+    console.log("Data berhasil tersinkron ke Cloud Firebase!");
+  }).catch((error) => {
+    console.error("Gagal menyimpan ke cloud:", error);
+  });
+}
 
     function saveAll() {
       localStorage.setItem('bone_iuran', JSON.stringify(dbIuran));
