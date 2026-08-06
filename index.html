@@ -383,8 +383,9 @@
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-    // GANTI DENGAN CONFIGURASI FIREBASE PROYEK ANDA
-    const firebaseConfig = {
+
+  // KONFIGURASI FIREBASE PROYEK ANDA
+  const firebaseConfig = {
     apiKey: "AIzaSyCJ4QDU1dPtQ1C9Y9bb5sdIhCJR7JRiFuE",
     authDomain: "upk-dapm-bone.firebaseapp.com",
     databaseURL: "https://upk-dapm-bone-default-rtdb.firebaseio.com",
@@ -393,59 +394,60 @@
     messagingSenderId: "40540518248",
     appId: "1:40540518248:web:fb0e338b8eaf94ee0b08dd"
   };
-    // Inisialisasi Firebase
-    const app = initializeApp(firebaseConfig);
-    // KODE BARU (REALTIME DATABASE)
-const db = getDatabase(app);
-const dbRef = ref(db, "iuran_upk");
 
-window.districtData = [];
-window.db = db;
-window.dbRef = dbRef;
-window.push = push;
-window.set = set;
-window.ref = ref;
-// Mendengarkan Perubahan Data Cloud secara Realtime (Auto Sync)
-// KODE BARU (REALTIME DATABASE)
-onValue(dbRef, (snapshot) => {
-  let dataTemp = [];
-  const data = snapshot.val();
+  // Inisialisasi Firebase Realtime Database
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const dbRef = ref(db, "iuran_upk");
 
-  if (data) {
-    Object.keys(data).forEach((key) => {
-      dataTemp.push({ id: key, ...data[key] });
-    });
-  }
+  // Ekspos variabel & fungsi ke window agar bisa diakses script biasa/HTML
+  window.districtData = [];
+  window.db = db;
+  window.dbRef = dbRef;
+  window.push = push;
+  window.set = set;
+  window.ref = ref;
 
-  // 1. Urutkan data berdasarkan nama secara aman
-  dataTemp.sort((a, b) => (a.nama || "").localeCompare(b.nama || ""));
+  // Mendengarkan Perubahan Data Cloud secara Realtime (Auto Sync)
+  onValue(dbRef, (snapshot) => {
+    let dataTemp = [];
+    const data = snapshot.val();
 
-  // 2. Simpan ke variabel global
-  window.districtData = dataTemp;
-
-  // 3. Tampilkan data ke tabel atau isi data default jika kosong
-  if (dataTemp.length > 0) {
-    if (typeof renderTable === "function") {
-      renderTable();
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        dataTemp.push({ id: key, ...data[key] });
+      });
     }
-  } else {
-    // Jika DB Firebase masih kosong, isi data default
-    if (typeof seedDefaultData === "function") {
-      seedDefaultData();
+
+    // 1. Urutkan berdasarkan nama
+    dataTemp.sort((a, b) => (a.nama || "").localeCompare(b.nama || ""));
+
+    // 2. Simpan ke data global
+    window.districtData = dataTemp;
+
+    // 3. Render tabel / Isi data default jika kosong
+    if (dataTemp.length > 0) {
+      if (typeof renderTable === "function") {
+        renderTable();
+      }
+    } else {
+      if (typeof seedDefaultData === "function") {
+        seedDefaultData();
+      }
     }
-  }
 
-  // 4. Update Badge & Teks Status Koneksi UI
-  const badge = document.getElementById('syncStatusBadge');
-  const statusText = document.getElementById('syncStatusText');
-  const cloudText = document.getElementById('cloudSyncText');
+    // 4. Update Status Indikator UI
+    const badge = document.getElementById('syncStatusBadge');
+    const statusText = document.getElementById('syncStatusText');
+    const cloudText = document.getElementById('cloudSyncText');
 
-  if (badge) badge.className = "w-2 h-2 rounded-full bg-emerald-400 inline-block";
-  if (statusText) statusText.textContent = "Online Sync Active";
-  if (cloudText) cloudText.textContent = "Terhubung";
-}, (error) => {
-  console.error("Gagal sinkronisasi dari Firebase:", error);
-});
+    if (badge) badge.className = "w-2 h-2 rounded-full bg-emerald-400 inline-block";
+    if (statusText) statusText.textContent = "Online Sync Active";
+    if (cloudText) cloudText.textContent = "Terhubung";
+  }, (error) => {
+    console.error("Gagal sinkronisasi dari Firebase:", error);
+  });
+</script>
 
       renderAllTables();
     }, (error) => {
@@ -751,22 +753,23 @@ onValue(dbRef, (snapshot) => {
         isRed: false
       };
 
-      try {
-        if(!docId) {
-          // Data Baru
-          await window.addDoc(window.collectionRef, newData);
-        } else {
-          // Update Data Cloud
-          const docRef = window.doc(window.db, "iuran_upk", docId);
-          await window.setDoc(docRef, newData, { merge: true });
-        }
-        closeFormModal();
-      } catch (err) {
-        alert("Gagal menyimpan ke Cloud: " + err.message);
-      } finally {
-        btnSubmit.innerText = "Simpan ke Cloud";
-        btnSubmit.disabled = false;
-      }
+     try {
+  if(!docId) {
+    // Data Baru (Realtime Database)
+    const newRef = window.push(window.dbRef);
+    await window.set(newRef, newData);
+  } else {
+    // Update Data Cloud (Realtime Database)
+    const itemRef = window.ref(window.db, `iuran_upk/${docId}`);
+    await window.set(itemRef, newData);
+  }
+  closeFormModal();
+} catch (err) {
+  alert("Gagal menyimpan ke Cloud: " + err.message);
+} finally {
+  btnSubmit.innerText = "Simpan ke Cloud";
+  btnSubmit.disabled = false;
+}
     }
 
     function filterTables() {
