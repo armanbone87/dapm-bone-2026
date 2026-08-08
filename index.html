@@ -28,6 +28,11 @@
     .hero-gradient {
       background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #0f172a 100%);
     }
+    /* Efek untuk menghilangkan latar putih pada logo */
+    .transparent-logo {
+      mix-blend-mode: multiply;
+      background-color: transparent !important;
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen font-sans">
@@ -36,8 +41,8 @@
   <header class="bg-blue-950 text-white shadow-xl sticky top-0 z-50 no-print border-b border-blue-900/50">
     <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
       <div class="flex items-center space-x-3.5">
-        <div class="w-12 h-12 flex items-center justify-center transform hover:scale-105 transition overflow-hidden flex-shrink-0">
-          <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full">
+        <div class="w-12 h-12 flex items-center justify-center transform hover:scale-105 transition overflow-hidden flex-shrink-0 bg-white rounded-full p-0.5 shadow-md">
+          <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full transparent-logo">
         </div>
         <div>
           <h1 class="font-black text-xs sm:text-sm md:text-base tracking-wide bg-gradient-to-r from-white via-blue-100 to-blue-300 bg-clip-text text-transparent leading-tight">Sistem Informasi dan Laporan Keuangan<br><span class="text-amber-400">ASOSIASI UPK DAPM KAB BONE</span></h1>
@@ -76,8 +81,8 @@
 
     <div class="max-w-[96rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
       <div class="flex items-start gap-5 max-w-2xl">
-        <div class="w-20 h-20 flex-shrink-0 hidden sm:flex items-center justify-center">
-          <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full">
+        <div class="w-20 h-20 flex-shrink-0 hidden sm:flex items-center justify-center bg-white rounded-full p-1 shadow-lg">
+          <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain rounded-full transparent-logo">
         </div>
         <div class="space-y-3">
           <span class="bg-blue-600/40 text-blue-200 text-[11px] sm:text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-blue-400/30 shadow-sm inline-flex items-center gap-1.5">
