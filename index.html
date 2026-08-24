@@ -20,9 +20,9 @@
       body { background-color: #fff !important; color: #000 !important; }
       .print-header { display: block !important; }
       .table-print { width: 100% !important; border-collapse: collapse !important; }
-      .table-print th, .table-print td { border: 1px solid #475569 !important; padding: 6px !important; }
+      .table-print th, .table-print td { border: 1px solid #475569 !important; padding: 5px !important; }
     }
-    .table-scroll::-webkit-scrollbar { height: 7px; width: 7px; }
+    .table-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
     .table-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
     .table-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
     .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e1b4b 100%); }
@@ -33,9 +33,9 @@
   <!-- ==================== PRINT HEADER ==================== -->
   <div class="hidden print-header p-4 border-b-2 border-slate-900 mb-6 text-center">
     <h2 class="text-xl font-black uppercase tracking-wider">ASOSIASI UPK DAPM KABUPATEN BONE</h2>
-    <p class="text-xs text-slate-700">Sekretariat: Watampone, Kab. Bone, Sulawesi Selatan | Kontak: 085398087772 | DAPM TA. 2026</p>
+    <p class="text-xs text-slate-700">Sekretariat: Watampone, Kab. Bone, Sulawesi Selatan | Kontak: 085398087772</p>
     <h3 id="printReportTitle" class="text-sm font-extrabold uppercase mt-3 underline">LAPORAN KEUANGAN RESMI</h3>
-    <p id="printReportPeriod" class="text-xs text-slate-600 mt-0.5">Periode: Semua Periode (Tahun 2026)</p>
+    <p id="printReportPeriod" class="text-xs text-slate-600 mt-0.5">Tahun Anggaran: <span class="activeYearText">2026</span></p>
   </div>
 
   <!-- ==================== NAVBAR ==================== -->
@@ -58,11 +58,24 @@
       </div>
 
       <div class="flex items-center space-x-2 sm:space-x-3">
+        <!-- Selector Tahun Global -->
+        <div class="flex items-center gap-1.5 bg-blue-900/60 border border-blue-700/60 rounded-xl px-2.5 py-1.5 shadow-sm">
+          <i class="fa-solid fa-calendar-days text-amber-400 text-xs"></i>
+          <span class="text-[10px] text-blue-200 font-bold hidden sm:inline">Tahun:</span>
+          <select id="globalYearSelect" onchange="changeActiveYear(this.value)" class="bg-transparent text-white font-black text-xs outline-none cursor-pointer">
+            <option value="2026" class="bg-slate-900 text-white">2026</option>
+            <option value="2027" class="bg-slate-900 text-white">2027</option>
+            <option value="2028" class="bg-slate-900 text-white">2028</option>
+            <option value="2029" class="bg-slate-900 text-white">2029</option>
+            <option value="2030" class="bg-slate-900 text-white">2030</option>
+          </select>
+        </div>
+
         <button onclick="fetchSheetData()" title="Muat Ulang Data" class="bg-slate-800 hover:bg-slate-700 text-blue-200 border border-slate-700 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i> <span class="hidden sm:inline">Refresh</span>
         </button>
-        <button onclick="openPrintModal()" class="bg-blue-900/80 hover:bg-blue-800 text-blue-100 border border-blue-700/60 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-md transition">
-          <i class="fa-solid fa-print text-amber-400"></i> <span class="hidden md:inline">Cetak Laporan</span>
+        <button onclick="openPrintModal()" class="bg-blue-900/80 hover:bg-blue-800 text-blue-100 border border-blue-700/60 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-md transition">
+          <i class="fa-solid fa-print text-amber-400"></i> <span class="hidden md:inline">Cetak</span>
         </button>
         <button id="btnLogin" onclick="openLoginModal()" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-2 shadow-lg transition">
           <i class="fa-solid fa-lock"></i> <span class="hidden xs:inline">Login</span> Admin
@@ -76,114 +89,138 @@
 
   <!-- Admin Status Bar -->
   <div id="adminStatusBar" class="hidden bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 text-slate-950 px-4 py-2 font-bold text-xs text-center border-b border-amber-600 shadow-md no-print flex items-center justify-center gap-2">
-    <i class="fa-solid fa-shield-halved text-sm"></i> Mode Admin Aktif: Anda memiliki hak akses penuh untuk Tambah, Edit, dan Hapus data langsung ke Google Sheets.
+    <i class="fa-solid fa-shield-halved text-sm"></i> Mode Admin Aktif: Anda memiliki akses penuh Tambah, Edit, dan Hapus data langsung ke Google Sheets.
   </div>
 
   <!-- ==================== HERO SECTION ==================== -->
-  <section class="hero-gradient text-white py-10 sm:py-14 px-4 sm:px-6 lg:px-8 relative overflow-hidden no-print">
-    <div class="max-w-[96rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-      <div class="space-y-3 max-w-2xl">
-        <span class="bg-blue-600/40 text-blue-200 text-[11px] sm:text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-blue-400/30 shadow-sm inline-flex items-center gap-1.5">
+  <section class="hero-gradient text-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden no-print">
+    <div class="max-w-[96rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+      <div class="space-y-2.5 max-w-2xl">
+        <span class="bg-blue-600/40 text-blue-200 text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-blue-400/30 shadow-sm inline-flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Portal Transparansi Real-Time Terintegrasi
         </span>
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-snug">
-          Transparansi Pengelolaan Iuran & Kas DAPM Kab. Bone TA. 2026
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight leading-snug">
+          Transparansi Pengelolaan Iuran & Kas DAPM Kab. Bone (TA. <span class="activeYearText text-amber-400">2026</span>)
         </h2>
         <p class="text-blue-100/90 text-xs sm:text-sm leading-relaxed">
-          Pusat data terpadu monitoring setoran iuran kecamatan dan pembukuan kas yang terhubung secara aman langsung ke spreadsheet Google Sheets.
+          Pusat monitoring iuran kecamatan dan pembukuan kas yang terhubung langsung ke Google Spreadsheet resmi.
         </p>
       </div>
     </div>
   </section>
 
   <!-- ==================== MAIN SECTION ==================== -->
-  <main class="flex-grow max-w-[96rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  <main class="flex-grow max-w-[96rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
     <!-- Ringkasan Statistik -->
     <section class="grid grid-cols-2 lg:grid-cols-4 gap-4 no-print">
-      <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
+      <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
         <div>
-          <p class="text-[11px] text-slate-500 font-bold uppercase">Total UPK</p>
-          <p class="text-xl sm:text-2xl font-black text-slate-900 mt-1" id="statTotalUnit">21 Kec.</p>
-          <p class="text-[10px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-circle-check"></i> Terdata Aktif</p>
+          <p class="text-[10px] text-slate-500 font-bold uppercase">Total UPK</p>
+          <p class="text-lg sm:text-xl font-black text-slate-900 mt-0.5" id="statTotalUnit">21 Kec.</p>
+          <p class="text-[10px] text-emerald-600 font-bold mt-0.5"><i class="fa-solid fa-circle-check"></i> Terdata Aktif</p>
         </div>
-        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-lg sm:text-xl shadow-inner">
           <i class="fa-solid fa-map-location-dot"></i>
         </div>
       </div>
 
-      <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
+      <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
         <div>
-          <p class="text-[11px] text-slate-500 font-bold uppercase">Total Iuran Masuk</p>
-          <p class="text-xl sm:text-2xl font-black text-emerald-600 mt-1" id="statTotalTerkumpul">Rp 0</p>
-          <p class="text-[10px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-wallet"></i> Realisasi</p>
+          <p class="text-[10px] text-slate-500 font-bold uppercase">Iuran (TA. <span class="activeYearText">2026</span>)</p>
+          <p class="text-lg sm:text-xl font-black text-emerald-600 mt-0.5" id="statTotalTerkumpul">Rp 0</p>
+          <p class="text-[10px] text-emerald-600 font-bold mt-0.5"><i class="fa-solid fa-wallet"></i> Realisasi Iuran</p>
         </div>
-        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-lg sm:text-xl shadow-inner">
           <i class="fa-solid fa-money-bill-trend-up"></i>
         </div>
       </div>
 
-      <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
+      <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
         <div>
-          <p class="text-[11px] text-slate-500 font-bold uppercase">Saldo Kas Akhir</p>
-          <p class="text-xl sm:text-2xl font-black text-blue-900 mt-1" id="statSaldoKas">Rp 0</p>
-          <p class="text-[10px] text-blue-600 font-bold mt-1"><i class="fa-solid fa-vault"></i> Posisi Kas Terkini</p>
+          <p class="text-[10px] text-slate-500 font-bold uppercase">Saldo Kas Akhir</p>
+          <p class="text-lg sm:text-xl font-black text-blue-900 mt-0.5" id="statSaldoKas">Rp 0</p>
+          <p class="text-[10px] text-blue-600 font-bold mt-0.5"><i class="fa-solid fa-vault"></i> Posisi Kas Terkini</p>
         </div>
-        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shadow-inner">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-lg sm:text-xl shadow-inner">
           <i class="fa-solid fa-calculator"></i>
         </div>
       </div>
 
-      <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
+      <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
         <div>
-          <p class="text-[11px] text-slate-500 font-bold uppercase">Database Source</p>
-          <p class="text-xl sm:text-2xl font-black text-emerald-700 mt-1" id="cloudSyncText">Google Sheets</p>
-          <p class="text-[10px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-shield-halved"></i> Live Database</p>
+          <p class="text-[10px] text-slate-500 font-bold uppercase">Database Source</p>
+          <p class="text-lg sm:text-xl font-black text-emerald-700 mt-0.5" id="cloudSyncText">Google Sheets</p>
+          <p class="text-[10px] text-emerald-600 font-bold mt-0.5"><i class="fa-solid fa-shield-halved"></i> Live Database</p>
         </div>
-        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-lg sm:text-xl shadow-inner">
           <i class="fa-solid fa-file-excel"></i>
         </div>
       </div>
     </section>
 
     <!-- TABEL UTAMA -->
-    <section class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden p-5 sm:p-7 space-y-6">
-      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-5 no-print">
+    <section class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden p-4 sm:p-6 space-y-5">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-100 pb-4 no-print">
         <div>
-          <h3 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2.5">
-            <i class="fa-solid fa-folder-open text-blue-700"></i> Panel Pembukuan & Laporan UPK
+          <h3 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-folder-open text-blue-700"></i> Panel Pembukuan & Laporan UPK (TA. <span class="activeYearText text-blue-900">2026</span>)
           </h3>
-          <p class="text-xs text-slate-500 mt-0.5">Semua perubahan data langsung tersinkronkan ke Google Spreadsheet Anda.</p>
+          <p class="text-xs text-slate-500 mt-0.5">Kelola iuran dan pembukuan kas dengan filter ringkas.</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200/80 shadow-inner">
-          <button id="tabDetailBtn" onclick="switchTab('detail')" class="px-3.5 py-2 text-xs font-bold rounded-xl transition bg-blue-950 text-white shadow-md">
-            <i class="fa-solid fa-calendar-check mr-1.5"></i> Detail Bulanan
+          <button id="tabDetailBtn" onclick="switchTab('detail')" class="px-3 py-1.5 text-xs font-bold rounded-xl transition bg-blue-950 text-white shadow-md">
+            <i class="fa-solid fa-calendar-check mr-1"></i> Detail Bulanan
           </button>
-          <button id="tabKuartalBtn" onclick="switchTab('kuartal')" class="px-3.5 py-2 text-xs font-bold rounded-xl transition text-slate-600 hover:bg-white">
-            <i class="fa-solid fa-chart-pie mr-1.5"></i> Rekap Kuartal
+          <button id="tabKuartalBtn" onclick="switchTab('kuartal')" class="px-3 py-1.5 text-xs font-bold rounded-xl transition text-slate-600 hover:bg-white">
+            <i class="fa-solid fa-chart-pie mr-1"></i> Rekap Kuartal
           </button>
-          <button id="tabKasBtn" onclick="switchTab('kas')" class="px-3.5 py-2 text-xs font-bold rounded-xl transition text-slate-600 hover:bg-white">
-            <i class="fa-solid fa-book-journal-whills mr-1.5"></i> Buku Kas
+          <button id="tabKasBtn" onclick="switchTab('kas')" class="px-3 py-1.5 text-xs font-bold rounded-xl transition text-slate-600 hover:bg-white">
+            <i class="fa-solid fa-book-journal-whills mr-1"></i> Buku Kas
           </button>
         </div>
       </div>
 
-      <!-- Action Tools -->
+      <!-- Action & Filter Tools -->
       <div class="flex flex-wrap items-center justify-between gap-3 no-print">
-        <div class="relative w-full sm:w-80">
-          <input type="text" id="searchInput" onkeyup="filterTables()" placeholder="Cari kecamatan / uraian kas..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs sm:text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none shadow-inner">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <!-- Input Search -->
+          <div class="relative w-full sm:w-64">
+            <input type="text" id="searchInput" onkeyup="filterTables()" placeholder="Cari kecamatan / uraian..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-600 focus:outline-none shadow-inner">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+          </div>
+
+          <!-- Filter Kas Minimalis: Sort Bulan Berjalan & Rentang Bulan -->
+          <div id="kasFilterContainer" class="hidden flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded-xl">
+            <span class="text-[10px] text-slate-500 font-bold"><i class="fa-solid fa-filter mr-1 text-blue-700"></i>Bulan:</span>
+            <select id="kasMonthFilter" onchange="renderKasTable()" class="bg-white border border-slate-200 rounded-lg text-xs font-bold px-2 py-1 text-slate-800 outline-none cursor-pointer">
+              <option value="all">Semua Bulan (1 Tahun)</option>
+              <option value="current">Bulan Berjalan Saat Ini</option>
+              <option value="0">Januari</option>
+              <option value="1">Februari</option>
+              <option value="2">Maret</option>
+              <option value="3">April</option>
+              <option value="4">Mei</option>
+              <option value="5">Juni</option>
+              <option value="6">Juli</option>
+              <option value="7">Agustus</option>
+              <option value="8">September</option>
+              <option value="9">Oktober</option>
+              <option value="10">November</option>
+              <option value="11">Desember</option>
+            </select>
+          </div>
         </div>
 
         <div class="flex items-center flex-wrap gap-2 w-full sm:w-auto justify-end">
-          <button onclick="exportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-1.5 shadow-md">
+          <button onclick="exportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md">
             <i class="fa-solid fa-file-excel"></i> Ekspor CSV
           </button>
-          <button id="btnTambahData" onclick="openFormModal()" class="hidden bg-blue-900 hover:bg-blue-800 text-white px-3.5 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-1.5 shadow-md">
+          <button id="btnTambahData" onclick="openFormModal()" class="hidden bg-blue-900 hover:bg-blue-800 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md">
             <i class="fa-solid fa-plus-circle"></i> Tambah Kecamatan
           </button>
-          <button id="btnTambahKas" onclick="openKasModal()" class="hidden bg-blue-900 hover:bg-blue-800 text-white px-3.5 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-1.5 shadow-md">
+          <button id="btnTambahKas" onclick="openKasModal()" class="hidden bg-blue-900 hover:bg-blue-800 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md">
             <i class="fa-solid fa-plus-circle"></i> Tambah Transaksi Kas
           </button>
         </div>
@@ -197,9 +234,9 @@
               <tr class="bg-slate-200 text-slate-800 border-b border-slate-300 font-extrabold uppercase text-center">
                 <th class="border-r border-slate-300 p-2 w-8" rowspan="2">NO</th>
                 <th class="border-r border-slate-300 p-2 min-w-[140px]" rowspan="2">NAMA KECAMATAN</th>
-                <th class="border-r border-slate-300 p-2" colspan="24">BULAN PENYETORAN</th>
+                <th class="border-r border-slate-300 p-2" colspan="24">BULAN PENYETORAN (TA. <span class="activeYearText">2026</span>)</th>
                 <th class="border-r border-slate-300 p-2 min-w-[95px]" rowspan="2">TOTAL</th>
-                <th class="p-2 min-w-[100px]" rowspan="2">KET / AKSI</th>
+                <th class="p-2 min-w-[90px]" rowspan="2">KET / AKSI</th>
               </tr>
               <tr class="bg-slate-100 text-slate-700 border-b border-slate-300 font-bold text-center">
                 <th class="border-r border-slate-300 p-1" colspan="2">Jan</th>
@@ -241,14 +278,14 @@
           <table class="w-full text-xs text-left text-slate-700 table-print" id="tableKuartal">
             <thead class="text-xs text-slate-800 uppercase bg-slate-100 border-b border-slate-200 font-extrabold text-center">
               <tr>
-                <th class="px-3 py-3 w-12 border-r">No</th>
-                <th class="px-4 py-3 text-left border-r">Nama UPK / Kecamatan</th>
-                <th class="px-3 py-3 border-r">Kuartal 1 (Jan-Mar)</th>
-                <th class="px-3 py-3 border-r">Kuartal 2 (Apr-Jun)</th>
-                <th class="px-3 py-3 border-r">Kuartal 3 (Jul-Sep)</th>
-                <th class="px-3 py-3 border-r">Kuartal 4 (Okt-Des)</th>
-                <th class="px-4 py-3 text-right border-r">Total Terkumpul</th>
-                <th class="px-3 py-3">Status</th>
+                <th class="px-3 py-2.5 w-12 border-r">No</th>
+                <th class="px-4 py-2.5 text-left border-r">Nama UPK / Kecamatan</th>
+                <th class="px-3 py-2.5 border-r">Kuartal 1 (Jan-Mar)</th>
+                <th class="px-3 py-2.5 border-r">Kuartal 2 (Apr-Jun)</th>
+                <th class="px-3 py-2.5 border-r">Kuartal 3 (Jul-Sep)</th>
+                <th class="px-3 py-2.5 border-r">Kuartal 4 (Okt-Des)</th>
+                <th class="px-4 py-2.5 text-right border-r">Total (TA. <span class="activeYearText">2026</span>)</th>
+                <th class="px-3 py-2.5">Status</th>
               </tr>
             </thead>
             <tbody id="kuartalTableBody" class="divide-y divide-slate-200"></tbody>
@@ -259,11 +296,11 @@
         </div>
       </div>
 
-      <!-- VIEW 3: BUKU KAS (URUTAN TANGGAL TERBARU) -->
+      <!-- VIEW 3: BUKU KAS (MINIMALIS & URUTAN TANGGAL TERBARU) -->
       <div id="viewKas" class="hidden space-y-3">
-        <div class="overflow-x-auto border border-slate-200 rounded-2xl table-scroll shadow-sm">
+        <div class="overflow-x-auto border border-slate-200 rounded-2xl table-scroll shadow-sm max-h-[65vh]">
           <table class="w-full text-xs text-left border-collapse table-print" id="tableKas">
-            <thead>
+            <thead class="sticky top-0 z-10">
               <tr class="bg-slate-200 text-slate-800 border-b border-slate-300 font-extrabold uppercase text-center">
                 <th class="border-r border-slate-300 p-2.5 w-10">NO</th>
                 <th class="border-r border-slate-300 p-2.5 w-28">TANGGAL</th>
@@ -363,7 +400,9 @@
             <input type="text" id="inputKet" class="w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl" placeholder="Opsional">
           </div>
         </div>
-        <p class="font-black text-slate-800 uppercase tracking-wider border-b pb-1 text-[11px]">Setoran Iuran & Laporan Bulanan</p>
+        <p class="font-black text-slate-800 uppercase tracking-wider border-b pb-1 text-[11px]">
+          Setoran Iuran & Laporan Bulanan (TA. <span class="activeYearText">2026</span>)
+        </p>
         <div class="max-h-[45vh] overflow-y-auto pr-1">
           <div id="monthsFormContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
         </div>
@@ -416,32 +455,36 @@
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT LOGIC & GOOGLE SHEETS SYNC ==================== -->
+  <!-- ==================== JAVASCRIPT ENGINE ==================== -->
   <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrRmV3sgwa1ND1dp9yEXMa9Cry5jtNCr4aUjZ24KBeztsCIhwua_Ln-0970qryMgcT9Q/exec";
 
+    let activeYear = "2026";
+    const monthNamesFull = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    // Template Database Multitahun
     let districtData = [
-      { id: "AMALI", nama: "AMALI", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 50000, 0, 0, 0, 0, 0], laporan: [true, true, true, true, true, true, true, false, false, false, false, false], ket: "" },
-      { id: "ULAWENG", nama: "ULAWENG", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "TL_LIMPOE", nama: "TL.LIMPOE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "LIBURENG", nama: "LIBURENG", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "PALAKKA", nama: "PALAKKA", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "TR_BARAT", nama: "TR.BARAT", iuran: [50000, 70000, 55000, 50000, 55000, 55000, 50000, 0, 0, 0, 0, 0], laporan: [true, true, true, true, true, true, true, false, false, false, false, false], ket: "" },
-      { id: "TR_TIMUR", nama: "TR.TIMUR", iuran: [210000, 213000, 234000, 212500, 277500, 229000, 230000, 0, 0, 0, 0, 0], laporan: [true, true, true, true, true, true, true, false, false, false, false, false], ket: "" },
-      { id: "CENRANA", nama: "CENRANA", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "DUA_BOCCOE", nama: "DUA BOCCOE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "AWANGPONE", nama: "AWANGPONE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "BAREBBO", nama: "BAREBBO", iuran: [60000, 75000, 60000, 65000, 65000, 65000, 65000, 0, 0, 0, 0, 0], laporan: [true, true, true, true, true, true, true, false, false, false, false, false], ket: "" },
-      { id: "SIBULUE", nama: "SIBULUE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "CINA", nama: "CINA", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "TONRA", nama: "TONRA", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000], laporan: [true, true, true, true, true, true, true, true, true, true, true, true], ket: "" },
-      { id: "KAJUARA", nama: "KAJUARA", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "KAHU", nama: "KAHU", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "PATIMPENG", nama: "PATIMPENG", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "BONTOCANI", nama: "BONTOCANI", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "LAPRI", nama: "LAPRI", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "MARE", nama: "MARE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" },
-      { id: "PONRE", nama: "PONRE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "" }
+      { id: "AMALI", nama: "AMALI", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 50000, 0, 0, 0, 0, 0], laporan: [true, true, true, true, true, true, true, false, false, false, false, false], ket: "", tahun: "2026" },
+      { id: "ULAWENG", nama: "ULAWENG", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "TL_LIMPOE", nama: "TL.LIMPOE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "LIBURENG", nama: "LIBURENG", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "PALAKKA", nama: "PALAKKA", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "TR_BARAT", nama: "TR.BARAT", iuran: [50000, 70000, 55000, 50000, 55000, 55000, 50000, 0, 0, 0, 0, 0], laporan: [true, true, true, true, true, true, true, false, false, false, false, false], ket: "", tahun: "2026" },
+      { id: "TR_TIMUR", nama: "TR.TIMUR", iuran: [210000, 213000, 234000, 212500, 277500, 229000, 230000, 0, 0, 0, 0, 0], laporan: [true, true, true, true, true, true, true, false, false, false, false, false], ket: "", tahun: "2026" },
+      { id: "CENRANA", nama: "CENRANA", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "DUA_BOCCOE", nama: "DUA BOCCOE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "AWANGPONE", nama: "AWANGPONE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "BAREBBO", nama: "BAREBBO", iuran: [60000, 75000, 60000, 65000, 65000, 65000, 65000, 0, 0, 0, 0, 0], laporan: [true, true, true, true, true, true, true, false, false, false, false, false], ket: "", tahun: "2026" },
+      { id: "SIBULUE", nama: "SIBULUE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "CINA", nama: "CINA", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "TONRA", nama: "TONRA", iuran: [50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000], laporan: [true, true, true, true, true, true, true, true, true, true, true, true], ket: "", tahun: "2026" },
+      { id: "KAJUARA", nama: "KAJUARA", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "KAHU", nama: "KAHU", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "PATIMPENG", nama: "PATIMPENG", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "BONTOCANI", nama: "BONTOCANI", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "LAPRI", nama: "LAPRI", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "MARE", nama: "MARE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" },
+      { id: "PONRE", nama: "PONRE", iuran: Array(12).fill(0), laporan: Array(12).fill(false), ket: "", tahun: "2026" }
     ];
 
     let kasTransactions = [
@@ -450,8 +493,12 @@
 
     let isAdminLoggedIn = false;
     let activeTab = 'detail';
-    const monthNamesFull = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-    const monthDatesDefault2026 = ['2026-01-28', '2026-02-28', '2026-03-30', '2026-04-29', '2026-05-29', '2026-06-29', '2026-07-28', '2026-08-03', '2026-09-03', '2026-10-01', '2026-11-02', '2026-12-01'];
+
+    function changeActiveYear(year) {
+      activeYear = String(year);
+      document.querySelectorAll('.activeYearText').forEach(el => el.textContent = activeYear);
+      renderAllTables();
+    }
 
     async function fetchSheetData() {
       const badge = document.getElementById('syncStatusBadge');
@@ -467,7 +514,7 @@
         const data = await response.json();
         
         if (data.iuran && data.iuran.length > 0) {
-          districtData = data.iuran;
+          districtData = data.iuran.map(d => ({ ...d, tahun: d.tahun || "2026" }));
         }
         if (data.kas && data.kas.length > 0) {
           kasTransactions = data.kas;
@@ -476,7 +523,7 @@
         badge.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block";
         text.textContent = "Google Sheets Terhubung (Online)";
       } catch (e) {
-        console.warn("Gagal load Google Sheets, menggunakan data lokal:", e);
+        console.warn("Offline fallback:", e);
         badge.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block";
         text.textContent = "Mode Offline / Lokal Siap";
       } finally {
@@ -492,7 +539,7 @@
         monthNamesFull.forEach((m, idx) => {
           const opt = document.createElement('option');
           opt.value = idx;
-          opt.textContent = `${m} 2026`;
+          opt.textContent = `${m} ${activeYear}`;
           sel.appendChild(opt);
         });
       }
@@ -525,9 +572,10 @@
       document.getElementById('viewDetail').classList.toggle('hidden', tab !== 'detail');
       document.getElementById('viewKuartal').classList.toggle('hidden', tab !== 'kuartal');
       document.getElementById('viewKas').classList.toggle('hidden', tab !== 'kas');
+      document.getElementById('kasFilterContainer').classList.toggle('hidden', tab !== 'kas');
 
-      const inactive = "px-3.5 py-2 text-xs font-bold rounded-xl transition text-slate-600 hover:bg-white";
-      const active = "px-3.5 py-2 text-xs font-bold rounded-xl transition bg-blue-950 text-white shadow-md";
+      const inactive = "px-3 py-1.5 text-xs font-bold rounded-xl transition text-slate-600 hover:bg-white";
+      const active = "px-3 py-1.5 text-xs font-bold rounded-xl transition bg-blue-950 text-white shadow-md";
 
       document.getElementById('tabDetailBtn').className = tab === 'detail' ? active : inactive;
       document.getElementById('tabKuartalBtn').className = tab === 'kuartal' ? active : inactive;
@@ -549,7 +597,10 @@
       tbody.innerHTML = '';
       let monthlyTotals = Array(12).fill(0), grandTotal = 0;
 
-      districtData.forEach((item, index) => {
+      // Filter berdasarkan tahun aktif
+      const filteredDistricts = districtData.filter(d => (d.tahun || "2026") === activeYear);
+
+      filteredDistricts.forEach((item, index) => {
         const rowTotal = item.iuran ? item.iuran.reduce((a, b) => (Number(a)||0) + (Number(b)||0), 0) : 0;
         grandTotal += rowTotal;
 
@@ -587,7 +638,7 @@
       document.getElementById('detailTableFoot').innerHTML = footHtml;
 
       document.getElementById('statTotalTerkumpul').textContent = formatRupiah(grandTotal);
-      document.getElementById('statTotalUnit').textContent = districtData.length + " Kec.";
+      document.getElementById('statTotalUnit').textContent = filteredDistricts.length + " Kec.";
     }
 
     function renderKuartalTable() {
@@ -596,7 +647,9 @@
       tbody.innerHTML = '';
       let tQ1=0, tQ2=0, tQ3=0, tQ4=0, grandTotal=0;
 
-      districtData.forEach((item, idx) => {
+      const filteredDistricts = districtData.filter(d => (d.tahun || "2026") === activeYear);
+
+      filteredDistricts.forEach((item, idx) => {
         const q1 = ((Number(item.iuran[0])||0) + (Number(item.iuran[1])||0) + (Number(item.iuran[2])||0));
         const q2 = ((Number(item.iuran[3])||0) + (Number(item.iuran[4])||0) + (Number(item.iuran[5])||0));
         const q3 = ((Number(item.iuran[6])||0) + (Number(item.iuran[7])||0) + (Number(item.iuran[8])||0));
@@ -642,18 +695,20 @@
       kasActionTh.classList.toggle('hidden', !isAdminLoggedIn);
 
       let saldoAwal = 825137;
-      let totalPenerimaan = 0, totalPengeluaran = 0, raw = [];
+      let raw = [];
 
-      // Otomatis Iuran Masuk
-      districtData.forEach(item => {
+      // 1. Kumpulkan Mutasi Iuran Otomatis Sesuai Tahun Aktif
+      const filteredDistricts = districtData.filter(d => (d.tahun || "2026") === activeYear);
+      filteredDistricts.forEach(item => {
         if(item.iuran) {
           item.iuran.forEach((val, mIdx) => {
             const num = Number(val) || 0;
             if(num > 0) {
+              const monthStr = String(mIdx + 1).padStart(2, '0');
               raw.push({
                 isAuto: true,
-                tanggal: monthDatesDefault2026[mIdx],
-                uraian: `Iuran UPK Kec. ${item.nama} - ${monthNamesFull[mIdx]} 2026`,
+                tanggal: `${activeYear}-${monthStr}-10`,
+                uraian: `Iuran UPK Kec. ${item.nama} - ${monthNamesFull[mIdx]} ${activeYear}`,
                 penerimaan: num,
                 pengeluaran: 0
               });
@@ -662,45 +717,62 @@
         }
       });
 
-      // Kas Manual
+      // 2. Kumpulkan Kas Manual
       kasTransactions.forEach(tx => {
-        raw.push({
-          id: tx.id,
-          isAuto: false,
-          tanggal: tx.tanggal,
-          uraian: tx.uraian,
-          penerimaan: Number(tx.penerimaan) || 0,
-          pengeluaran: Number(tx.pengeluaran) || 0
-        });
+        if (tx.tanggal && tx.tanggal.startsWith(activeYear)) {
+          raw.push({
+            id: tx.id,
+            isAuto: false,
+            tanggal: tx.tanggal,
+            uraian: tx.uraian,
+            penerimaan: Number(tx.penerimaan) || 0,
+            pengeluaran: Number(tx.pengeluaran) || 0
+          });
+        }
       });
 
-      // Hitung Saldo Berjalan Dari Terlama
+      // Urutkan & Hitung Saldo Berjalan Kumulatif
       raw.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
       let currentSaldo = saldoAwal;
       raw.forEach(tx => {
-        totalPenerimaan += tx.penerimaan;
-        totalPengeluaran += tx.pengeluaran;
         currentSaldo = currentSaldo + tx.penerimaan - tx.pengeluaran;
         tx.saldo = currentSaldo;
       });
 
-      // Tampilkan Urutan Terbaru di Atas
-      const displayTx = [...raw].reverse();
+      // Filter Bulan Berjalan / Tertentu
+      const monthFilterVal = document.getElementById('kasMonthFilter') ? document.getElementById('kasMonthFilter').value : 'all';
+      const nowMonthIdx = new Date().getMonth();
+
+      let displayTx = [...raw].reverse();
+
+      if (monthFilterVal === 'current') {
+        const targetMonthStr = String(nowMonthIdx + 1).padStart(2, '0');
+        displayTx = displayTx.filter(t => t.tanggal.startsWith(`${activeYear}-${targetMonthStr}`));
+      } else if (monthFilterVal !== 'all') {
+        const targetMonthStr = String(parseInt(monthFilterVal) + 1).padStart(2, '0');
+        displayTx = displayTx.filter(t => t.tanggal.startsWith(`${activeYear}-${targetMonthStr}`));
+      }
+
+      let totalPenerimaan = 0, totalPengeluaran = 0;
+
       displayTx.forEach((tx, idx) => {
+        totalPenerimaan += tx.penerimaan;
+        totalPengeluaran += tx.pengeluaran;
+
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 transition border-b";
         tr.innerHTML = `
-          <td class="text-center p-2.5 border-r font-bold">${idx + 1}</td>
-          <td class="text-center p-2.5 border-r font-semibold text-slate-600">${tx.tanggal}</td>
-          <td class="p-2.5 border-r px-4 font-medium text-slate-900">${tx.uraian}</td>
-          <td class="text-right p-2.5 border-r text-emerald-600 font-bold">${tx.penerimaan > 0 ? formatRupiah(tx.penerimaan) : '-'}</td>
-          <td class="text-right p-2.5 border-r text-rose-600 font-bold">${tx.pengeluaran > 0 ? formatRupiah(tx.pengeluaran) : '-'}</td>
-          <td class="text-right p-2.5 border-r font-black text-blue-950">${formatRupiah(tx.saldo)}</td>
+          <td class="text-center p-2 border-r font-bold">${idx + 1}</td>
+          <td class="text-center p-2 border-r font-semibold text-slate-600">${tx.tanggal}</td>
+          <td class="p-2 border-r px-4 font-medium text-slate-900">${tx.uraian}</td>
+          <td class="text-right p-2 border-r text-emerald-600 font-bold">${tx.penerimaan > 0 ? formatRupiah(tx.penerimaan) : '-'}</td>
+          <td class="text-right p-2 border-r text-rose-600 font-bold">${tx.pengeluaran > 0 ? formatRupiah(tx.pengeluaran) : '-'}</td>
+          <td class="text-right p-2 border-r font-black text-blue-950">${formatRupiah(tx.saldo)}</td>
           ${isAdminLoggedIn ? `
-            <td class="p-2.5 text-center no-print">
+            <td class="p-2 text-center no-print">
               ${!tx.isAuto ? `
-                <button onclick="editKasData('${tx.id}')" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold">Edit</button>
-                <button onclick="deleteKasData('${tx.id}')" class="bg-rose-600 text-white px-2 py-1 rounded text-[10px] font-bold">Hapus</button>
+                <button onclick="editKasData('${tx.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">Edit</button>
+                <button onclick="deleteKasData('${tx.id}')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">Hapus</button>
               ` : '<span class="text-[10px] text-slate-400 font-bold italic">Otomatis</span>'}
             </td>
           ` : ''}
@@ -708,25 +780,27 @@
         tbody.appendChild(tr);
       });
 
-      // Saldo Awal
-      let trInit = document.createElement('tr');
-      trInit.className = "bg-slate-50 font-semibold italic text-slate-600";
-      trInit.innerHTML = `
-        <td class="text-center p-2.5 border-r">-</td>
-        <td class="text-center p-2.5 border-r">2026-01-01</td>
-        <td class="p-2.5 border-r px-4">Saldo Awal Buku Kas</td>
-        <td class="text-right p-2.5 border-r">-</td>
-        <td class="text-right p-2.5 border-r">-</td>
-        <td class="text-right p-2.5 border-r font-black text-blue-950">${formatRupiah(saldoAwal)}</td>
-        ${isAdminLoggedIn ? '<td class="no-print"></td>' : ''}
-      `;
-      tbody.appendChild(trInit);
+      // Row Saldo Awal jika menampilkan seluruh transaksi
+      if (monthFilterVal === 'all') {
+        let trInit = document.createElement('tr');
+        trInit.className = "bg-slate-50 font-semibold italic text-slate-600";
+        trInit.innerHTML = `
+          <td class="text-center p-2 border-r">-</td>
+          <td class="text-center p-2 border-r">${activeYear}-01-01</td>
+          <td class="p-2 border-r px-4">Saldo Awal Buku Kas (TA. ${activeYear})</td>
+          <td class="text-right p-2 border-r">-</td>
+          <td class="text-right p-2 border-r">-</td>
+          <td class="text-right p-2 border-r font-black text-blue-950">${formatRupiah(saldoAwal)}</td>
+          ${isAdminLoggedIn ? '<td class="no-print"></td>' : ''}
+        `;
+        tbody.appendChild(trInit);
+      }
 
       document.getElementById('kasTableFoot').innerHTML = `
-        <td colspan="3" class="p-3 text-center border-r font-black">TOTAL MUTASI</td>
-        <td class="text-right p-3 border-r text-emerald-700 font-black">${formatRupiah(totalPenerimaan)}</td>
-        <td class="text-right p-3 border-r text-rose-700 font-black">${formatRupiah(totalPengeluaran)}</td>
-        <td class="text-right p-3 border-r text-blue-950 font-black text-sm">${formatRupiah(currentSaldo)}</td>
+        <td colspan="3" class="p-2.5 text-center border-r font-black">TOTAL MUTASI PERIODE INI</td>
+        <td class="text-right p-2.5 border-r text-emerald-700 font-black">${formatRupiah(totalPenerimaan)}</td>
+        <td class="text-right p-2.5 border-r text-rose-700 font-black">${formatRupiah(totalPengeluaran)}</td>
+        <td class="text-right p-2.5 border-r text-blue-950 font-black text-xs">${formatRupiah(currentSaldo)}</td>
         ${isAdminLoggedIn ? '<td class="no-print"></td>' : ''}
       `;
 
@@ -734,11 +808,9 @@
     }
 
     // AUTH ADMIN
-    function openLoginModal() {
-      document.getElementById('loginModal').classList.replace('hidden', 'flex');
-    }
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.replace('flex', 'hidden');
+    function openLoginModal() { document.getElementById('loginModal').classList.replace('hidden', 'flex'); }
+    function closeLoginModal() { 
+      document.getElementById('loginModal').classList.replace('flex', 'hidden'); 
       document.getElementById('loginError').classList.add('hidden');
     }
     function handleLogin(e) {
@@ -766,34 +838,29 @@
       renderAllTables();
     }
 
-    // POST / SYNC KE GOOGLE APPS SCRIPT
+    // SYNC GOOGLE SHEETS
     async function syncToGoogleSheets(payload) {
       const badge = document.getElementById('syncStatusBadge');
       const text = document.getElementById('syncStatusText');
-      
       try {
         badge.className = "w-2.5 h-2.5 rounded-full bg-amber-400 inline-block animate-pulse";
         text.textContent = "Menyimpan ke Sheets...";
-
         await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
-
         badge.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block";
         text.textContent = "Tersimpan di Google Sheets";
       } catch (err) {
-        console.error("Gagal sinkron ke Google Sheets:", err);
+        console.error(err);
       }
     }
 
     // CRUD KECAMATAN
     function openFormModal(isEdit = false) {
-      document.getElementById('formModalTitle').textContent = isEdit ? 'Edit Data Kecamatan' : 'Tambah Kecamatan Baru';
+      document.getElementById('formModalTitle').textContent = isEdit ? `Edit Data Kecamatan (TA. ${activeYear})` : `Tambah Kecamatan Baru (TA. ${activeYear})`;
       document.getElementById('btnDeleteKecamatan').className = isEdit ? "px-4 py-2 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded-xl font-bold" : "hidden";
       document.getElementById('formModal').classList.replace('hidden', 'flex');
     }
@@ -808,7 +875,7 @@
       }
     }
     function editData(docId) {
-      const item = districtData.find(d => d.id === docId);
+      const item = districtData.find(d => d.id === docId && (d.tahun || "2026") === activeYear);
       if(!item) return;
       document.getElementById('editDocId').value = item.id;
       document.getElementById('inputNama').value = item.nama;
@@ -840,10 +907,11 @@
         nama: nama,
         iuran: newIuran,
         laporan: newLaporan,
-        ket: document.getElementById('inputKet').value
+        ket: document.getElementById('inputKet').value,
+        tahun: activeYear
       };
 
-      const existingIdx = districtData.findIndex(d => d.id === targetId);
+      const existingIdx = districtData.findIndex(d => d.id === targetId && (d.tahun || "2026") === activeYear);
       if (existingIdx >= 0) {
         districtData[existingIdx] = payload;
       } else {
@@ -856,12 +924,11 @@
       btn.disabled = false;
       closeFormModal();
     }
-
     async function deleteCurrentKecamatan() {
       const docId = document.getElementById('editDocId').value;
       if (!docId) return;
       if (confirm(`Hapus data kecamatan ini dari Google Sheets?`)) {
-        districtData = districtData.filter(d => d.id !== docId);
+        districtData = districtData.filter(d => !(d.id === docId && (d.tahun || "2026") === activeYear));
         renderAllTables();
         await syncToGoogleSheets({ action: "delete_iuran", id: docId });
         closeFormModal();
@@ -871,6 +938,7 @@
     // CRUD KAS
     function openKasModal(isEdit = false) {
       document.getElementById('kasModalTitle').textContent = isEdit ? 'Edit Transaksi Kas' : 'Tambah Kas Baru';
+      document.getElementById('inputKasTanggal').value = `${activeYear}-01-10`;
       document.getElementById('kasModal').classList.replace('hidden', 'flex');
     }
     function closeKasModal() {
@@ -906,7 +974,7 @@
 
       const payload = {
         action: "save_kas",
-        id: kasId || "KAS_" + new Date().getTime(),
+        id: kasId || "MANUAL_" + new Date().getTime(),
         tanggal: tanggal,
         uraian: uraian,
         penerimaan: jenis === 'penerimaan' ? nominal : 0,
@@ -947,20 +1015,24 @@
       if (pType === 'detail') {
         switchTab('detail');
         titleEl.textContent = "LAPORAN DETAIL SETORAN IURAN & STATUS LAPORAN UPK";
-        periodEl.textContent = "Tahun Anggaran 2026";
+        periodEl.textContent = `Tahun Anggaran ${activeYear}`;
       } else if (pType === 'kuartal') {
         switchTab('kuartal');
         titleEl.textContent = "REKAPITULASI IURAN KUARTAL (Q1 - Q4) UPK DAPM";
-        periodEl.textContent = "Tahun Anggaran 2026";
+        periodEl.textContent = `Tahun Anggaran ${activeYear}`;
       } else if (pType === 'kas_semua') {
         switchTab('kas');
+        document.getElementById('kasMonthFilter').value = 'all';
+        renderKasTable();
         titleEl.textContent = "BUKU KAS UMUM ASOSIASI UPK DAPM KAB BONE";
-        periodEl.textContent = "Rekapan Transaksi Keseluruhan TA. 2026";
+        periodEl.textContent = `Rekapan Seluruh Transaksi TA. ${activeYear}`;
       } else if (pType === 'kas_bulan') {
         switchTab('kas');
         const mIdx = parseInt(document.getElementById('printMonthSelect').value);
-        titleEl.textContent = `BUKU KAS UMUM ASOSIASI UPK DAPM - BULAN ${monthNamesFull[mIdx].toUpperCase()} 2026`;
-        periodEl.textContent = `Periode: 01 s/d ${monthNamesFull[mIdx]} 2026`;
+        document.getElementById('kasMonthFilter').value = String(mIdx);
+        renderKasTable();
+        titleEl.textContent = `BUKU KAS UMUM ASOSIASI UPK DAPM - BULAN ${monthNamesFull[mIdx].toUpperCase()} ${activeYear}`;
+        periodEl.textContent = `Periode: Bulan ${monthNamesFull[mIdx]} ${activeYear}`;
       }
       closePrintModal();
       setTimeout(() => window.print(), 300);
@@ -996,12 +1068,12 @@
       }
       const blob = new Blob([csv.join("\n")], {type: "text/csv;charset=utf-8;"});
       const link = document.createElement("a");
-      link.download = `Laporan_UPK_Bone_${activeTab}_2026.csv`;
+      link.download = `Laporan_UPK_Bone_${activeTab}_${activeYear}.csv`;
       link.href = window.URL.createObjectURL(blob);
       link.click();
     }
 
-    // INIT
+    // INITIALIZATION
     window.addEventListener('DOMContentLoaded', () => {
       initMonths();
       fetchSheetData();
