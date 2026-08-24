@@ -466,12 +466,17 @@
         const response = await fetch(GOOGLE_SCRIPT_URL);
         const data = await response.json();
         
-        if (data.iuran && data.iuran.length > 0) districtData = data.iuran;
-        if (data.kas && data.kas.length > 0) kasTransactions = data.kas;
+        if (data.iuran && data.iuran.length > 0) {
+          districtData = data.iuran;
+        }
+        if (data.kas && data.kas.length > 0) {
+          kasTransactions = data.kas;
+        }
 
         badge.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block";
-        text.textContent = "Google Sheets Terhubung (Aman)";
+        text.textContent = "Google Sheets Terhubung (Online)";
       } catch (e) {
+        console.warn("Gagal load Google Sheets, menggunakan data lokal:", e);
         badge.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block";
         text.textContent = "Mode Offline / Lokal Siap";
       } finally {
@@ -763,13 +768,24 @@
 
     // POST / SYNC KE GOOGLE APPS SCRIPT
     async function syncToGoogleSheets(payload) {
+      const badge = document.getElementById('syncStatusBadge');
+      const text = document.getElementById('syncStatusText');
+      
       try {
+        badge.className = "w-2.5 h-2.5 rounded-full bg-amber-400 inline-block animate-pulse";
+        text.textContent = "Menyimpan ke Sheets...";
+
         await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
           body: JSON.stringify(payload)
         });
+
+        badge.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block";
+        text.textContent = "Tersimpan di Google Sheets";
       } catch (err) {
         console.error("Gagal sinkron ke Google Sheets:", err);
       }
